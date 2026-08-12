@@ -1,0 +1,22 @@
+[0.000s] Log started
+[0.000s] main: parameter validation passed
+[0.000s] thopproblem: loading data from ..\..\instances\d2103-thop\d2103_01_bsc_01_01.thop
+[0.015s] thopproblem: read header -> cities=2103, items=2101, capacity=180654, maxTime=60140
+[0.015s] thopproblem: loaded 2103 nodes and 2101 items
+[0.015s] main: input loaded (2103 cities, 2101 items)
+[0.015s] packing: initializing packing structures
+[0.015s] packing: nCities=2103, nItems=2101, capacity=180654, minSpeed=0.1, maxSpeed=1
+[0.015s] packing: initialized city map and item buckets
+[0.015s] main: PackingPlan initialized
+[0.015s] aco: initializing ACO solver
+[0.015s] aco: initializing candidate lists
+[0.170s] aco: initialized 2103 components and 196 ants
+[0.170s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start
+[34.004s] aco: new best solution found with cost 236643 and 2103 components
+[34.005s] aco: generation 1 start
+[48.503s] aco: generation 2 start
+[62.114s] aco: generation 3 start
+[75.126s] aco: generation 4 start
+[88.569s] aco: generation 5 start
+[101.793s] aco: generation 6 start

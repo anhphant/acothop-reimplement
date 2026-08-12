@@ -1,0 +1,30 @@
+[0.001s] Log started
+[0.001s] main: parameter validation passed
+[0.001s] thopproblem: loading data from ..\..\instances\dsj1000-thop\dsj1000_01_bsc_01_01.thop
+[0.012s] thopproblem: read header -> cities=1000, items=998, capacity=87826, maxTime=2.11247e+008
+[0.012s] thopproblem: loaded 1000 nodes and 998 items
+[0.205s] thopproblem: computed nearest neighbor lists (nn_ants = 20)
+[0.205s] main: input loaded (1000 cities, 998 items)
+[0.205s] packing: initializing packing structures
+[0.205s] packing: nCities=1000, nItems=998, capacity=87826, minSpeed=0.1, maxSpeed=1
+[0.205s] packing: initialized city map and item buckets
+[0.205s] main: PackingPlan initialized
+[0.205s] aco: initializing ACO solver
+[0.218s] aco: initialized 1000 components and 200 ants
+[0.218s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start
+[9.159s] aco: new best solution found with cost 143632 and 1000 components
+[9.201s] aco: generation 1 start
+[17.589s] aco: new best solution found with cost 144164 and 1000 components
+[17.610s] aco: generation 2 start
+[26.963s] aco: new best solution found with cost 144361 and 1000 components
+[27.009s] aco: generation 3 start
+[36.674s] aco: generation 4 start
+[47.260s] aco: generation 5 start
+[56.771s] aco: generation 6 start
+[69.382s] aco: generation 7 start
+[78.955s] aco: new best solution found with cost 144387 and 1000 components
+[79.002s] aco: generation 8 start
+[88.159s] aco: generation 9 start
+[99.672s] aco: generation 10 start
+[100.003s] aco: stopping after 11 generations

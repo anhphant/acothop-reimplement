@@ -1,0 +1,215 @@
+[0.001s] Log started
+[0.001s] main: parameter validation passed
+[0.001s] thopproblem: loading data from ..\..\instances\d2103-thop\d2103_01_bsc_01_01.thop
+[0.016s] thopproblem: read header -> cities=2103, items=2101, capacity=180654, maxTime=60140
+[0.016s] thopproblem: loaded 2103 nodes and 2101 items
+[0.017s] main: input loaded (2103 cities, 2101 items)
+[0.017s] packing: initializing packing structures
+[0.017s] packing: nCities=2103, nItems=2101, capacity=180654, minSpeed=0.1, maxSpeed=1
+[0.017s] packing: initialized city map, item buckets, and elite profiles
+[0.017s] main: PackingPlan initialized
+[0.017s] aco: initializing ACO solver
+[0.017s] aco: initializing candidate lists
+[0.111s] aco: initialized 2103 components and 196 ants
+[0.111s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start
+[2.918s] aco: new best solution found with cost 230650 and 2103 components
+[2.919s] aco: generation 1 start
+[5.114s] aco: new best solution found with cost 234642 and 2103 components
+[5.115s] aco: generation 2 start
+[6.899s] aco: generation 3 start
+[8.780s] aco: generation 4 start
+[10.603s] aco: generation 5 start
+[12.330s] aco: generation 6 start
+[14.142s] aco: new best solution found with cost 240967 and 2103 components
+[14.142s] aco: generation 7 start
+[15.889s] aco: generation 8 start
+[17.323s] aco: generation 9 start
+[18.755s] aco: generation 10 start
+[20.501s] aco: generation 11 start
+[22.068s] aco: generation 12 start
+[23.506s] aco: generation 13 start
+[25.033s] aco: generation 14 start
+[26.582s] aco: generation 15 start
+[27.953s] aco: generation 16 start
+[29.424s] aco: generation 17 start
+[30.896s] aco: generation 18 start
+[32.337s] aco: generation 19 start
+[33.838s] aco: generation 20 start
+[35.327s] aco: generation 21 start
+[36.631s] aco: generation 22 start
+[38.129s] aco: generation 23 start
+[39.602s] aco: generation 24 start
+[40.912s] aco: generation 25 start
+[42.162s] aco: generation 26 start
+[43.698s] aco: stagnation reached (20 gens), restarting pheromone!
+[43.699s] aco: generation 27 start
+[45.015s] aco: generation 28 start
+[46.598s] aco: generation 29 start
+[48.021s] aco: new best solution found with cost 243748 and 2103 components
+[48.021s] aco: generation 30 start
+[49.078s] aco: generation 31 start
+[50.123s] aco: generation 32 start
+[51.183s] aco: generation 33 start
+[52.504s] aco: generation 34 start
+[53.890s] aco: generation 35 start
+[55.107s] aco: generation 36 start
+[56.204s] aco: generation 37 start
+[57.436s] aco: generation 38 start
+[58.404s] aco: generation 39 start
+[59.605s] aco: new best solution found with cost 244693 and 2103 components
+[59.607s] aco: generation 40 start
+[60.752s] aco: new best solution found with cost 244985 and 2103 components
+[60.752s] aco: generation 41 start
+[61.850s] aco: generation 42 start
+[62.941s] aco: new best solution found with cost 246514 and 2103 components
+[62.942s] aco: generation 43 start
+[64.257s] aco: generation 44 start
+[65.515s] aco: generation 45 start
+[66.730s] aco: generation 46 start
+[67.786s] aco: generation 47 start
+[68.916s] aco: generation 48 start
+[70.051s] aco: generation 49 start
+[71.175s] aco: generation 50 start
+[72.219s] aco: generation 51 start
+[73.437s] aco: generation 52 start
+[74.594s] aco: generation 53 start
+[75.671s] aco: generation 54 start
+[76.719s] aco: generation 55 start
+[77.932s] aco: generation 56 start
+[79.075s] aco: generation 57 start
+[80.351s] aco: generation 58 start
+[81.493s] aco: generation 59 start
+[82.521s] aco: generation 60 start
+[83.695s] aco: generation 61 start
+[84.697s] aco: generation 62 start
+[85.865s] aco: stagnation reached (20 gens), restarting pheromone!
+[85.866s] aco: generation 63 start
+[86.873s] aco: generation 64 start
+[87.975s] aco: generation 65 start
+[89.104s] aco: generation 66 start
+[90.221s] aco: generation 67 start
+[91.555s] aco: generation 68 start
+[92.566s] aco: generation 69 start
+[93.668s] aco: generation 70 start
+[94.717s] aco: generation 71 start
+[95.929s] aco: generation 72 start
+[97.082s] aco: generation 73 start
+[98.312s] aco: generation 74 start
+[99.445s] aco: new best solution found with cost 247063 and 2103 components
+[99.445s] aco: generation 75 start
+[100.619s] aco: new best solution found with cost 251889 and 2103 components
+[100.620s] aco: generation 76 start
+[101.805s] aco: generation 77 start
+[102.785s] aco: generation 78 start
+[103.932s] aco: generation 79 start
+[105.296s] aco: generation 80 start
+[106.872s] aco: generation 81 start
+[108.771s] aco: generation 82 start
+[110.570s] aco: generation 83 start
+[112.189s] aco: generation 84 start
+[113.663s] aco: generation 85 start
+[115.049s] aco: generation 86 start
+[116.249s] aco: generation 87 start
+[117.277s] aco: generation 88 start
+[118.428s] aco: generation 89 start
+[119.457s] aco: generation 90 start
+[120.411s] aco: generation 91 start
+[121.774s] aco: generation 92 start
+[122.712s] aco: generation 93 start
+[123.738s] aco: generation 94 start
+[124.692s] aco: generation 95 start
+[125.723s] aco: stagnation reached (20 gens), restarting pheromone!
+[125.723s] aco: generation 96 start
+[126.665s] aco: generation 97 start
+[127.663s] aco: generation 98 start
+[128.550s] aco: generation 99 start
+[129.620s] aco: generation 100 start
+[130.572s] aco: generation 101 start
+[131.677s] aco: generation 102 start
+[132.559s] aco: generation 103 start
+[133.513s] aco: generation 104 start
+[134.383s] aco: generation 105 start
+[135.314s] aco: generation 106 start
+[136.198s] aco: generation 107 start
+[137.157s] aco: generation 108 start
+[138.133s] aco: generation 109 start
+[139.031s] aco: generation 110 start
+[139.941s] aco: generation 111 start
+[140.811s] aco: generation 112 start
+[141.807s] aco: generation 113 start
+[142.696s] aco: generation 114 start
+[143.638s] aco: generation 115 start
+[144.524s] aco: stagnation reached (20 gens), restarting pheromone!
+[144.524s] aco: generation 116 start
+[145.464s] aco: generation 117 start
+[146.494s] aco: generation 118 start
+[147.554s] aco: generation 119 start
+[148.420s] aco: generation 120 start
+[149.362s] aco: generation 121 start
+[150.230s] aco: generation 122 start
+[151.347s] aco: generation 123 start
+[152.222s] aco: generation 124 start
+[153.148s] aco: generation 125 start
+[154.031s] aco: generation 126 start
+[154.921s] aco: generation 127 start
+[156.013s] aco: generation 128 start
+[156.910s] aco: generation 129 start
+[157.857s] aco: generation 130 start
+[158.732s] aco: generation 131 start
+[159.705s] aco: generation 132 start
+[160.638s] aco: generation 133 start
+[161.599s] aco: generation 134 start
+[162.530s] aco: generation 135 start
+[163.859s] aco: stagnation reached (20 gens), restarting pheromone!
+[163.860s] aco: generation 136 start
+[164.779s] aco: generation 137 start
+[165.755s] aco: generation 138 start
+[166.637s] aco: generation 139 start
+[167.578s] aco: generation 140 start
+[168.434s] aco: generation 141 start
+[169.452s] aco: generation 142 start
+[170.337s] aco: generation 143 start
+[171.456s] aco: generation 144 start
+[172.627s] aco: generation 145 start
+[173.839s] aco: generation 146 start
+[174.824s] aco: generation 147 start
+[175.759s] aco: generation 148 start
+[176.732s] aco: generation 149 start
+[177.686s] aco: generation 150 start
+[178.745s] aco: generation 151 start
+[179.712s] aco: generation 152 start
+[180.603s] aco: generation 153 start
+[181.601s] aco: generation 154 start
+[182.656s] aco: generation 155 start
+[183.595s] aco: stagnation reached (20 gens), restarting pheromone!
+[183.595s] aco: generation 156 start
+[184.470s] aco: generation 157 start
+[185.502s] aco: generation 158 start
+[186.473s] aco: generation 159 start
+[187.479s] aco: generation 160 start
+[188.440s] aco: generation 161 start
+[189.484s] aco: generation 162 start
+[190.378s] aco: generation 163 start
+[191.387s] aco: generation 164 start
+[192.281s] aco: generation 165 start
+[193.283s] aco: generation 166 start
+[194.263s] aco: generation 167 start
+[195.241s] aco: generation 168 start
+[196.302s] aco: generation 169 start
+[197.621s] aco: generation 170 start
+[198.699s] aco: generation 171 start
+[199.874s] aco: generation 172 start
+[200.739s] aco: generation 173 start
+[201.701s] aco: generation 174 start
+[202.589s] aco: generation 175 start
+[203.623s] aco: stagnation reached (20 gens), restarting pheromone!
+[203.623s] aco: generation 176 start
+[204.485s] aco: generation 177 start
+[205.471s] aco: generation 178 start
+[206.360s] aco: generation 179 start
+[207.509s] aco: generation 180 start
+[208.381s] aco: generation 181 start
+[209.329s] aco: generation 182 start
+[210.210s] aco: generation 183 start
+[211.010s] aco: stopping after 184 generations

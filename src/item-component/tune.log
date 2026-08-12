@@ -1,0 +1,17 @@
+[0.000s] Log started
+[0.001s] main: parameter validation passed
+[0.001s] thopproblem: loading data from ..\..\instances\pr107-thop\pr107_10_usw_10_03.thop
+[0.004s] thopproblem: read header -> cities=107, items=1050, capacity=968010, maxTime=64260
+[0.004s] thopproblem: loaded 107 nodes and 1050 items
+[0.005s] main: input loaded (107 cities, 1050 items)
+[0.005s] aco: initializing ACO solver
+[0.024s] aco: initialized 1050 components and 20 ants
+[0.024s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start
+[3.686s] aco: new best solution found with cost 355144 and 704 components
+[3.729s] aco: new best solution found with cost 355875 and 707 components
+[3.763s] aco: new best solution found with cost 371781 and 740 components
+[3.828s] aco: new best solution found with cost 374604 and 745 components
+[3.848s] aco: generation 1 start
+[7.802s] aco: generation 2 start
+[8.756s] aco: stopping after 3 generations

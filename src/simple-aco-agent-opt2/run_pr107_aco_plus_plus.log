@@ -1,0 +1,256 @@
+[0.001s] Log started
+[0.001s] main: parameter validation passed
+[0.001s] thopproblem: loading data from ..\..\instances\pr107-thop\pr107_10_usw_10_03.thop
+[0.005s] thopproblem: read header -> cities=107, items=1050, capacity=968010, maxTime=64260
+[0.005s] thopproblem: loaded 107 nodes and 1050 items
+[0.007s] thopproblem: computed nearest neighbor lists (nn_ants = 20)
+[0.007s] main: input loaded (107 cities, 1050 items)
+[0.007s] packing: initializing packing structures
+[0.007s] packing: nCities=107, nItems=1050, capacity=968010, minSpeed=0.1, maxSpeed=1
+[0.007s] packing: initialized city map and item buckets
+[0.007s] main: PackingPlan initialized
+[0.007s] aco: initializing ACO solver
+[0.008s] aco: initialized 107 components and 200 ants
+[0.008s] main: AntColonyOptimization initialized
+[1.239s] daemon timings: pack_all=1224.75ms, all_ants_ls=1064.65ms, all_ants_ls_pack=160.103ms
+[1.240s] aco: new best solution found with cost 475110 and 106 components
+[1.240s] aco: generation 0 timings: total_info=3.093ms, ants=11.063ms, evap=0ms, daemon=1225.75ms
+[2.322s] daemon timings: pack_all=1070.8ms, all_ants_ls=904.607ms, all_ants_ls_pack=166.19ms
+[2.322s] aco: new best solution found with cost 476104 and 105 components
+[2.322s] aco: generation 1 timings: total_info=1.996ms, ants=9.519ms, evap=0ms, daemon=1070.8ms
+[2.905s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=11ms
+[3.361s] daemon timings: pack_all=1027.81ms, all_ants_ls=852.715ms, all_ants_ls_pack=175.098ms
+[3.361s] aco: generation 2 timings: total_info=1.987ms, ants=8.538ms, evap=0ms, daemon=1027.81ms
+[4.330s] daemon timings: pack_all=960.789ms, all_ants_ls=808.389ms, all_ants_ls_pack=152.4ms
+[4.330s] aco: generation 3 timings: total_info=1.989ms, ants=7.025ms, evap=0ms, daemon=960.789ms
+[5.337s] daemon timings: pack_all=996.951ms, all_ants_ls=855.028ms, all_ants_ls_pack=141.923ms
+[5.338s] aco: generation 4 timings: total_info=2.981ms, ants=7.022ms, evap=0ms, daemon=997.958ms
+[6.342s] daemon timings: pack_all=993.847ms, all_ants_ls=845.573ms, all_ants_ls_pack=148.274ms
+[6.342s] aco: generation 5 timings: total_info=0.997ms, ants=8.659ms, evap=0ms, daemon=993.847ms
+[7.356s] daemon timings: pack_all=1003.41ms, all_ants_ls=854.535ms, all_ants_ls_pack=148.342ms
+[7.356s] aco: generation 6 timings: total_info=1.999ms, ants=8.529ms, evap=0ms, daemon=1003.41ms
+[8.363s] daemon timings: pack_all=996.677ms, all_ants_ls=858.02ms, all_ants_ls_pack=138.657ms
+[8.363s] aco: new best solution found with cost 476906 and 106 components
+[8.363s] aco: generation 7 timings: total_info=2ms, ants=8.986ms, evap=0ms, daemon=996.677ms
+[9.388s] daemon timings: pack_all=1015.47ms, all_ants_ls=844.981ms, all_ants_ls_pack=170.488ms
+[9.388s] aco: generation 8 timings: total_info=2.834ms, ants=5.999ms, evap=0ms, daemon=1015.47ms
+[10.326s] daemon timings: pack_all=928.895ms, all_ants_ls=769.466ms, all_ants_ls_pack=159.429ms
+[10.326s] aco: generation 9 timings: total_info=2ms, ants=6.989ms, evap=0ms, daemon=928.895ms
+[11.321s] daemon timings: pack_all=984.976ms, all_ants_ls=838.802ms, all_ants_ls_pack=146.174ms
+[11.321s] aco: generation 10 timings: total_info=1.984ms, ants=7.999ms, evap=0ms, daemon=984.976ms
+[11.732s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=18.993ms
+[12.221s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=37.012ms
+[12.490s] daemon timings: pack_all=1160.91ms, all_ants_ls=949.271ms, all_ants_ls_pack=210.413ms
+[12.490s] aco: generation 11 timings: total_info=1.994ms, ants=6.487ms, evap=0ms, daemon=1160.91ms
+[13.474s] daemon timings: pack_all=974.672ms, all_ants_ls=826.38ms, all_ants_ls_pack=147.737ms
+[13.475s] aco: generation 12 timings: total_info=2ms, ants=7.028ms, evap=0ms, daemon=975.674ms
+[14.605s] daemon timings: pack_all=1117.14ms, all_ants_ls=939.472ms, all_ants_ls_pack=177.668ms
+[14.605s] aco: generation 13 timings: total_info=1.999ms, ants=11.001ms, evap=0.503ms, daemon=1117.14ms
+[15.789s] daemon timings: pack_all=1171.42ms, all_ants_ls=975.861ms, all_ants_ls_pack=195.56ms
+[15.789s] aco: generation 14 timings: total_info=1.999ms, ants=10.012ms, evap=0ms, daemon=1171.42ms
+[16.937s] daemon timings: pack_all=1136.54ms, all_ants_ls=963.106ms, all_ants_ls_pack=173.434ms
+[16.937s] aco: generation 15 timings: total_info=2.002ms, ants=10.02ms, evap=0ms, daemon=1136.54ms
+[18.005s] daemon timings: pack_all=1057.37ms, all_ants_ls=886.65ms, all_ants_ls_pack=169.72ms
+[18.005s] aco: generation 16 timings: total_info=1.999ms, ants=8.01ms, evap=0ms, daemon=1057.37ms
+[18.835s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=11.514ms
+[18.852s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=8.529ms
+[19.194s] daemon timings: pack_all=1174.22ms, all_ants_ls=977.863ms, all_ants_ls_pack=195.343ms
+[19.195s] aco: generation 17 timings: total_info=3ms, ants=12.005ms, evap=0ms, daemon=1175.22ms
+[20.265s] daemon timings: pack_all=1059.6ms, all_ants_ls=895.756ms, all_ants_ls_pack=163.847ms
+[20.265s] aco: generation 18 timings: total_info=3.005ms, ants=7.01ms, evap=0ms, daemon=1059.6ms
+[21.480s] daemon timings: pack_all=1207.16ms, all_ants_ls=1031.39ms, all_ants_ls_pack=175.218ms
+[21.480s] aco: generation 19 timings: total_info=2.563ms, ants=6.011ms, evap=0ms, daemon=1207.16ms
+[22.491s] daemon timings: pack_all=999.094ms, all_ants_ls=852.367ms, all_ants_ls_pack=146.727ms
+[22.491s] aco: generation 20 timings: total_info=2.998ms, ants=8.242ms, evap=0ms, daemon=999.094ms
+[23.087s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=17.517ms
+[23.633s] daemon timings: pack_all=1131.19ms, all_ants_ls=954.842ms, all_ants_ls_pack=176.347ms
+[23.634s] aco: generation 21 timings: total_info=1.688ms, ants=9.066ms, evap=0ms, daemon=1132.21ms
+[24.783s] daemon timings: pack_all=1140.98ms, all_ants_ls=968.248ms, all_ants_ls_pack=171.726ms
+[24.783s] aco: generation 22 timings: total_info=2.688ms, ants=6.004ms, evap=0ms, daemon=1140.98ms
+[25.414s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=40.528ms
+[26.084s] daemon timings: pack_all=1290.61ms, all_ants_ls=1068.02ms, all_ants_ls_pack=221.586ms
+[26.084s] aco: generation 23 timings: total_info=2ms, ants=6.998ms, evap=0ms, daemon=1290.61ms
+[26.558s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=30.001ms
+[27.251s] daemon timings: pack_all=1155.09ms, all_ants_ls=955.229ms, all_ants_ls_pack=199.86ms
+[27.251s] aco: generation 24 timings: total_info=2.001ms, ants=9.987ms, evap=0ms, daemon=1155.09ms
+[28.461s] daemon timings: pack_all=1199.22ms, all_ants_ls=1017.89ms, all_ants_ls_pack=179.304ms
+[28.462s] aco: generation 25 timings: total_info=2.004ms, ants=8.01ms, evap=1.016ms, daemon=1200.22ms
+[29.239s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=22.997ms
+[29.696s] daemon timings: pack_all=1220.85ms, all_ants_ls=999.8ms, all_ants_ls_pack=221.051ms
+[29.696s] aco: generation 26 timings: total_info=4.027ms, ants=8.996ms, evap=0ms, daemon=1220.85ms
+[30.614s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=6.984ms
+[31.076s] daemon timings: pack_all=1365.38ms, all_ants_ls=1150.86ms, all_ants_ls_pack=213.526ms
+[31.076s] aco: generation 27 timings: total_info=2.992ms, ants=12ms, evap=0ms, daemon=1365.38ms
+[32.286s] daemon timings: pack_all=1195.21ms, all_ants_ls=1013.47ms, all_ants_ls_pack=181.739ms
+[32.286s] aco: generation 28 timings: total_info=3.517ms, ants=11.027ms, evap=0ms, daemon=1195.21ms
+[33.377s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=8.998ms
+[33.456s] daemon timings: pack_all=1158.32ms, all_ants_ls=974.68ms, all_ants_ls_pack=183.636ms
+[33.456s] aco: generation 29 timings: total_info=2ms, ants=9.988ms, evap=0ms, daemon=1158.32ms
+[34.560s] daemon timings: pack_all=1090.79ms, all_ants_ls=909.399ms, all_ants_ls_pack=181.387ms
+[34.560s] aco: generation 30 timings: total_info=3.007ms, ants=9.986ms, evap=0ms, daemon=1090.79ms
+[34.984s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=12.005ms
+[36.079s] daemon timings: pack_all=1504.85ms, all_ants_ls=1286.84ms, all_ants_ls_pack=218.009ms
+[36.080s] aco: generation 31 timings: total_info=5.037ms, ants=8.971ms, evap=0ms, daemon=1505.85ms
+[37.221s] daemon timings: pack_all=1130.03ms, all_ants_ls=951.102ms, all_ants_ls_pack=178.926ms
+[37.221s] aco: generation 32 timings: total_info=3.009ms, ants=8.303ms, evap=0ms, daemon=1130.03ms
+[38.282s] daemon timings: pack_all=1048.61ms, all_ants_ls=880.12ms, all_ants_ls_pack=168.489ms
+[38.282s] aco: generation 33 timings: total_info=2.005ms, ants=9.991ms, evap=0ms, daemon=1048.61ms
+[39.432s] daemon timings: pack_all=1139.85ms, all_ants_ls=982.706ms, all_ants_ls_pack=157.142ms
+[39.432s] aco: generation 34 timings: total_info=1.998ms, ants=7.598ms, evap=0ms, daemon=1139.85ms
+[40.428s] daemon timings: pack_all=986.778ms, all_ants_ls=817.909ms, all_ants_ls_pack=168.869ms
+[40.428s] aco: generation 35 timings: total_info=3.012ms, ants=7.002ms, evap=0ms, daemon=986.778ms
+[41.409s] daemon timings: pack_all=969.422ms, all_ants_ls=822.791ms, all_ants_ls_pack=146.631ms
+[41.409s] aco: generation 36 timings: total_info=3.634ms, ants=8.024ms, evap=0ms, daemon=969.422ms
+[42.488s] daemon timings: pack_all=1067.65ms, all_ants_ls=891.315ms, all_ants_ls_pack=176.333ms
+[42.488s] aco: generation 37 timings: total_info=1.998ms, ants=8.983ms, evap=0ms, daemon=1067.65ms
+[43.644s] daemon timings: pack_all=1145.12ms, all_ants_ls=962.626ms, all_ants_ls_pack=182.489ms
+[43.644s] aco: generation 38 timings: total_info=2.162ms, ants=9.18ms, evap=0ms, daemon=1145.12ms
+[44.838s] daemon timings: pack_all=1178.18ms, all_ants_ls=994.38ms, all_ants_ls_pack=183.801ms
+[44.838s] aco: generation 39 timings: total_info=5.004ms, ants=9.014ms, evap=0ms, daemon=1178.18ms
+[45.909s] daemon timings: pack_all=1059.08ms, all_ants_ls=889.889ms, all_ants_ls_pack=169.192ms
+[45.909s] aco: generation 40 timings: total_info=3.013ms, ants=9.01ms, evap=0ms, daemon=1059.08ms
+[46.940s] daemon timings: pack_all=1016.69ms, all_ants_ls=858.458ms, all_ants_ls_pack=158.234ms
+[46.940s] aco: generation 41 timings: total_info=5.008ms, ants=10.012ms, evap=0ms, daemon=1016.69ms
+[47.954s] daemon timings: pack_all=1003.7ms, all_ants_ls=849.551ms, all_ants_ls_pack=154.15ms
+[47.955s] aco: generation 42 timings: total_info=2ms, ants=8ms, evap=0ms, daemon=1004.7ms
+[48.943s] daemon timings: pack_all=978.02ms, all_ants_ls=841.529ms, all_ants_ls_pack=136.491ms
+[48.944s] aco: generation 43 timings: total_info=2.002ms, ants=7.989ms, evap=0ms, daemon=978.57ms
+[50.005s] daemon timings: pack_all=1050ms, all_ants_ls=876.382ms, all_ants_ls_pack=173.615ms
+[50.006s] aco: generation 44 timings: total_info=2.847ms, ants=8.598ms, evap=0ms, daemon=1050.66ms
+[51.104s] daemon timings: pack_all=1087.39ms, all_ants_ls=920.872ms, all_ants_ls_pack=166.515ms
+[51.104s] aco: generation 45 timings: total_info=2.024ms, ants=8.988ms, evap=0ms, daemon=1087.39ms
+[51.285s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=14.003ms
+[52.003s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=6.003ms
+[52.300s] daemon timings: pack_all=1183.39ms, all_ants_ls=985.187ms, all_ants_ls_pack=198.208ms
+[52.300s] aco: generation 46 timings: total_info=2.509ms, ants=10.008ms, evap=0ms, daemon=1183.39ms
+[53.446s] daemon timings: pack_all=1133.41ms, all_ants_ls=977.757ms, all_ants_ls_pack=155.657ms
+[53.446s] aco: generation 47 timings: total_info=1.998ms, ants=10.563ms, evap=0ms, daemon=1133.41ms
+[54.611s] daemon timings: pack_all=1153.86ms, all_ants_ls=988.123ms, all_ants_ls_pack=164.737ms
+[54.612s] aco: generation 48 timings: total_info=3.155ms, ants=7.878ms, evap=0ms, daemon=1154.87ms
+[55.651s] daemon timings: pack_all=1028.58ms, all_ants_ls=876.08ms, all_ants_ls_pack=152.502ms
+[55.651s] aco: generation 49 timings: total_info=2.999ms, ants=6.999ms, evap=0ms, daemon=1028.58ms
+[56.987s] daemon timings: pack_all=1326.76ms, all_ants_ls=1110.89ms, all_ants_ls_pack=215.877ms
+[56.987s] aco: generation 50 timings: total_info=3.005ms, ants=6.995ms, evap=0ms, daemon=1326.76ms
+[58.202s] daemon timings: pack_all=1199.69ms, all_ants_ls=981.077ms, all_ants_ls_pack=218.61ms
+[58.203s] aco: generation 51 timings: total_info=3.002ms, ants=12.016ms, evap=0ms, daemon=1200.69ms
+[58.565s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=10.014ms
+[58.884s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=8.039ms
+[59.534s] daemon timings: pack_all=1317.63ms, all_ants_ls=1081.51ms, all_ants_ls_pack=236.121ms
+[59.535s] aco: generation 52 timings: total_info=2.99ms, ants=10.542ms, evap=0ms, daemon=1318.62ms
+[59.716s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=8.834ms
+[60.906s] daemon timings: pack_all=1353.81ms, all_ants_ls=1119.55ms, all_ants_ls_pack=234.25ms
+[60.906s] aco: generation 53 timings: total_info=3.004ms, ants=13.998ms, evap=0ms, daemon=1353.81ms
+[62.269s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=17.999ms
+[62.339s] daemon timings: pack_all=1418.32ms, all_ants_ls=1158.18ms, all_ants_ls_pack=259.133ms
+[62.340s] aco: generation 54 timings: total_info=2.996ms, ants=11.514ms, evap=0ms, daemon=1419.32ms
+[62.766s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=5.021ms
+[62.844s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=42.548ms
+[62.869s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=9.004ms
+[63.840s] daemon timings: pack_all=1482.65ms, all_ants_ls=1169.96ms, all_ants_ls_pack=312.688ms
+[63.840s] aco: generation 55 timings: total_info=2.999ms, ants=14.002ms, evap=0ms, daemon=1482.65ms
+[64.664s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=23.999ms
+[65.333s] daemon timings: pack_all=1477.99ms, all_ants_ls=1203.82ms, all_ants_ls_pack=274.169ms
+[65.334s] aco: generation 56 timings: total_info=2.74ms, ants=12.405ms, evap=0ms, daemon=1478.99ms
+[66.649s] daemon timings: pack_all=1297.97ms, all_ants_ls=1071.69ms, all_ants_ls_pack=226.283ms
+[66.649s] aco: generation 57 timings: total_info=5ms, ants=11.527ms, evap=0ms, daemon=1297.97ms
+[67.703s] daemon timings: pack_all=1040.8ms, all_ants_ls=865.625ms, all_ants_ls_pack=175.179ms
+[67.703s] aco: generation 58 timings: total_info=3.999ms, ants=9.984ms, evap=0ms, daemon=1040.8ms
+[68.754s] daemon timings: pack_all=1041.71ms, all_ants_ls=862.043ms, all_ants_ls_pack=179.665ms
+[68.754s] aco: generation 59 timings: total_info=1.998ms, ants=6.017ms, evap=0ms, daemon=1041.71ms
+[69.705s] daemon timings: pack_all=941.241ms, all_ants_ls=776.883ms, all_ants_ls_pack=164.358ms
+[69.705s] aco: generation 60 timings: total_info=2ms, ants=7.002ms, evap=1.023ms, daemon=941.241ms
+[70.636s] daemon timings: pack_all=920.713ms, all_ants_ls=755.916ms, all_ants_ls_pack=164.797ms
+[70.636s] aco: generation 61 timings: total_info=1.007ms, ants=7.539ms, evap=0ms, daemon=920.713ms
+[71.547s] daemon timings: pack_all=902.567ms, all_ants_ls=746.312ms, all_ants_ls_pack=155.257ms
+[71.547s] aco: generation 62 timings: total_info=1.996ms, ants=6.999ms, evap=0ms, daemon=902.567ms
+[72.557s] daemon timings: pack_all=998.84ms, all_ants_ls=826.925ms, all_ants_ls_pack=171.915ms
+[72.557s] aco: generation 63 timings: total_info=3.996ms, ants=7.001ms, evap=0ms, daemon=998.84ms
+[73.512s] daemon timings: pack_all=944.783ms, all_ants_ls=783.116ms, all_ants_ls_pack=161.667ms
+[73.512s] aco: generation 64 timings: total_info=2ms, ants=7.999ms, evap=0ms, daemon=944.783ms
+[74.462s] daemon timings: pack_all=940.103ms, all_ants_ls=784.696ms, all_ants_ls_pack=154.412ms
+[74.462s] aco: generation 65 timings: total_info=2.017ms, ants=7.662ms, evap=0ms, daemon=940.103ms
+[75.409s] daemon timings: pack_all=937.533ms, all_ants_ls=775.355ms, all_ants_ls_pack=162.178ms
+[75.409s] aco: generation 66 timings: total_info=2.034ms, ants=6.997ms, evap=1ms, daemon=937.533ms
+[75.624s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=14.013ms
+[76.360s] daemon timings: pack_all=939.629ms, all_ants_ls=772.182ms, all_ants_ls_pack=167.447ms
+[76.360s] aco: generation 67 timings: total_info=1.986ms, ants=9.011ms, evap=0ms, daemon=939.629ms
+[77.238s] daemon timings: pack_all=868.032ms, all_ants_ls=704.162ms, all_ants_ls_pack=163.87ms
+[77.239s] aco: generation 68 timings: total_info=1.98ms, ants=7.998ms, evap=0ms, daemon=869.015ms
+[78.186s] daemon timings: pack_all=936.719ms, all_ants_ls=786.095ms, all_ants_ls_pack=150.624ms
+[78.186s] aco: generation 69 timings: total_info=1.504ms, ants=9.01ms, evap=0ms, daemon=936.719ms
+[79.141s] daemon timings: pack_all=945.982ms, all_ants_ls=773.498ms, all_ants_ls_pack=172.484ms
+[79.141s] aco: generation 70 timings: total_info=2.012ms, ants=6.986ms, evap=0ms, daemon=945.982ms
+[80.156s] daemon timings: pack_all=1004.41ms, all_ants_ls=843.286ms, all_ants_ls_pack=161.123ms
+[80.156s] aco: generation 71 timings: total_info=2.56ms, ants=7.996ms, evap=0ms, daemon=1004.41ms
+[81.193s] daemon timings: pack_all=1026.98ms, all_ants_ls=848.863ms, all_ants_ls_pack=178.115ms
+[81.193s] aco: generation 72 timings: total_info=2ms, ants=8.043ms, evap=0ms, daemon=1026.98ms
+[82.112s] daemon timings: pack_all=907.092ms, all_ants_ls=749.908ms, all_ants_ls_pack=156.185ms
+[82.112s] aco: generation 73 timings: total_info=3.006ms, ants=8.993ms, evap=0ms, daemon=907.092ms
+[82.191s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=10.001ms
+[82.275s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=10.998ms
+[83.204s] daemon timings: pack_all=1080.74ms, all_ants_ls=872.571ms, all_ants_ls_pack=208.169ms
+[83.204s] aco: generation 74 timings: total_info=3.012ms, ants=8.003ms, evap=0ms, daemon=1080.74ms
+[84.105s] daemon timings: pack_all=890.063ms, all_ants_ls=734.381ms, all_ants_ls_pack=155.682ms
+[84.105s] aco: generation 75 timings: total_info=1.999ms, ants=9.037ms, evap=0ms, daemon=890.063ms
+[85.050s] daemon timings: pack_all=932.619ms, all_ants_ls=764.374ms, all_ants_ls_pack=168.245ms
+[85.050s] aco: generation 76 timings: total_info=1.994ms, ants=10.001ms, evap=0ms, daemon=932.619ms
+[85.206s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=30ms
+[86.012s] daemon timings: pack_all=952.611ms, all_ants_ls=758.515ms, all_ants_ls_pack=194.096ms
+[86.012s] aco: generation 77 timings: total_info=2.062ms, ants=8.002ms, evap=0ms, daemon=952.611ms
+[86.948s] daemon timings: pack_all=922.478ms, all_ants_ls=759.951ms, all_ants_ls_pack=161.528ms
+[86.948s] aco: new best solution found with cost 476991 and 106 components
+[86.949s] aco: generation 78 timings: total_info=3.01ms, ants=9.012ms, evap=0ms, daemon=923.476ms
+[87.863s] daemon timings: pack_all=904.599ms, all_ants_ls=750.938ms, all_ants_ls_pack=153.661ms
+[87.863s] aco: generation 79 timings: total_info=3.503ms, ants=6.004ms, evap=0ms, daemon=904.599ms
+[88.149s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=5.006ms
+[88.174s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=19.994ms
+[88.888s] daemon timings: pack_all=1013.08ms, all_ants_ls=813.373ms, all_ants_ls_pack=199.702ms
+[88.888s] aco: generation 80 timings: total_info=2.995ms, ants=9.013ms, evap=0ms, daemon=1013.08ms
+[89.381s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=11.005ms
+[90.102s] daemon timings: pack_all=1202.74ms, all_ants_ls=994.736ms, all_ants_ls_pack=207.289ms
+[90.102s] aco: generation 81 timings: total_info=1.989ms, ants=8.001ms, evap=0ms, daemon=1202.74ms
+[91.097s] daemon timings: pack_all=983.649ms, all_ants_ls=806.763ms, all_ants_ls_pack=176.886ms
+[91.098s] aco: generation 82 timings: total_info=2ms, ants=9.41ms, evap=0ms, daemon=984.652ms
+[91.973s] daemon timings: pack_all=864.707ms, all_ants_ls=731.119ms, all_ants_ls_pack=133.588ms
+[91.973s] aco: generation 83 timings: total_info=3.03ms, ants=6.982ms, evap=0ms, daemon=864.707ms
+[92.804s] daemon timings: pack_all=821.014ms, all_ants_ls=684.39ms, all_ants_ls_pack=136.624ms
+[92.804s] aco: generation 84 timings: total_info=2.001ms, ants=7.983ms, evap=0ms, daemon=821.014ms
+[93.675s] daemon timings: pack_all=863.696ms, all_ants_ls=709.298ms, all_ants_ls_pack=154.398ms
+[93.675s] aco: generation 85 timings: total_info=2ms, ants=6ms, evap=0ms, daemon=863.696ms
+[94.000s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=16.984ms
+[94.574s] daemon timings: pack_all=888.954ms, all_ants_ls=720.676ms, all_ants_ls_pack=168.278ms
+[94.575s] aco: generation 86 timings: total_info=1.999ms, ants=7.51ms, evap=0ms, daemon=889.954ms
+[95.495s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=5.566ms
+[95.609s] daemon timings: pack_all=1025.26ms, all_ants_ls=842.614ms, all_ants_ls_pack=182.647ms
+[95.609s] aco: generation 87 timings: total_info=2ms, ants=7.556ms, evap=0ms, daemon=1025.26ms
+[96.677s] daemon timings: pack_all=1056.7ms, all_ants_ls=873.715ms, all_ants_ls_pack=182.988ms
+[96.677s] aco: generation 88 timings: total_info=1.994ms, ants=9.034ms, evap=0ms, daemon=1056.7ms
+[97.593s] daemon timings: pack_all=905.021ms, all_ants_ls=745.558ms, all_ants_ls_pack=159.463ms
+[97.593s] aco: generation 89 timings: total_info=2.269ms, ants=8.013ms, evap=0ms, daemon=905.021ms
+[98.569s] daemon timings: pack_all=964.473ms, all_ants_ls=785.649ms, all_ants_ls_pack=178.824ms
+[98.569s] aco: generation 90 timings: total_info=2.993ms, ants=8.99ms, evap=0ms, daemon=964.473ms
+[99.181s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=27.519ms
+[99.542s] daemon timings: pack_all=963.153ms, all_ants_ls=778.821ms, all_ants_ls_pack=184.332ms
+[99.542s] aco: generation 91 timings: total_info=2ms, ants=7.003ms, evap=1.004ms, daemon=963.153ms
+[100.427s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=8ms
+[100.459s] daemon timings: pack_all=906.503ms, all_ants_ls=738.737ms, all_ants_ls_pack=167.766ms
+[100.459s] aco: generation 92 timings: total_info=1.999ms, ants=8ms, evap=0ms, daemon=906.503ms
+[101.282s] daemon timings: pack_all=812.923ms, all_ants_ls=668.541ms, all_ants_ls_pack=144.382ms
+[101.282s] aco: generation 93 timings: total_info=1.998ms, ants=8.541ms, evap=0ms, daemon=812.923ms
+[102.102s] daemon timings: pack_all=811.156ms, all_ants_ls=680.659ms, all_ants_ls_pack=130.497ms
+[102.103s] aco: generation 94 timings: total_info=2.999ms, ants=5.999ms, evap=0ms, daemon=812.136ms
+[102.941s] daemon timings: pack_all=826.665ms, all_ants_ls=679.844ms, all_ants_ls_pack=146.821ms
+[102.941s] aco: generation 95 timings: total_info=2.119ms, ants=9.44ms, evap=0ms, daemon=826.665ms
+[103.779s] daemon timings: pack_all=826.849ms, all_ants_ls=680.213ms, all_ants_ls_pack=146.636ms
+[103.779s] aco: generation 96 timings: total_info=2ms, ants=8.682ms, evap=0ms, daemon=826.849ms
+[104.595s] daemon timings: pack_all=807.44ms, all_ants_ls=670.921ms, all_ants_ls_pack=136.519ms
+[104.595s] aco: generation 97 timings: total_info=2.999ms, ants=5.998ms, evap=0ms, daemon=807.44ms
+[105.460s] daemon timings: pack_all=855.604ms, all_ants_ls=709.017ms, all_ants_ls_pack=146.587ms
+[105.460s] aco: generation 98 timings: total_info=2.994ms, ants=5.998ms, evap=0ms, daemon=855.604ms
+[105.587s] pack timings: score=0ms, sort=0ms, greedy=0ms, fit=0ms, total=13.471ms
+[106.345s] daemon timings: pack_all=874.158ms, all_ants_ls=710.366ms, all_ants_ls_pack=162.795ms
+[106.345s] aco: generation 99 timings: total_info=4.021ms, ants=7.008ms, evap=0ms, daemon=874.158ms
+[107.188s] daemon timings: pack_all=830.732ms, all_ants_ls=687.543ms, all_ants_ls_pack=142.156ms
+[107.188s] aco: generation 100 timings: total_info=3.424ms, ants=8.038ms, evap=0ms, daemon=830.732ms
+[107.188s] aco: stopping after 101 generations
+[107.189s] main: saved best solution to output.txt

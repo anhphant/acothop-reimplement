@@ -1,0 +1,53 @@
+[0.003s] Log started
+[0.003s] main: parameter validation passed
+[0.003s] thopproblem: loading data from ..\..\instances\dsj1000-thop\dsj1000_01_bsc_01_01.thop
+[0.012s] thopproblem: read header -> cities=1000, items=998, capacity=87826, maxTime=2.11247e+008
+[0.013s] thopproblem: loaded 1000 nodes and 998 items
+[0.203s] thopproblem: computed nearest neighbor lists (nn_ants = 20)
+[0.203s] main: input loaded (1000 cities, 998 items)
+[0.203s] packing: initializing packing structures
+[0.203s] packing: nCities=1000, nItems=998, capacity=87826, minSpeed=0.1, maxSpeed=1
+[0.204s] packing: initialized city map and item buckets
+[0.204s] main: PackingPlan initialized
+[0.204s] aco: initializing ACO solver
+[0.217s] aco: initialized 1000 components and 200 ants
+[0.218s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start
+[2.767s] aco: new best solution found with cost 142222 and 1000 components
+[2.782s] aco: generation 1 start
+[5.368s] aco: new best solution found with cost 144022 and 1000 components
+[5.376s] aco: generation 2 start
+[7.834s] aco: generation 3 start
+[10.690s] aco: generation 4 start
+[13.469s] aco: generation 5 start
+[16.018s] aco: generation 6 start
+[18.625s] aco: new best solution found with cost 144039 and 1000 components
+[18.644s] aco: generation 7 start
+[21.369s] aco: generation 8 start
+[23.954s] aco: generation 9 start
+[26.533s] aco: generation 10 start
+[29.146s] aco: generation 11 start
+[32.059s] aco: generation 12 start
+[35.027s] aco: generation 13 start
+[37.824s] aco: generation 14 start
+[40.265s] aco: generation 15 start
+[43.257s] aco: generation 16 start
+[46.072s] aco: generation 17 start
+[51.394s] aco: generation 18 start
+[55.753s] aco: generation 19 start
+[59.064s] aco: new best solution found with cost 144164 and 1000 components
+[59.073s] aco: generation 20 start
+[62.384s] aco: new best solution found with cost 144408 and 1000 components
+[62.400s] aco: generation 21 start
+[66.265s] aco: generation 22 start
+[70.490s] aco: generation 23 start
+[73.279s] aco: generation 24 start
+[75.647s] aco: generation 25 start
+[78.379s] aco: generation 26 start
+[81.971s] aco: generation 27 start
+[85.428s] aco: generation 28 start
+[88.172s] aco: generation 29 start
+[91.238s] aco: generation 30 start
+[93.879s] aco: generation 31 start
+[97.005s] aco: generation 32 start
+[100.450s] aco: stopping after 33 generations
