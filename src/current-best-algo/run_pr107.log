@@ -1,0 +1,23 @@
+[0.000s] Log started
+[0.000s] main: parameter validation passed
+[0.000s] thopproblem: loading data from ..\..\instances\pr107-thop\pr107_10_usw_10_03.thop
+[0.002s] thopproblem: read header -> cities=107, items=1050, capacity=968010, maxTime=64260
+[0.002s] thopproblem: loaded 107 nodes and 1050 items
+[0.002s] main: input loaded (107 cities, 1050 items)
+[0.002s] packing: initializing packing structures
+[0.002s] packing: nCities=107, nItems=1050, capacity=968010, minSpeed=0.1, maxSpeed=1
+[0.002s] packing: initialized city map and item buckets
+[0.002s] main: PackingPlan initialized
+[0.002s] aco: initializing ACO solver
+[0.002s] aco: initialized 107 components and 50 ants
+[0.002s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start
+[0.324s] aco: new best solution found with cost 472011 and 107 components
+[0.647s] aco: new best solution found with cost 472043 and 107 components
+[0.966s] aco: new best solution found with cost 473557 and 107 components
+[1.286s] aco: new best solution found with cost 474073 and 107 components
+[1.915s] aco: new best solution found with cost 474472 and 107 components
+[4.535s] aco: new best solution found with cost 474840 and 107 components
+[8.208s] aco: new best solution found with cost 475424 and 107 components
+[8.857s] aco: new best solution found with cost 475584 and 107 components
+[16.339s] aco: generation 1 start

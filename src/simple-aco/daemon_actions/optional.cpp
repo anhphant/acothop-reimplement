@@ -5,24 +5,66 @@ public:
     bool has_best_solution = false;
 
     void save_best_solution() {
+        Ant* iter_best_ant = nullptr;
+        long double iter_best_cost = -INF;
+        
+        vector<pair<long double, Ant*>> candidates;
+        candidates.reserve(Colony.ants.size());
+
         for (auto& ant : Colony.ants) {
             if (ant.state.sequence.empty() || ant.state.sequence.back().id != componentList.back().id)
                 continue;
 
-            // ACO++ Feature: apply local search on each route constructed by the ants
+            // Ultra-fast LS sweep on all ants
             if (params.local_search_flag > 0) {
                 switch (params.local_search_flag) {
-                    case 1: two_opt(ant.state); break;
-                    case 2: two_point_five_opt(ant.state); break;
-                    case 3: three_opt(ant.state); break;
+                    case 1: two_opt(ant.state, 3); break;
+                    case 2: two_point_five_opt(ant.state, 3); break;
+                    case 3: three_opt(ant.state, 3); break;
                 }
             }
+                
+            // Compute pure geometric TSP distance in O(N)
+            long double tsp_dist = 0.0L;
+            for (size_t k = 0; k + 1 < ant.state.sequence.size(); ++k) {
+                tsp_dist += connections.distance(ant.state.sequence[k], ant.state.sequence[k+1]);
+            }
+            candidates.push_back({tsp_dist, &ant});
+        }
 
-            long double cost = ant.state.solution_cost();
+        if (candidates.empty()) return;
+
+        // Sort by shortest TSP distance first
+        sort(candidates.begin(), candidates.end(), [](const auto& a, const auto& b) {
+            return a.first < b.first;
+        });
+
+        // Deep polish the best candidate
+        if (params.local_search_flag > 0) {
+            switch (params.local_search_flag) {
+                case 1: two_opt(candidates[0].second->state, 20); break;
+                case 2: two_point_five_opt(candidates[0].second->state, 20); break;
+                case 3: three_opt(candidates[0].second->state, 20); break;
+            }
+        }
+
+        // Only evaluate expensive Knapsack Packing on the Top K candidates (K = 5)
+        size_t top_k = min((size_t)5, candidates.size());
+        for (size_t i = 0; i < top_k; ++i) {
+            Ant* ant = candidates[i].second;
+            long double cost = ant->state.solution_cost();
+            if (cost > iter_best_cost) {
+                iter_best_cost = cost;
+                iter_best_ant = ant;
+            }
+        }
+        
+        if (iter_best_ant != nullptr) {
+            long double cost = iter_best_cost;
 
             if (!has_best_solution || cost > best_cost) {
                 best_cost = cost;
-                best_solution = ant.state;
+                best_solution = iter_best_ant->state;
                 has_best_solution = true;
                 log_debug("aco: new best solution found with cost ", cost,
                      " and ", best_solution.sequence.size(), " components");
@@ -30,68 +72,84 @@ public:
         }
     }
 
-    void two_opt(State& s) {
+    void two_opt(State& s, int max_passes = 20) {
         bool improved = true;
-        while (improved) {
+        int pass = 0;
+        vector<int> pos(componentList.size(), -1);
+        while (improved && ++pass <= max_passes) {
             improved = false;
+            for (size_t i = 0; i < s.sequence.size(); ++i) pos[s.sequence[i].id] = i;
             for (size_t i = 1; i + 2 < s.sequence.size(); ++i) {
-                for (size_t j = i + 1; j + 1 < s.sequence.size(); ++j) {
-                    int u_id = s.sequence[i-1].id;
-                    int v_id = s.sequence[i].id;
-                    int x_id = s.sequence[j].id;
-                    int y_id = s.sequence[j+1].id;
-
-                    long double current_dist = connections.distance(componentList[u_id], componentList[v_id]) + 
-                                               connections.distance(componentList[x_id], componentList[y_id]);
-                    long double new_dist = connections.distance(componentList[u_id], componentList[x_id]) + 
-                                           connections.distance(componentList[v_id], componentList[y_id]);
-
-                    if (new_dist < current_dist) {
-                        reverse(s.sequence.begin() + i, s.sequence.begin() + j + 1);
-                        improved = true;
+                int u_id = s.sequence[i-1].id;
+                int v_id = s.sequence[i].id;
+                for (int y_id : knn[v_id]) {
+                    int j_plus_1 = pos[y_id];
+                    if (j_plus_1 == -1) continue;
+                    int j = j_plus_1 - 1;
+                    if (j > (int)i) {
+                        int x_id = s.sequence[j].id;
+                        long double current_dist = connections.distance(componentList[u_id], componentList[v_id]) + 
+                                                   connections.distance(componentList[x_id], componentList[y_id]);
+                        long double new_dist = connections.distance(componentList[u_id], componentList[x_id]) + 
+                                               connections.distance(componentList[v_id], componentList[y_id]);
+                        if (new_dist < current_dist - 1e-6) {
+                            reverse(s.sequence.begin() + i, s.sequence.begin() + j + 1);
+                            for(size_t k = i; k <= (size_t)j; ++k) pos[s.sequence[k].id] = k;
+                            improved = true;
+                            break;
+                        }
                     }
                 }
             }
         }
     }
 
-    void two_point_five_opt(State& s) {
+    void two_point_five_opt(State& s, int max_passes = 15) {
         bool improved = true;
-        while (improved) {
+        int pass = 0;
+        vector<int> pos(componentList.size(), -1);
+        while (improved && ++pass <= max_passes) {
             improved = false;
-            
-            // 2-opt part
+            for (size_t i = 0; i < s.sequence.size(); ++i) pos[s.sequence[i].id] = i;
+
+            // 2-opt sweep
             for (size_t i = 1; i + 2 < s.sequence.size(); ++i) {
-                for (size_t j = i + 1; j + 1 < s.sequence.size(); ++j) {
-                    int u_id = s.sequence[i-1].id;
-                    int v_id = s.sequence[i].id;
-                    int x_id = s.sequence[j].id;
-                    int y_id = s.sequence[j+1].id;
-
-                    long double current_dist = connections.distance(componentList[u_id], componentList[v_id]) + 
-                                               connections.distance(componentList[x_id], componentList[y_id]);
-                    long double new_dist = connections.distance(componentList[u_id], componentList[x_id]) + 
-                                           connections.distance(componentList[v_id], componentList[y_id]);
-
-                    if (new_dist < current_dist - 1e-6) {
-                        reverse(s.sequence.begin() + i, s.sequence.begin() + j + 1);
-                        improved = true;
+                int u_id = s.sequence[i-1].id;
+                int v_id = s.sequence[i].id;
+                for (int y_id : knn[v_id]) {
+                    int j_plus_1 = pos[y_id];
+                    if (j_plus_1 == -1) continue;
+                    int j = j_plus_1 - 1;
+                    if (j > (int)i) {
+                        int x_id = s.sequence[j].id;
+                        long double current_dist = connections.distance(componentList[u_id], componentList[v_id]) + 
+                                                   connections.distance(componentList[x_id], componentList[y_id]);
+                        long double new_dist = connections.distance(componentList[u_id], componentList[x_id]) + 
+                                               connections.distance(componentList[v_id], componentList[y_id]);
+                        if (new_dist < current_dist - 1e-6) {
+                            reverse(s.sequence.begin() + i, s.sequence.begin() + j + 1);
+                            for(size_t k = i; k <= (size_t)j; ++k) pos[s.sequence[k].id] = k;
+                            improved = true;
+                            break;
+                        }
                     }
                 }
             }
 
-            // Node relocation (0.5 opt) part
+            // Node relocation (0.5 opt) sweep
             for (size_t i = 1; i + 1 < s.sequence.size(); ++i) {
-                for (size_t j = 1; j + 1 < s.sequence.size(); ++j) {
-                    if (i == j || i == j + 1 || i + 1 == j) continue;
-
-                    int u_id = s.sequence[i-1].id;
-                    int v_id = s.sequence[i].id;
-                    int w_id = s.sequence[i+1].id;
-
-                    int x_id = s.sequence[j-1].id;
+                int u_id = s.sequence[i-1].id;
+                int v_id = s.sequence[i].id;
+                int w_id = s.sequence[i+1].id;
+                
+                for (int x_id : knn[v_id]) {
+                    int j_minus_1 = pos[x_id];
+                    if (j_minus_1 == -1) continue;
+                    int j = j_minus_1 + 1; // y_id
+                    if (j >= s.sequence.size() || j == (int)i || j == (int)i+1) continue;
+                    
                     int y_id = s.sequence[j].id;
-
+                    
                     long double current_dist = connections.distance(componentList[u_id], componentList[v_id]) + 
                                                connections.distance(componentList[v_id], componentList[w_id]) + 
                                                connections.distance(componentList[x_id], componentList[y_id]);
@@ -103,21 +161,22 @@ public:
                     if (new_dist < current_dist - 1e-6) {
                         Component temp = s.sequence[i];
                         s.sequence.erase(s.sequence.begin() + i);
-                        if (i < j) {
+                        if ((int)i < j) {
                             s.sequence.insert(s.sequence.begin() + j - 1, temp);
                         } else {
                             s.sequence.insert(s.sequence.begin() + j, temp);
                         }
+                        for(size_t k = 0; k < s.sequence.size(); ++k) pos[s.sequence[k].id] = k;
                         improved = true;
+                        break;
                     }
                 }
             }
         }
     }
 
-    void three_opt(State& s) {
-        two_point_five_opt(s);
-        // Implement proper 3-opt if needed, but usually 2.5-opt is sufficient.
+    void three_opt(State& s, int max_passes = 15) {
+        two_point_five_opt(s, max_passes);
     }
 
     void local_search() {

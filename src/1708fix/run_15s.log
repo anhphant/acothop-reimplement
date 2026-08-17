@@ -1,0 +1,43 @@
+[0.001s] Log started
+[0.002s] main: parameter validation passed
+[0.002s] thopproblem: loading data from ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop
+[0.026s] thopproblem: read header -> cities=1000, items=9980, capacity=9122564, maxTime=3.37538e+007
+[0.026s] thopproblem: loaded 1000 nodes and 9980 items
+[0.026s] thopproblem: Node 0 -> id: 0 x: 981036 y: 508139
+[0.026s] thopproblem: Node 999 -> id: 999 x: 471287 y: 119659
+[0.026s] main: input loaded (1000 cities, 9980 items)
+[0.026s] packing: initializing packing structures
+[0.026s] packing: nCities=1000, nItems=9980, capacity=9122564, minSpeed=0.1, maxSpeed=1
+[0.028s] packing: initialized city map and item buckets
+[0.028s] main: PackingPlan initialized
+[0.028s] aco: initializing ACO solver
+[0.050s] aco: initialized 1000 components and 40 ants
+[0.050s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start, time: 0
+[0.000s] aco: compute_total_information done, time: 0
+[0.724s] aco: ants_generation_and_activity done, time: 0.723552
+[0.744s] aco: adaptive_pheromone_evaporation done, time: 0.743807
+[3.492s] aco: new best solution found with cost 4.61648e+006 and 1000 components
+[3.496s] aco: daemon_actions done, time: 3.49637
+[3.496s] aco: generation 1 start, time: 3.49637
+[3.496s] aco: compute_total_information done, time: 3.49637
+[3.949s] aco: ants_generation_and_activity done, time: 3.94895
+[3.953s] aco: adaptive_pheromone_evaporation done, time: 3.95344
+[7.174s] aco: daemon_actions done, time: 7.17373
+[7.174s] aco: generation 2 start, time: 7.17373
+[7.174s] aco: compute_total_information done, time: 7.17373
+[7.564s] aco: ants_generation_and_activity done, time: 7.56384
+[7.569s] aco: adaptive_pheromone_evaporation done, time: 7.56837
+[10.345s] aco: daemon_actions done, time: 10.3454
+[10.345s] aco: generation 3 start, time: 10.3454
+[10.345s] aco: compute_total_information done, time: 10.3454
+[10.736s] aco: ants_generation_and_activity done, time: 10.7362
+[10.741s] aco: adaptive_pheromone_evaporation done, time: 10.7407
+[13.846s] aco: daemon_actions done, time: 13.8463
+[13.846s] aco: generation 4 start, time: 13.8463
+[13.846s] aco: compute_total_information done, time: 13.8463
+[14.324s] aco: ants_generation_and_activity done, time: 14.3242
+[14.329s] aco: adaptive_pheromone_evaporation done, time: 14.3287
+[16.886s] aco: daemon_actions done, time: 16.8864
+[16.886s] aco: stopping after 5 generations
+[16.886s] main: starting Ultimate Tour Optimization

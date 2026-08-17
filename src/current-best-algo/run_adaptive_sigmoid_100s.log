@@ -1,0 +1,68 @@
+[0.001s] Log started
+[0.001s] main: parameter validation passed
+[0.002s] thopproblem: loading data from ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop
+[0.021s] thopproblem: read header -> cities=1000, items=9980, capacity=9122564, maxTime=3.37538e+007
+[0.021s] thopproblem: loaded 1000 nodes and 9980 items
+[0.021s] thopproblem: Node 0 -> id: 0 x: 981036 y: 508139
+[0.021s] thopproblem: Node 999 -> id: 999 x: 471287 y: 119659
+[0.021s] main: input loaded (1000 cities, 9980 items)
+[0.021s] packing: initializing packing structures
+[0.021s] packing: nCities=1000, nItems=9980, capacity=9122564, minSpeed=0.1, maxSpeed=1
+[0.022s] packing: initialized city map and item buckets
+[0.022s] main: PackingPlan initialized
+[0.022s] aco: initializing ACO solver
+[0.041s] aco: initialized 1000 components and 40 ants
+[0.041s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start, time: 0
+[0.000s] aco: compute_total_information done, time: 0
+[6.446s] aco: ants_generation_and_activity done, time: 6.44572
+[6.450s] aco: adaptive_pheromone_evaporation done, time: 6.45023
+[9.031s] aco: new best solution found with cost 4.68858e+006 and 1000 components
+[9.034s] aco: daemon_actions done, time: 9.03407
+[9.036s] aco: generation 1 start, time: 9.0356
+[9.036s] aco: compute_total_information done, time: 9.0356
+[16.848s] aco: ants_generation_and_activity done, time: 16.8476
+[16.851s] aco: adaptive_pheromone_evaporation done, time: 16.8511
+[19.947s] aco: daemon_actions done, time: 19.9469
+[19.947s] aco: generation 2 start, time: 19.9469
+[19.947s] aco: compute_total_information done, time: 19.9469
+[26.704s] aco: ants_generation_and_activity done, time: 26.7042
+[26.709s] aco: adaptive_pheromone_evaporation done, time: 26.7087
+[29.469s] aco: daemon_actions done, time: 29.4686
+[29.469s] aco: generation 3 start, time: 29.4686
+[29.469s] aco: compute_total_information done, time: 29.4686
+[36.054s] aco: ants_generation_and_activity done, time: 36.0539
+[36.058s] aco: adaptive_pheromone_evaporation done, time: 36.0579
+[38.634s] aco: daemon_actions done, time: 38.6337
+[38.634s] aco: generation 4 start, time: 38.6337
+[38.635s] aco: compute_total_information done, time: 38.6347
+[45.043s] aco: ants_generation_and_activity done, time: 45.0434
+[45.047s] aco: adaptive_pheromone_evaporation done, time: 45.047
+[47.495s] aco: daemon_actions done, time: 47.4951
+[47.495s] aco: generation 5 start, time: 47.4951
+[47.495s] aco: compute_total_information done, time: 47.4951
+[54.842s] aco: ants_generation_and_activity done, time: 54.8419
+[54.850s] aco: adaptive_pheromone_evaporation done, time: 54.85
+[58.502s] aco: daemon_actions done, time: 58.5015
+[58.502s] aco: generation 6 start, time: 58.5025
+[58.502s] aco: compute_total_information done, time: 58.5025
+[66.546s] aco: ants_generation_and_activity done, time: 66.5464
+[66.551s] aco: adaptive_pheromone_evaporation done, time: 66.5509
+[69.571s] aco: daemon_actions done, time: 69.5708
+[69.571s] aco: generation 7 start, time: 69.5708
+[69.571s] aco: compute_total_information done, time: 69.5708
+[77.760s] aco: ants_generation_and_activity done, time: 77.76
+[77.764s] aco: adaptive_pheromone_evaporation done, time: 77.764
+[80.329s] aco: daemon_actions done, time: 80.329
+[80.329s] aco: generation 8 start, time: 80.329
+[80.329s] aco: compute_total_information done, time: 80.329
+[88.130s] aco: ants_generation_and_activity done, time: 88.1298
+[88.134s] aco: adaptive_pheromone_evaporation done, time: 88.1338
+[90.449s] aco: daemon_actions done, time: 90.4492
+[90.449s] aco: generation 9 start, time: 90.4492
+[90.449s] aco: compute_total_information done, time: 90.4492
+[98.153s] aco: ants_generation_and_activity done, time: 98.1532
+[98.156s] aco: adaptive_pheromone_evaporation done, time: 98.1562
+[100.729s] aco: daemon_actions done, time: 100.729
+[100.729s] aco: stopping after 10 generations
+[100.729s] main: starting Ultimate Tour Optimization

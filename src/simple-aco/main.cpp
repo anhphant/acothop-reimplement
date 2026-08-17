@@ -128,6 +128,55 @@ int main(int argc, char* argv[]) {
          << "Best objective: " << Optional.best_cost << '\n'
          << "Runtime: " << elapsed_time() << " s\n";
 
+    if (!p.outputfile.empty()) {
+        ofstream out(p.outputfile);
+        if (out.is_open()) {
+            const auto& best_tour = Optional.best_solution.sequence;
+            vector<int> tour;
+            for (auto c : best_tour) tour.push_back(c.id);
+            Packing ultimate_packing = pack(tour);
+
+            vector<int> output_cities;
+            for (size_t i = 1; i + 1 < tour.size(); ++i) {
+                int city = tour[i];
+                bool hasPicked = false;
+                for (int item : itemsAtCity[city]) {
+                    if (ultimate_packing.picked[item]) {
+                        hasPicked = true;
+                        break;
+                    }
+                }
+                if (hasPicked) {
+                    output_cities.push_back(city);
+                }
+            }
+
+            out << "[";
+            for (size_t i = 0; i < output_cities.size(); ++i) {
+                out << (output_cities[i] + 1);
+                if (i + 1 < output_cities.size()) out << ", ";
+            }
+            out << "]\n";
+
+            out << "[";
+            bool first = true;
+            for (int city : output_cities) {
+                for (int item : itemsAtCity[city]) {
+                    if (ultimate_packing.picked[item]) {
+                        if (!first) out << ", ";
+                        out << (item + 1);
+                        first = false;
+                    }
+                }
+            }
+            out << "]\n";
+            out.close();
+            log_debug("main: saved best solution to ", p.outputfile);
+        } else {
+            log_debug("main: failed to open output file: ", p.outputfile);
+        }
+    }
+
     if (originalCerrBuffer != nullptr) {
         cerr.rdbuf(originalCerrBuffer);
     }

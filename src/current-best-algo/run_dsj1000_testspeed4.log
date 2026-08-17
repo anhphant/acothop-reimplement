@@ -1,0 +1,29 @@
+[0.001s] Log started
+[0.001s] main: parameter validation passed
+[0.001s] thopproblem: loading data from ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop
+[0.027s] thopproblem: read header -> cities=1000, items=9980, capacity=9122564, maxTime=3.37538e+007
+[0.028s] thopproblem: loaded 1000 nodes and 9980 items
+[0.028s] thopproblem: Node 0 -> id: 0 x: 981036 y: 508139
+[0.028s] thopproblem: Node 999 -> id: 999 x: 471287 y: 119659
+[0.028s] main: input loaded (1000 cities, 9980 items)
+[0.028s] packing: initializing packing structures
+[0.028s] packing: nCities=1000, nItems=9980, capacity=9122564, minSpeed=0.1, maxSpeed=1
+[0.029s] packing: initialized city map and item buckets
+[0.029s] main: PackingPlan initialized
+[0.029s] aco: initializing ACO solver
+[0.056s] aco: initialized 1000 components and 20 ants
+[0.056s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start, time: 0
+[0.336s] aco: compute_total_information done, time: 0.33645
+[0.508s] aco: ants_generation_and_activity done, time: 0.508315
+[0.512s] aco: pheromone_evaporation done, time: 0.512274
+[9.439s] aco: new best solution found with cost 4.02042e+006 and 1000 components
+[9.444s] aco: daemon_actions done, time: 9.44425
+[9.444s] aco: generation 1 start, time: 9.44425
+[9.586s] aco: compute_total_information done, time: 9.58644
+[9.715s] aco: ants_generation_and_activity done, time: 9.71524
+[9.716s] aco: pheromone_evaporation done, time: 9.71623
+[20.521s] aco: new best solution found with cost 4.26033e+006 and 1000 components
+[20.524s] aco: daemon_actions done, time: 20.5242
+[20.525s] aco: stopping after 2 generations
+[20.525s] main: starting Ultimate Tour Optimization

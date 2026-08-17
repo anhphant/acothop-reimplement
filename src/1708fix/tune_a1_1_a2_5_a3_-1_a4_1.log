@@ -1,0 +1,150 @@
+[0.001s] Log started
+[0.001s] main: parameter validation passed
+[0.001s] thopproblem: loading data from ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop
+[0.029s] thopproblem: read header -> cities=1000, items=9980, capacity=9122564, maxTime=3.37538e+007
+[0.029s] thopproblem: loaded 1000 nodes and 9980 items
+[0.029s] thopproblem: Node 0 -> id: 0 x: 981036 y: 508139
+[0.030s] thopproblem: Node 999 -> id: 999 x: 471287 y: 119659
+[0.030s] main: input loaded (1000 cities, 9980 items)
+[0.030s] packing: initializing packing structures
+[0.030s] packing: nCities=1000, nItems=9980, capacity=9122564, minSpeed=0.1, maxSpeed=1
+[0.031s] packing: initialized city map and item buckets
+[0.031s] main: PackingPlan initialized
+[0.031s] aco: initializing ACO solver
+[0.056s] aco: initialized 1000 components and 20 ants
+[0.056s] main: AntColonyOptimization initialized
+[0.000s] aco: generation 0 start, time: 0
+[0.500s] aco: compute_total_information done, time: 0.499947
+[0.684s] aco: ants_generation_and_activity done, time: 0.684032
+[0.688s] aco: pheromone_evaporation done, time: 0.68803
+[1.009s] aco: new best solution found with cost 4.20902e+006 and 1000 components
+[1.016s] aco: daemon_actions done, time: 1.01554
+[1.016s] aco: generation 1 start, time: 1.01554
+[1.411s] aco: compute_total_information done, time: 1.41128
+[1.603s] aco: ants_generation_and_activity done, time: 1.6028
+[1.607s] aco: pheromone_evaporation done, time: 1.60681
+[1.949s] aco: new best solution found with cost 4.54619e+006 and 1000 components
+[1.953s] aco: daemon_actions done, time: 1.95308
+[1.953s] aco: generation 2 start, time: 1.95308
+[2.568s] aco: compute_total_information done, time: 2.5677
+[2.777s] aco: ants_generation_and_activity done, time: 2.77656
+[2.783s] aco: pheromone_evaporation done, time: 2.7826
+[3.149s] aco: new best solution found with cost 4.55928e+006 and 1000 components
+[3.151s] aco: daemon_actions done, time: 3.15057
+[3.151s] aco: generation 3 start, time: 3.15057
+[3.519s] aco: compute_total_information done, time: 3.51875
+[3.720s] aco: ants_generation_and_activity done, time: 3.72024
+[3.725s] aco: pheromone_evaporation done, time: 3.72484
+[4.065s] aco: daemon_actions done, time: 4.06506
+[4.065s] aco: generation 4 start, time: 4.06506
+[4.477s] aco: compute_total_information done, time: 4.47657
+[4.649s] aco: ants_generation_and_activity done, time: 4.64891
+[4.652s] aco: pheromone_evaporation done, time: 4.6525
+[4.999s] aco: daemon_actions done, time: 4.99868
+[4.999s] aco: generation 5 start, time: 4.99868
+[5.342s] aco: compute_total_information done, time: 5.34164
+[5.545s] aco: ants_generation_and_activity done, time: 5.54462
+[5.549s] aco: pheromone_evaporation done, time: 5.54863
+[5.836s] aco: daemon_actions done, time: 5.83639
+[5.836s] aco: generation 6 start, time: 5.83639
+[6.199s] aco: compute_total_information done, time: 6.19863
+[6.323s] aco: ants_generation_and_activity done, time: 6.32279
+[6.327s] aco: pheromone_evaporation done, time: 6.32677
+[6.571s] aco: daemon_actions done, time: 6.57144
+[6.571s] aco: generation 7 start, time: 6.57144
+[6.896s] aco: compute_total_information done, time: 6.89605
+[7.017s] aco: ants_generation_and_activity done, time: 7.01674
+[7.021s] aco: pheromone_evaporation done, time: 7.02074
+[7.333s] aco: daemon_actions done, time: 7.33251
+[7.333s] aco: generation 8 start, time: 7.33251
+[7.638s] aco: compute_total_information done, time: 7.63821
+[7.777s] aco: ants_generation_and_activity done, time: 7.77665
+[7.782s] aco: pheromone_evaporation done, time: 7.78166
+[8.110s] aco: daemon_actions done, time: 8.10962
+[8.110s] aco: generation 9 start, time: 8.10962
+[8.488s] aco: compute_total_information done, time: 8.48804
+[8.610s] aco: ants_generation_and_activity done, time: 8.61035
+[8.615s] aco: pheromone_evaporation done, time: 8.61486
+[8.859s] aco: daemon_actions done, time: 8.85935
+[8.859s] aco: generation 10 start, time: 8.85935
+[9.163s] aco: compute_total_information done, time: 9.1627
+[9.278s] aco: ants_generation_and_activity done, time: 9.27797
+[9.283s] aco: pheromone_evaporation done, time: 9.28252
+[9.543s] aco: daemon_actions done, time: 9.54277
+[9.543s] aco: generation 11 start, time: 9.54277
+[9.878s] aco: compute_total_information done, time: 9.87781
+[9.977s] aco: ants_generation_and_activity done, time: 9.97678
+[9.979s] aco: pheromone_evaporation done, time: 9.97877
+[10.212s] aco: daemon_actions done, time: 10.2125
+[10.212s] aco: generation 12 start, time: 10.2125
+[10.477s] aco: compute_total_information done, time: 10.4775
+[10.573s] aco: ants_generation_and_activity done, time: 10.5725
+[10.577s] aco: pheromone_evaporation done, time: 10.5766
+[10.807s] aco: daemon_actions done, time: 10.8074
+[10.807s] aco: generation 13 start, time: 10.8074
+[11.076s] aco: compute_total_information done, time: 11.0757
+[11.173s] aco: ants_generation_and_activity done, time: 11.1726
+[11.176s] aco: pheromone_evaporation done, time: 11.1756
+[11.418s] aco: daemon_actions done, time: 11.4181
+[11.418s] aco: generation 14 start, time: 11.4181
+[11.689s] aco: compute_total_information done, time: 11.6892
+[11.784s] aco: ants_generation_and_activity done, time: 11.7836
+[11.788s] aco: pheromone_evaporation done, time: 11.7876
+[12.051s] aco: daemon_actions done, time: 12.0514
+[12.051s] aco: generation 15 start, time: 12.0514
+[12.337s] aco: compute_total_information done, time: 12.3371
+[12.429s] aco: ants_generation_and_activity done, time: 12.4291
+[12.433s] aco: pheromone_evaporation done, time: 12.4326
+[12.727s] aco: daemon_actions done, time: 12.7266
+[12.727s] aco: generation 16 start, time: 12.7266
+[13.001s] aco: compute_total_information done, time: 13.0008
+[13.107s] aco: ants_generation_and_activity done, time: 13.1067
+[13.111s] aco: pheromone_evaporation done, time: 13.1107
+[13.349s] aco: daemon_actions done, time: 13.3486
+[13.349s] aco: generation 17 start, time: 13.3486
+[13.670s] aco: compute_total_information done, time: 13.6698
+[13.777s] aco: ants_generation_and_activity done, time: 13.7768
+[13.781s] aco: pheromone_evaporation done, time: 13.7808
+[14.064s] aco: daemon_actions done, time: 14.0643
+[14.064s] aco: generation 18 start, time: 14.0643
+[14.355s] aco: compute_total_information done, time: 14.3545
+[14.458s] aco: ants_generation_and_activity done, time: 14.4582
+[14.462s] aco: pheromone_evaporation done, time: 14.4617
+[14.764s] aco: daemon_actions done, time: 14.7638
+[14.764s] aco: generation 19 start, time: 14.7638
+[15.078s] aco: compute_total_information done, time: 15.0778
+[15.169s] aco: ants_generation_and_activity done, time: 15.169
+[15.172s] aco: pheromone_evaporation done, time: 15.1725
+[15.403s] aco: daemon_actions done, time: 15.4031
+[15.403s] aco: generation 20 start, time: 15.4031
+[15.685s] aco: compute_total_information done, time: 15.6848
+[15.788s] aco: ants_generation_and_activity done, time: 15.7877
+[15.792s] aco: pheromone_evaporation done, time: 15.7917
+[16.031s] aco: daemon_actions done, time: 16.0314
+[16.032s] aco: generation 21 start, time: 16.0324
+[16.336s] aco: compute_total_information done, time: 16.3359
+[16.491s] aco: ants_generation_and_activity done, time: 16.4914
+[16.494s] aco: pheromone_evaporation done, time: 16.4939
+[16.751s] aco: daemon_actions done, time: 16.7506
+[16.751s] aco: generation 22 start, time: 16.7506
+[17.092s] aco: compute_total_information done, time: 17.0916
+[17.196s] aco: ants_generation_and_activity done, time: 17.1964
+[17.199s] aco: pheromone_evaporation done, time: 17.1994
+[17.433s] aco: daemon_actions done, time: 17.4328
+[17.433s] aco: generation 23 start, time: 17.4328
+[17.754s] aco: compute_total_information done, time: 17.7542
+[17.880s] aco: ants_generation_and_activity done, time: 17.88
+[17.882s] aco: pheromone_evaporation done, time: 17.8822
+[18.137s] aco: daemon_actions done, time: 18.1373
+[18.137s] aco: generation 24 start, time: 18.1373
+[18.461s] aco: compute_total_information done, time: 18.4606
+[18.557s] aco: ants_generation_and_activity done, time: 18.5568
+[18.560s] aco: pheromone_evaporation done, time: 18.5598
+[18.802s] aco: daemon_actions done, time: 18.8019
+[18.802s] aco: generation 25 start, time: 18.8019
+[19.078s] aco: compute_total_information done, time: 19.0784
+[19.170s] aco: ants_generation_and_activity done, time: 19.1699
+[19.172s] aco: pheromone_evaporation done, time: 19.1725
+[19.398s] aco: daemon_actions done, time: 19.3982
+[19.399s] aco: stopping after 26 generations
+[19.399s] main: starting Ultimate Tour Optimization

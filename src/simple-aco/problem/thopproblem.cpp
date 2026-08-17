@@ -47,8 +47,19 @@ long double distance(Point i, Point j) {
     return r;
 }
 
+vector<vector<long double>> dist_memo;
+
 long double distance(int i, int j) {
-    return distance(nodes[i], nodes[j]);
+    if (dist_memo.empty()) {
+        dist_memo.assign(nodes.size(), vector<long double>(nodes.size(), -1.0));
+    }
+    if (dist_memo[i][j] < 0) {
+        long double d = distance(nodes[i], nodes[j]);
+        dist_memo[i][j] = d;
+        dist_memo[j][i] = d;
+        return d;
+    }
+    return dist_memo[i][j];
 }
 
 bool readData(const string& path) {

@@ -6,10 +6,11 @@ struct Component {
     int x, y;
 };
 vector<Component> componentList;
+vector<vector<int>> knn;
 
 struct Connections {
     long double distance(Component i, Component j) {
-        return sqrt((i.x - j.x) * (i.x - j.x) + (i.y - j.y) * (i.y - j.y));
+        return ::distance(i.id, j.id);
     }
     long double get_cost(Component i, Component j, long double vmax, long double vmin, long double w, long double W) {
         auto d = distance(i, j);
@@ -63,6 +64,21 @@ void ACOinit() {
         c.x = nodes[i].x;
         c.y = nodes[i].y;
         componentList.push_back(c);
+    }
+
+    // Initialize k-nearest neighbors for local search
+    const int NN_ANTS = min(20, n - 1);
+    knn.assign(n, vector<int>(NN_ANTS));
+    for (int i = 0; i < n; ++i) {
+        vector<pair<long double, int>> neighbors;
+        for (int j = 0; j < n; ++j) {
+            if (i == j) continue;
+            neighbors.push_back({connections.distance(componentList[i], componentList[j]), j});
+        }
+        sort(neighbors.begin(), neighbors.end());
+        for (int k = 0; k < NN_ANTS; ++k) {
+            knn[i][k] = neighbors[k].second;
+        }
     }
 
     // 2. Initialize pheromone matrix

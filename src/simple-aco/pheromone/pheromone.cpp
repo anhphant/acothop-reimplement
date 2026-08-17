@@ -43,7 +43,7 @@ public:
     void check_pheromone_trail_limits(long double best_cost) {
         if (best_cost <= 0) return;
         const long n = (long)phe.size();
-        long double trail_max = best_cost / params.rho;
+        long double trail_max = 1.0L / (params.rho * best_cost);
         long double trail_min = trail_max / (2.0L * n);
         for (long i = 0; i < n; ++i) {
             for (long j = 0; j < n; ++j) {
