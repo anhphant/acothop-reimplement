@@ -1,0 +1,33 @@
+## irace parameter space for not-simple-2 (THOP ACO)
+## Format: name  ""  type  domain
+##   type: r = real, i = integer, c = categorical, o = ordinal
+
+# Pheromone influence
+alpha1  ""  r  (0.5, 5.0)
+
+# Distance heuristic exponent: (1/(dist+eps1))^alpha2
+alpha2  ""  r  (0.5, 10.0)
+
+# Weight heuristic exponent: (1/(weight+eps2))^alpha3
+alpha3  ""  r  (0.0, 5.0)
+
+# Profit heuristic exponent: profit^alpha4
+alpha4  ""  r  (0.0, 3.0)
+
+# Distance smoothing constant
+eps1    ""  r  (0.01, 500.0)
+
+# Weight smoothing constant
+eps2    ""  r  (0.01, 50000.0)
+
+# Pheromone evaporation rate
+rho     ""  r  (0.05, 0.99)
+
+# Number of ants
+ants    ""  i  (50, 500)
+
+# Number of packing tries per tour
+ptries  ""  i  (1, 5)
+
+# Local search: 0=none 1=2opt 2=2.5opt 3=3opt
+ls      ""  c  (0, 1, 2, 3)

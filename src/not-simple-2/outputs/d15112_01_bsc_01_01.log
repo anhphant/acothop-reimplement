@@ -1,0 +1,11 @@
+[0.003s] Log started
+[0.004s] main: parameter validation passed
+[0.004s] thopproblem: loading data from D:\PhD\THOP-TTP\acothop-reconstructed\instances\d15112-thop\d15112_01_bsc_01_01.thop
+[0.097s] thopproblem: read header -> cities=15112, items=15110, capacity=1303355, maxTime=473925
+[0.097s] thopproblem: loaded 15112 nodes and 15110 items
+[0.097s] main: input loaded (15112 cities, 15110 items)
+[0.097s] packing: initializing packing structures
+[0.097s] packing: nCities=15112, nItems=15110, capacity=1303355, minSpeed=0.1, maxSpeed=1
+[0.098s] packing: initialized city map and item buckets
+[0.098s] main: PackingPlan initialized
+[0.098s] aco: initializing ACO solver
