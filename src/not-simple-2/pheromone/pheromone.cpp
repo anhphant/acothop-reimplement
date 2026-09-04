@@ -40,9 +40,10 @@ public:
                 long int rounded_d = (long int)(d + 0.5);
                 double w = city_weight[j];
                 double d_profit = city_profit[j];
+                double profit_factor = (d_profit > 0.0) ? pow(d_profit, params.alpha4) : 1.0;
                 heuristic[i][j] = pow(1.0 / (rounded_d + params.eps1), params.alpha2) *
                                    pow(1.0 / (w + params.eps2), params.alpha3) *
-                                   pow(d_profit, params.alpha4);
+                                   profit_factor;
             }
         }
     }

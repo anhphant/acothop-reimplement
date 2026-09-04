@@ -66,6 +66,8 @@ public:
         }
 
         // Phase 2 (matches realbench local_search): LS + repack + revert, per ant.
+        // realbench calls termination_condition() after each ant's compute_fitness (pack)
+        // inside local_search() — we replicate that here.
         for (int a = 0; a < Colony.antsCount; ++a) {
             Ant& ant = Colony.ants[a];
             if (ant.state.sequenceSize == 0) continue;
@@ -84,9 +86,14 @@ public:
                 } else {
                     cost = post_ls_cost;
                 }
+                // === matches realbench local_search(): if (termination_condition()) return; ===
+                if (cost > iter_best_cost) { iter_best_cost = cost; iter_best_ant = &ant; }
+                if (termination_criterion()) goto phase2_done;
+                continue;   // skip the duplicate iter_best update below when LS is on
             }
             if (cost > iter_best_cost) { iter_best_cost = cost; iter_best_ant = &ant; }
         }
+        phase2_done:
         cout << "Pack time: " << pack_time / 1000.0 << "ms, LS time: " << ls_time / 1000.0 << "ms" << endl;
 
         if (iter_best_ant == nullptr) return;

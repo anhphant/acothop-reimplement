@@ -19,14 +19,13 @@ seed = 1234567
 
 ## Time limit per run (seconds) — must match --time-limit in target-runner
 ## Set to NA to use maxExperiments budget only
-# maxTime = NA
+maxTime = 998
 
 ## Minimum number of experiments before any elimination
 # minNbSurvival = 2
 
 ## Number of parallel processes (set to number of CPU cores for speed)
 ## WARNING: set to 1 if your machine is memory-constrained (the exe uses large static arrays)
-parallel = 1
 
 ## Log file
 logFile = "irace.Rdata"
@@ -37,3 +36,7 @@ logFile = "irace.Rdata"
 ## Default: t-test with confidence 0.05
 # testType = "t-test"
 # confidence = 0.95
+
+
+parallel = 4          # Số lượng luồng (cores) muốn sử dụng (ví dụ: 4 luồng)
+loadBalancing = 1     # Bật tính năng cân bằng tải (khuyên dùng để tận dụng tối ưu CPU)

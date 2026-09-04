@@ -75,15 +75,13 @@ Packing pack(const int* tour, int tourLen) {
     // (not-simple-2 has no dummy node: tourLen-1 is the actual destination)
     const double end_dist = distance_accumulated[tour[tourLen - 1]];
 
-    // PACKLOG (identical format to realbench/thop.c compute_fitness) — disabled for speed
-#if 0
+    // PACKLOG (identical format to realbench/thop.c compute_fitness)
     static long pack_call = 0; ++pack_call;
     fprintf(stderr, "PACKLOG|call=%ld|tour_len=%ld|end_dist=%.0f\n",
             pack_call, (long)tourLen, end_dist);
     fprintf(stderr, "PACKLOG|tour|");
     for (int i = 0; i < tourLen; ++i) fprintf(stderr, "%ld,", (long)tour[i]);
     fprintf(stderr, "\n");
-#endif
 
     static double score[MAX_ITEMS];
     static int order[MAX_ITEMS];
@@ -102,10 +100,8 @@ Packing pack(const int* tour, int tourLen) {
         double sum = theta + delta + gamma;
         theta /= sum; delta /= sum; gamma /= sum;
 
-#if 0
         fprintf(stderr, "PACKLOG|try=%ld|th=%.9f|de=%.9f|ga=%.9f\n",
                 (long)attempt, theta, delta, gamma);
-#endif
 
         // score items (negated ascending sort puts best first)
         memset(tmp_packing, 0, nItems);
@@ -175,10 +171,8 @@ Packing pack(const int* tour, int tourLen) {
             memcpy(best.picked, tmp_packing, nItems);
         }
 
-#if 0
         fprintf(stderr, "PACKLOG|try=%ld|profit=%ld|weight=%ld\n",
                 (long)attempt, total_profit, total_weight);
-#endif
     }
 
     best.totalProfit = best_profit;
@@ -186,9 +180,7 @@ Packing pack(const int* tour, int tourLen) {
     for (int j = 0; j < nItems; ++j) if (best.picked[j]) tw += items[j].weight;
     best.totalWeight = tw;
 
-#if 0
     fprintf(stderr, "PACKLOG|best|profit=%ld|weight=%ld\n",
             best.totalProfit, best.totalWeight);
-#endif
     return best;
 }
