@@ -1,0 +1,9 @@
+## irace parameter space for not-simple-2 — chỉ tune alpha3 và alpha4
+## Các tham số khác được fix cứng trong target-runner.ps1
+## Format: name  ""  type  domain
+
+# Weight heuristic exponent: (1/(weight+eps2))^alpha3
+alpha3  ""  r  (0.0, 20.0)
+
+# Profit heuristic exponent: profit^alpha4
+alpha4  ""  r  (0.0, 20.0)

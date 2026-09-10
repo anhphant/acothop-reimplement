@@ -1,0 +1,246 @@
+Pack time: 11273.8ms, LS time: 81.408ms
+Colony: 67ms
+Update: 11356ms
+Daemon: 3ms
+Pack time: 15706.9ms, LS time: 106.997ms
+Colony: 100ms
+Update: 15813ms
+Daemon: 4ms
+Pack time: 12720.2ms, LS time: 94.779ms
+Colony: 67ms
+Update: 12815ms
+Daemon: 4ms
+Pack time: 12277.7ms, LS time: 87.15ms
+Colony: 84ms
+Update: 12365ms
+Daemon: 3ms
+Pack time: 12784.5ms, LS time: 77.853ms
+Colony: 88ms
+Update: 12864ms
+Daemon: 3ms
+Pack time: 12293.5ms, LS time: 72.358ms
+Colony: 74ms
+Update: 12366ms
+Daemon: 4ms
+Pack time: 13366.1ms, LS time: 82.62ms
+Colony: 85ms
+Update: 13448ms
+Daemon: 4ms
+Pack time: 12340.3ms, LS time: 87.163ms
+Colony: 74ms
+Update: 12429ms
+Daemon: 3ms
+Pack time: 13743.6ms, LS time: 94.011ms
+Colony: 76ms
+Update: 13838ms
+Daemon: 4ms
+Pack time: 12804.5ms, LS time: 87.687ms
+Colony: 72ms
+Update: 12893ms
+Daemon: 2ms
+Pack time: 11826ms, LS time: 58.086ms
+Colony: 96ms
+Update: 11887ms
+Daemon: 3ms
+Pack time: 13301.8ms, LS time: 89.985ms
+Colony: 119ms
+Update: 13392ms
+Daemon: 2ms
+Pack time: 13747.3ms, LS time: 95.488ms
+Colony: 91ms
+Update: 13846ms
+Daemon: 2ms
+Pack time: 12990.1ms, LS time: 88.75ms
+Colony: 77ms
+Update: 13079ms
+Daemon: 2ms
+Pack time: 15405.9ms, LS time: 115.128ms
+Colony: 68ms
+Update: 15522ms
+Daemon: 1ms
+Pack time: 78353.3ms, LS time: 1682.66ms
+Colony: 93ms
+Update: 80036ms
+Daemon: 3ms
+Pack time: 24286.2ms, LS time: 191.614ms
+Colony: 211ms
+Update: 24480ms
+Daemon: 1ms
+Pack time: 17059.2ms, LS time: 136.832ms
+Colony: 198ms
+Update: 17197ms
+Daemon: 1ms
+Pack time: 15866.3ms, LS time: 160.716ms
+Colony: 92ms
+Update: 16028ms
+Daemon: 2ms
+Pack time: 11808.3ms, LS time: 87.96ms
+Colony: 97ms
+Update: 11898ms
+Daemon: 3ms
+Pack time: 15592.9ms, LS time: 160.771ms
+Colony: 69ms
+Update: 15754ms
+Daemon: 3ms
+Pack time: 17322.8ms, LS time: 258.166ms
+Colony: 93ms
+Update: 17582ms
+Daemon: 2ms
+Pack time: 15693.9ms, LS time: 157.531ms
+Colony: 129ms
+Update: 15853ms
+Daemon: 2ms
+Pack time: 15887.4ms, LS time: 157.463ms
+Colony: 94ms
+Update: 16047ms
+Daemon: 3ms
+Pack time: 15333.4ms, LS time: 176.47ms
+Colony: 92ms
+Update: 15512ms
+Daemon: 3ms
+Pack time: 15417.6ms, LS time: 161.129ms
+Colony: 95ms
+Update: 15580ms
+Daemon: 3ms
+Pack time: 15228.6ms, LS time: 183.845ms
+Colony: 93ms
+Update: 15413ms
+Daemon: 2ms
+Pack time: 15121.6ms, LS time: 160.5ms
+Colony: 91ms
+Update: 15283ms
+Daemon: 3ms
+Pack time: 15469.4ms, LS time: 170.934ms
+Colony: 93ms
+Update: 15640ms
+Daemon: 2ms
+Pack time: 15076.4ms, LS time: 172.334ms
+Colony: 90ms
+Update: 15251ms
+Daemon: 2ms
+Pack time: 14888ms, LS time: 175.18ms
+Colony: 89ms
+Update: 15064ms
+Daemon: 3ms
+Pack time: 15301.5ms, LS time: 152.546ms
+Colony: 90ms
+Update: 15455ms
+Daemon: 1ms
+Pack time: 15796.9ms, LS time: 115.914ms
+Colony: 100ms
+Update: 15912ms
+Daemon: 2ms
+Pack time: 15187.2ms, LS time: 131.268ms
+Colony: 100ms
+Update: 15321ms
+Daemon: 3ms
+Pack time: 15424.8ms, LS time: 131.603ms
+Colony: 97ms
+Update: 15558ms
+Daemon: 2ms
+Pack time: 15514.1ms, LS time: 127.781ms
+Colony: 99ms
+Update: 15641ms
+Daemon: 2ms
+Pack time: 16007.8ms, LS time: 126.713ms
+Colony: 102ms
+Update: 16136ms
+Daemon: 1ms
+Pack time: 15219ms, LS time: 119.81ms
+Colony: 97ms
+Update: 15339ms
+Daemon: 2ms
+Pack time: 15929.6ms, LS time: 129.83ms
+Colony: 103ms
+Update: 16060ms
+Daemon: 2ms
+Pack time: 15536.2ms, LS time: 122.252ms
+Colony: 98ms
+Update: 15658ms
+Daemon: 1ms
+Pack time: 15621.8ms, LS time: 136.683ms
+Colony: 99ms
+Update: 15761ms
+Daemon: 1ms
+Pack time: 15831.6ms, LS time: 135.332ms
+Colony: 104ms
+Update: 15970ms
+Daemon: 3ms
+Pack time: 15029.3ms, LS time: 161.81ms
+Colony: 94ms
+Update: 15193ms
+Daemon: 2ms
+Pack time: 15453.7ms, LS time: 173.368ms
+Colony: 89ms
+Update: 15628ms
+Daemon: 3ms
+Pack time: 15180.9ms, LS time: 165.619ms
+Colony: 90ms
+Update: 15348ms
+Daemon: 2ms
+Pack time: 15286.2ms, LS time: 166.862ms
+Colony: 100ms
+Update: 15453ms
+Daemon: 3ms
+Pack time: 15496.9ms, LS time: 162.91ms
+Colony: 92ms
+Update: 15660ms
+Daemon: 2ms
+Pack time: 15272.9ms, LS time: 174.372ms
+Colony: 90ms
+Update: 15449ms
+Daemon: 2ms
+Pack time: 15122.6ms, LS time: 176.91ms
+Colony: 90ms
+Update: 15301ms
+Daemon: 2ms
+Pack time: 15195.1ms, LS time: 173.592ms
+Colony: 92ms
+Update: 15369ms
+Daemon: 3ms
+Pack time: 14916.5ms, LS time: 176.739ms
+Colony: 90ms
+Update: 15095ms
+Daemon: 2ms
+Pack time: 15599.7ms, LS time: 189.105ms
+Colony: 93ms
+Update: 15791ms
+Daemon: 2ms
+Pack time: 15812.3ms, LS time: 191.2ms
+Colony: 96ms
+Update: 16004ms
+Daemon: 2ms
+Pack time: 16252.9ms, LS time: 167.387ms
+Colony: 90ms
+Update: 16423ms
+Daemon: 3ms
+Pack time: 15961ms, LS time: 172.794ms
+Colony: 99ms
+Update: 16135ms
+Daemon: 3ms
+Pack time: 15255.1ms, LS time: 186.921ms
+Colony: 93ms
+Update: 15447ms
+Daemon: 2ms
+Pack time: 15832.3ms, LS time: 161.722ms
+Colony: 92ms
+Update: 15994ms
+Daemon: 2ms
+Pack time: 15059.4ms, LS time: 175.497ms
+Colony: 89ms
+Update: 15238ms
+Daemon: 3ms
+Pack time: 15439.2ms, LS time: 188.217ms
+Colony: 91ms
+Update: 15627ms
+Daemon: 2ms
+Pack time: 15761.7ms, LS time: 174.239ms
+Colony: 95ms
+Update: 15937ms
+Daemon: 1ms
+Pack time: 14856ms, LS time: 138.206ms
+Colony: 90ms
+Update: 14998ms
+Daemon: 1ms
+Best objective: 4625818.0000000000
+Runtime: 1008.9230620000 s

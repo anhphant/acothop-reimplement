@@ -1,0 +1,18 @@
+## irace scenario ? alpha3 + alpha4 tuning for dsj1000 usw instances
+targetRunner = "target-runner.bat"
+parameterFile = "parameters.txt"
+trainInstancesFile = "instances.txt"
+logFile = "irace.Rdata"
+
+## Budget: 6 instances * 60s/run / 4 cores = ~90min wall time
+## irace needs >= 5 * nParams * nInstances experiments to race properly
+## nParams=2, nInstances=6 => ~60 minimum => 500 gives good coverage
+maxExperiments = 500
+maxTime = NA
+
+## Seed
+seed = 1234567
+
+## Parallel workers (adjust to your CPU cores)
+parallel = 6
+loadBalancing = 1

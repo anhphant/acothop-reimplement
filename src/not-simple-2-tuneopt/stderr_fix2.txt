@@ -1,0 +1,8 @@
+[0.003s] main: parsed arguments
+[0.003s] main: input file = ../../instances/dsj1000-thop/dsj1000_10_usw_10_03.thop
+[0.003s] main: ants = 500, time-limit = 998, local-search = 1
+[0.003s] main: alpha = 4.04, beta = 7.82, rho = 0.39, delta = 1
+[0.003s] main: seed = 531298, output = output_dsj1000_10_usw_10_03_fix2.out, log = run_dsj1000_10_usw_10_03_fix2.log
+[0.003s] main: ptries = 2
+[0.003s] main: step-online = 0, delayed-online = 1
+[0.003s] main: parameter validation passed; preparing solver initialization
