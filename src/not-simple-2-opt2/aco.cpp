@@ -194,6 +194,7 @@ void ACOinit() {
     Colony.antsCount = params.number_of_ants;
 
     for (int a = 0; a < Colony.antsCount; ++a) {
+        Colony.ants[a].sub_idx = a % Pheromone.getSubCount();
         Colony.ants[a].initialize(n);
     }
 
