@@ -56,6 +56,9 @@
 
 #define LINE_BUF_LEN     255
 
+struct point;
+struct item;
+
 extern long int *best_in_try;
 extern long int *best_found_at;
 extern double   *time_best_found;

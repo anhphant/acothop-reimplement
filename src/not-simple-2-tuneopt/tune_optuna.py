@@ -36,21 +36,20 @@ SCRIPT_DIR = Path(__file__).parent.resolve()
 EXE        = SCRIPT_DIR / "main.exe"
 BASE_DIR   = SCRIPT_DIR.parent.parent
 
-# 3 instances dai dien (du da dang, khong qua ton kem)
+# 3 instances: bsc, unc, usw — moi loai 1 file, cung cau hinh 10 items/city
 INSTANCES = [
+    BASE_DIR / "instances/dsj1000-thop/dsj1000_10_bsc_10_01.thop",
+    BASE_DIR / "instances/dsj1000-thop/dsj1000_10_unc_10_01.thop",
     BASE_DIR / "instances/dsj1000-thop/dsj1000_10_usw_10_01.thop",
-    BASE_DIR / "instances/dsj1000-thop/dsj1000_10_usw_10_02.thop",
-    BASE_DIR / "instances/dsj1000-thop/dsj1000_10_usw_10_03.thop",
 ]
 
-# 2 seeds (giam variance ma khong tang gap doi thoi gian)
+# 2 seeds
 SEEDS = [226489, 326489]
 
 # Tham so co dinh
 FIXED = {
     "alpha1":  4.04,
     "alpha2":  7.82,
-    "alpha4":  0.795394,  # FIX: ket qua tu tuning alpha4 truoc do
     "eps1":    0.0001,
     "eps2":    0.0001,
     "rho":     0.39,
@@ -60,8 +59,9 @@ FIXED = {
     "delta":   1.0,
 }
 
-# Chi tune alpha3 (weight exponent trong routing)
+# Tune ca alpha3 va alpha4
 ALPHA3_RANGE = (0.0, 10.0)
+ALPHA4_RANGE = (0.0,  2.0)
 
 RE_PROFIT = re.compile(r"Best\s+objective:\s*([\d.eE+\-]+)", re.IGNORECASE)
 
@@ -116,7 +116,7 @@ def make_objective(time_limit: int):
     valid = [i for i in INSTANCES if i.exists()]
     def objective(trial: optuna.Trial) -> float:
         alpha3 = trial.suggest_float("alpha3", *ALPHA3_RANGE)
-        alpha4 = FIXED["alpha4"]   # = 0.795394, fixed
+        alpha4 = trial.suggest_float("alpha4", *ALPHA4_RANGE)
         profits = []
         for inst in valid:
             for seed in SEEDS:
@@ -148,15 +148,15 @@ def make_sampler(use_botorch: bool, n_startup: int):
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--trials",     type=int, default=12,
-                   help="So trials (default: 12 ~ 30 phut voi 4 workers)")
-    p.add_argument("--time-limit", type=int, default=100,
-                   help="Giay moi run (default: 100)")
+    p.add_argument("--trials",     type=int, default=24,
+                   help="So trials (default: 24 ~ 2h voi 4 workers, 3inst x 2seeds x 200s)")
+    p.add_argument("--time-limit", type=int, default=200,
+                   help="Giay moi run (default: 200)")
     p.add_argument("--jobs",       type=int, default=4,
                    help="Parallel workers (default: 4)")
-    p.add_argument("--startup",    type=int, default=5,
-                   help="So trial random truoc GP (default: 5)")
-    p.add_argument("--study-name", type=str, default="alpha34_botorch")
+    p.add_argument("--startup",    type=int, default=10,
+                   help="So trial random truoc GP (default: 10)")
+    p.add_argument("--study-name", type=str, default="alpha34_bsc_unc_usw")
     p.add_argument("--db",         type=str, default="optuna_study.db")
     p.add_argument("--resume",     action="store_true")
     p.add_argument("--no-botorch", dest="use_botorch", action="store_false", default=True)
@@ -206,7 +206,7 @@ def main():
     csv_file = open(csv_path, "a", newline="", encoding="utf-8")
     writer   = csv.writer(csv_file)
     if new_file:
-        writer.writerow(["trial", "alpha4",
+        writer.writerow(["trial", "alpha3", "alpha4",
                          "mean_profit", "best_so_far", "timestamp"])
 
     # Header
@@ -216,20 +216,19 @@ def main():
     print(sep)
     print(f"  Sampler     : {sampler_name}")
     print(f"  EXE         : {EXE.name}")
-    print(f"  Instances   : {len(valid_inst)} x {len(SEEDS)} seeds = {runs_per_trial} runs/trial")
+    print(f"  Instances   : {len(valid_inst)} (bsc+unc+usw) x {len(SEEDS)} seeds = {runs_per_trial} runs/trial")
     print(f"  time-limit  : {args.time_limit}s/run")
     print(f"  Workers     : {args.jobs}  |  Trials: {args.trials}  |  Waves: {waves}")
     print(f"  Est. time   : ~{est_min:.0f} min  (~{est_min/60:.1f}h)")
     print(f"  GP startup  : {args.startup} random trials truoc khi GP bat dau")
     print(f"  Resume      : {args.resume}  |  DB: {args.db}")
     print(f"  Fixed       : alpha1={FIXED['alpha1']} alpha2={FIXED['alpha2']} "
-          f"alpha4={FIXED['alpha4']} rho={FIXED['rho']} "
-          f"ants={FIXED['ants']} ptries={FIXED['ptries']} ls={FIXED['ls']}")
-    print(f"  Tuning      : alpha3 in {ALPHA3_RANGE}  (1D search)")
+          f"rho={FIXED['rho']} ants={FIXED['ants']} ptries={FIXED['ptries']} ls={FIXED['ls']}")
+    print(f"  Tuning      : alpha3 in {ALPHA3_RANGE},  alpha4 in {ALPHA4_RANGE}  (2D search)")
     print(sep)
-    print(f"\n{'Trial':>6}  {'alpha3':>8}  "
+    print(f"\n{'Trial':>6}  {'alpha3':>8}  {'alpha4':>8}  "
           f"{'profit':>13}  {'best':>13}  elapsed  note")
-    print("-" * 58)
+    print("-" * 70)
 
     t0    = time.time()
     state = {"best": float("-inf")}
@@ -244,7 +243,7 @@ def main():
         mm, ss = divmod(r, 60)
         note = " << BEST" if is_best else ""
         print(
-            f"{trial.number:>6}  {trial.params['alpha3']:>8.4f}  "
+            f"{trial.number:>6}  {trial.params['alpha3']:>8.4f}  {trial.params['alpha4']:>8.4f}  "
             f"{profit:>13.0f}  {state['best']:>13.0f}  "
             f"{hh:02d}:{mm:02d}:{ss:02d}{note}",
             flush=True,
@@ -252,6 +251,7 @@ def main():
         writer.writerow([
             trial.number,
             f"{trial.params['alpha3']:.6f}",
+            f"{trial.params['alpha4']:.6f}",
             f"{profit:.2f}",
             f"{state['best']:.2f}",
             time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -270,6 +270,7 @@ def main():
 
     best    = study.best_trial
     best_a3 = best.params["alpha3"]
+    best_a4 = best.params["alpha4"]
     wall    = time.time() - t0
 
     print("\n" + sep)
@@ -277,15 +278,15 @@ def main():
     print(sep)
     print(f"  Best trial   : #{best.number}")
     print(f"  alpha3       : {best_a3:.6f}")
-    print(f"  alpha4       : {FIXED['alpha4']}  (fixed)")
-    print(f"  Mean profit  : {-best.value:.0f}  (avg {runs_per_trial} runs)")
+    print(f"  alpha4       : {best_a4:.6f}")
+    print(f"  Mean profit  : {-best.value:.0f}  (avg {runs_per_trial} runs, bsc+unc+usw)")
     print(f"  Wall time    : {wall/60:.1f} min")
     print()
     print("  Lenh benchmark (998s, copy-paste):")
     print(f"  .\\run.ps1 ..\\..\\instances\\dsj1000-thop\\dsj1000_10_usw_10_03.thop `")
     print(f"    -Ants {FIXED['ants']} -TimeLimit 998 -LocalSearch {FIXED['ls']} `")
     print(f"    -Alpha1 {FIXED['alpha1']} -Alpha2 {FIXED['alpha2']} `")
-    print(f"    -Alpha3 {best_a3:.6f} -Alpha4 {FIXED['alpha4']} `")
+    print(f"    -Alpha3 {best_a3:.6f} -Alpha4 {best_a4:.6f} `")
     print(f"    -Eps1 {FIXED['eps1']} -Eps2 {FIXED['eps2']} -Rho {FIXED['rho']} `")
     print(f"    -Seed 642580 -OutputFile out.sol -LogEnabled 0 -PTries {FIXED['ptries']}")
     print(sep)

@@ -116,13 +116,11 @@ int main(int argc, char* argv[]) {
     start_time = chrono::steady_clock::now();
 
     int generation = 0;
-    while(!termination_criterion()) {
+    while(elapsed_time() < params.time_limit - 20.0) {
         log_debug("aco: generation ", generation, " start, time: ", elapsed_time());
-        Pheromone.compute_total_information();
-        log_debug("aco: compute_total_information done, time: ", elapsed_time());
         Colony.ants_generation_and_activity();
         log_debug("aco: ants_generation_and_activity done, time: ", elapsed_time());
-        Pheromone.adaptive_pheromone_evaporation(Colony.ants, 0.05L, (params.rho > 0.05L ? params.rho : 0.63L));
+        Colony.adaptive_pheromone_evaporation();
         log_debug("aco: adaptive_pheromone_evaporation done, time: ", elapsed_time());
         Optional.daemon_actions();
         log_debug("aco: daemon_actions done, time: ", elapsed_time());
@@ -134,17 +132,24 @@ int main(int argc, char* argv[]) {
     // =======================================================================
     // ULTIMATE TOUR OPTIMIZATION (THOP OBJECTIVE)
     // =======================================================================
-    vector<int> best_tour;
-    for (auto c : Optional.best_solution.sequence) best_tour.push_back(c.id);
+    static int best_tour_arr[MAX_CITIES];
+    int best_tour_len = Optional.best_solution.sequence_len;
+    for (int i = 0; i < best_tour_len; i++) 
+        best_tour_arr[i] = Optional.best_solution.sequence_arr[i]->id;
     
     int old_ptries = packParams.ptries;
     packParams.ptries = p.ptries;
     
     // Use the fast stochastic EA packing algorithm!
+    extern int itemsAtCityArr[MAX_CITIES][100];
+    extern int numItemsAtCity[MAX_CITIES];
+
+    // Ultimate Tour Optimization
+    // Run random sweeps of 2-opt and 3-opt until time is up();
     log_debug("main: starting Ultimate Tour Optimization");
     double uto_start = elapsed_time();
-    Packing ultimate_packing = pack(best_tour, 1000);
-    double ultimate_profit = computeFitness(best_tour, ultimate_packing);
+    Packing ultimate_packing = pack(best_tour_arr, best_tour_len, 1000);
+    double ultimate_profit = computeFitness(best_tour_arr, best_tour_len, ultimate_packing);
     
     bool global_improved = true;
     while (global_improved && elapsed_time() < params.time_limit) {
@@ -153,36 +158,42 @@ int main(int argc, char* argv[]) {
         
         // 1. SUBTOUR 2-OPT OPTIMIZATION
         {
-            vector<int> visited;
-            vector<int> unvisited;
-            for (int city : best_tour) {
-                if (city == best_tour.front() || city == best_tour.back()) continue;
+            static int visited[MAX_CITIES];
+            static int unvisited[MAX_CITIES];
+            int visited_len = 0;
+            int unvisited_len = 0;
+            for (int i = 0; i < best_tour_len; i++) {
+                int city = best_tour_arr[i];
+                if (city == best_tour_arr[0] || city == best_tour_arr[best_tour_len-1]) continue;
                 bool has = false;
-                for (int item : itemsAtCity[city]) {
-                    if (ultimate_packing.picked[item]) { has = true; break; }
+                for (int k = 0; k < numItemsAtCity[city]; k++) {
+                    if (ultimate_packing.picked[itemsAtCityArr[city][k]]) { has = true; break; }
                 }
-                if (has) visited.push_back(city);
-                else unvisited.push_back(city);
+                if (has) visited[visited_len++] = city;
+                else unvisited[unvisited_len++] = city;
             }
             
-            vector<int> subpath;
-            subpath.push_back(best_tour.front());
-            for (int c : visited) subpath.push_back(c);
-            subpath.push_back(best_tour.back());
+            static int subpath[MAX_CITIES];
+            int subpath_len = 0;
+            subpath[subpath_len++] = best_tour_arr[0];
+            for (int i = 0; i < visited_len; i++) subpath[subpath_len++] = visited[i];
+            subpath[subpath_len++] = best_tour_arr[best_tour_len-1];
             
             bool sub_improved = true;
             while (sub_improved && elapsed_time() < params.time_limit) {
                 sub_improved = false;
-                for (size_t i = 1; i + 2 < subpath.size(); ++i) {
-                    for (size_t j = i + 1; j + 1 < subpath.size(); ++j) {
+                for (int i = 1; i + 2 < subpath_len; ++i) {
+                    for (int j = i + 1; j + 1 < subpath_len; ++j) {
                         int u = subpath[i-1], v = subpath[i];
                         int x = subpath[j], y = subpath[j+1];
-                        long double cur_d = connections.distance(componentList[u], componentList[v]) +
+                        double cur_d = connections.distance(componentList[u], componentList[v]) +
                                             connections.distance(componentList[x], componentList[y]);
-                        long double new_d = connections.distance(componentList[u], componentList[x]) +
+                        double new_d = connections.distance(componentList[u], componentList[x]) +
                                             connections.distance(componentList[v], componentList[y]);
                         if (new_d < cur_d - 1e-6) {
-                            reverse(subpath.begin() + i, subpath.begin() + j + 1);
+                            for (int k = 0; k < (j - i + 1) / 2; k++) {
+                                swap(subpath[i + k], subpath[j - k]);
+                            }
                             sub_improved = true;
                             break;
                         }
@@ -191,14 +202,15 @@ int main(int argc, char* argv[]) {
                 }
             }
             
-            vector<int> new_tour = subpath;
-            new_tour.pop_back();
-            for (int u : unvisited) new_tour.push_back(u);
-            new_tour.push_back(best_tour.back());
+            static int new_tour[MAX_CITIES];
+            int new_tour_len = 0;
+            for (int i = 0; i < subpath_len - 1; i++) new_tour[new_tour_len++] = subpath[i];
+            for (int i = 0; i < unvisited_len; i++) new_tour[new_tour_len++] = unvisited[i];
+            new_tour[new_tour_len++] = best_tour_arr[best_tour_len-1];
             
-            double f = computeFitness(new_tour, ultimate_packing);
+            double f = computeFitness(new_tour, new_tour_len, ultimate_packing);
             if (f >= ultimate_profit) {
-                best_tour = new_tour;
+                for (int i = 0; i < new_tour_len; i++) best_tour_arr[i] = new_tour[i];
                 ultimate_profit = f;
             }
         }
@@ -207,18 +219,21 @@ int main(int argc, char* argv[]) {
         bool tour_improved = true;
         while (tour_improved && elapsed_time() < params.time_limit) {
             tour_improved = false;
-            for (size_t i = 1; i + 2 < best_tour.size(); ++i) {
-                for (size_t j = i + 1; j + 1 < best_tour.size(); ++j) {
+            for (int i = 1; i + 2 < best_tour_len; ++i) {
+                for (int j = i + 1; j + 1 < best_tour_len; ++j) {
                     if (elapsed_time() >= params.time_limit) break;
                     
-                    vector<int> neighbor_tour = best_tour;
-                    reverse(neighbor_tour.begin() + i, neighbor_tour.begin() + j + 1);
+                    static int neighbor_tour[MAX_CITIES];
+                    for (int k = 0; k < best_tour_len; k++) neighbor_tour[k] = best_tour_arr[k];
+                    for (int k = 0; k < (j - i + 1) / 2; k++) {
+                        swap(neighbor_tour[i + k], neighbor_tour[j - k]);
+                    }
                     
-                    double f = computeFitness(neighbor_tour, ultimate_packing);
+                    double f = computeFitness(neighbor_tour, best_tour_len, ultimate_packing);
                     
                     if (f > ultimate_profit) {
                         ultimate_profit = f;
-                        best_tour = neighbor_tour;
+                        for (int k = 0; k < best_tour_len; k++) best_tour_arr[k] = neighbor_tour[k];
                         tour_improved = true;
                         global_improved = true;
                         break;
@@ -228,21 +243,32 @@ int main(int argc, char* argv[]) {
         }
         
         // 3. REVERSE CHECK
-        vector<int> rev_tour = best_tour;
-        reverse(rev_tour.begin() + 1, rev_tour.end() - 1);
-        double rev_profit = computeFitness(rev_tour, ultimate_packing);
+        static int rev_tour[MAX_CITIES];
+        for (int k = 0; k < best_tour_len; k++) rev_tour[k] = best_tour_arr[k];
+        for (int k = 1; k < (best_tour_len - 1) / 2 + 1; k++) {
+            swap(rev_tour[k], rev_tour[best_tour_len - 1 - k]);
+        }
+        double rev_profit = computeFitness(rev_tour, best_tour_len, ultimate_packing);
         if (rev_profit > ultimate_profit) {
             ultimate_profit = rev_profit;
-            best_tour = rev_tour;
+            for (int k = 0; k < best_tour_len; k++) best_tour_arr[k] = rev_tour[k];
             global_improved = true;
         }
         
         // 4. ULTIMATE PACKING OPTIMIZATION
-        Packing new_packing = pack(best_tour, 100);
-        double f = computeFitness(best_tour, new_packing);
+        Packing new_packing = pack(best_tour_arr, best_tour_len, 100);
+        double f = computeFitness(best_tour_arr, best_tour_len, new_packing);
         if (f > ultimate_profit) {
             ultimate_profit = f;
             ultimate_packing = new_packing;
+            global_improved = true;
+        }
+        
+        Packing iter_packing = packIterative(best_tour_arr, best_tour_len);
+        double iter_f = computeFitness(best_tour_arr, best_tour_len, iter_packing);
+        if (iter_f > ultimate_profit) {
+            ultimate_profit = iter_f;
+            ultimate_packing = iter_packing;
             global_improved = true;
         }
     }
@@ -254,9 +280,9 @@ int main(int argc, char* argv[]) {
     // =======================================================================
 
     // Compute pure TSP distance of best_tour
-    long double pure_tsp_distance = 0;
-    for (size_t i = 0; i + 1 < best_tour.size(); ++i) {
-        pure_tsp_distance += connections.distance(componentList[best_tour[i]], componentList[best_tour[i+1]]);
+    double pure_tsp_distance = 0;
+    for (int i = 0; i + 1 < best_tour_len; ++i) {
+        pure_tsp_distance += connections.distance(componentList[best_tour_arr[i]], componentList[best_tour_arr[i+1]]);
     }
     cout << fixed << setprecision(10)
          << "Best objective: " << Optional.best_cost << '\n'
@@ -266,29 +292,31 @@ int main(int argc, char* argv[]) {
         ofstream out(p.outputfile);
         if (out) {
             // Reconstruct visited cities (the ones where items were picked)
-            vector<int> output_cities;
-            for (size_t i = 1; i + 1 < best_tour.size(); ++i) {
-                int city = best_tour[i];
+            static int output_cities[MAX_CITIES];
+            int output_cities_len = 0;
+            for (int i = 1; i + 1 < best_tour_len; ++i) {
+                int city = best_tour_arr[i];
                 bool hasPicked = false;
-                for (int item : itemsAtCity[city]) {
-                    if (ultimate_packing.picked[item]) {
+                for (int k = 0; k < numItemsAtCity[city]; k++) {
+                    int item = itemsAtCityArr[city][k];
+                    if (ultimate_packing.picked.test(item)) {
                         hasPicked = true;
                         break;
                     }
                 }
                 if (hasPicked) {
-                    output_cities.push_back(city);
+                    output_cities[output_cities_len++] = city;
                 }
             }
 
             // Write middle cities (1-indexed)
-            for (size_t i = 0; i < output_cities.size(); ++i) {
-                out << (componentList[output_cities[i]].id + 1) << (i + 1 < output_cities.size() ? " " : "");
+            for (int i = 0; i < output_cities_len; ++i) {
+                out << (componentList[output_cities[i]].id + 1) << (i + 1 < output_cities_len ? " " : "");
             }
             out << "\n";
             // Write picked items (1-indexed)
             bool first_item = true;
-            for (size_t i = 0; i < ultimate_packing.picked.size(); ++i) {
+            for (size_t i = 0; i < nItems; ++i) {
                 if (ultimate_packing.picked[i]) {
                     if (!first_item) out << " ";
                     out << (items[i].id + 1);
@@ -303,17 +331,18 @@ int main(int argc, char* argv[]) {
     }
 
     // Simple NN distance test
-    if (componentList.size() > 0) {
-        vector<bool> vis(componentList.size(), false);
+    if (numComponents > 0) {
+        static bool vis[MAX_CITIES];
+        for (int i = 0; i < numComponents; i++) vis[i] = false;
         int curr = 0;
         vis[curr] = true;
-        long double nn_dist = 0;
-        for (size_t i = 1; i < componentList.size(); ++i) {
+        double nn_dist = 0;
+        for (int i = 1; i < numComponents; ++i) {
             int best_nxt = -1;
-            long double best_d = 1e18;
-            for (size_t j = 0; j < componentList.size(); ++j) {
+            double best_d = 1e18;
+            for (int j = 0; j < numComponents; ++j) {
                 if (!vis[j]) {
-                    long double d = connections.distance(componentList[curr], componentList[j]);
+                    double d = connections.distance(componentList[curr], componentList[j]);
                     if (d < best_d) { best_d = d; best_nxt = j; }
                 }
             }

@@ -137,9 +137,9 @@ int main(int argc, char* argv[]) {
         auto t3 = chrono::high_resolution_clock::now();
         Optional.daemon_actions(iteration);
         auto t4 = chrono::high_resolution_clock::now();
-        cout << "Colony: " << chrono::duration_cast<chrono::milliseconds>(t2 - t1).count() << "ms" << endl;
-        cout << "Update: " << chrono::duration_cast<chrono::milliseconds>(t3 - t2).count() << "ms" << endl;
-        cout << "Daemon: " << chrono::duration_cast<chrono::milliseconds>(t4 - t3).count() << "ms" << endl;
+        // cout << "Colony: " << chrono::duration_cast<chrono::milliseconds>(t2 - t1).count() << "ms" << endl;
+        // cout << "Update: " << chrono::duration_cast<chrono::milliseconds>(t3 - t2).count() << "ms" << endl;
+        // cout << "Daemon: " << chrono::duration_cast<chrono::milliseconds>(t4 - t3).count() << "ms" << endl;
         Optional.search_control_and_statistics(iteration);
         // Compute total for the next generation (matches realbench pheromone_trail_update).
         if (params.local_search_flag > 0)

@@ -5,12 +5,13 @@ using namespace std;
 // (m^2), mlogm 
 
 struct Packing {
-    vector<bool> picked;  
+    bitset<MAX_ITEMS> picked;  
     long totalWeight = 0, totalProfit = 0;
 };
 
 struct Solution {
-    vector<int> tour;    
+    int tour[MAX_CITIES];    
+    int tour_len;
     Packing packing;
     double objective = -INF;
 };
@@ -29,12 +30,12 @@ struct PackParameter {
 } packParams;
 
 
-vector<vector<int>> itemsAtCity;   // itemsAtCity[nodeIdx] = list of item indices
 vector<int> cityIdToNodeIdx; // Map from 1-based city ID to 0-based node index
 
-double nu;
+int itemsAtCityArr[MAX_CITIES][100];
+int numItemsAtCity[MAX_CITIES];
 
-// packing_distance removed
+double nu;
 
 #include "pack_iterative.h"
 
@@ -51,11 +52,14 @@ void packInit() {
     }
 
     // build itemsAtCity 
-    itemsAtCity.assign(nCities, vector<int>());
+    for (int i=0; i<MAX_CITIES; i++) numItemsAtCity[i] = 0;
+    
     for (long k = 0; k < nItems; ++k) {
         int nodeIdx = cityIdToNodeIdx[items[k].city];
         if (nodeIdx != -1) {
-            itemsAtCity[nodeIdx].push_back((int)k);
+            if (numItemsAtCity[nodeIdx] < 100) {
+                itemsAtCityArr[nodeIdx][numItemsAtCity[nodeIdx]++] = k;
+            }
         }
     }
 
@@ -64,18 +68,14 @@ void packInit() {
     log_debug("packing: initialized city map and item buckets");
 }
 
-void computeDistanceToEnd(const vector<int>& tour,
+void computeDistanceToEnd(const int* tour, int tour_size,
                           vector<double>& distanceToEnd)
 {
-    int n = tour.size();
-
-    distanceToEnd.assign(n, 0.0);
-
+    distanceToEnd.assign(tour_size, 0.0);
     double dist = 0.0;
+    distanceToEnd[tour_size - 1] = 0.0;   // end city
 
-    distanceToEnd[n - 1] = 0.0;   // end city
-
-    for (int i = n - 2; i >= 0; i--)
+    for (int i = tour_size - 2; i >= 0; i--)
     {
         dist += distance(tour[i], tour[i + 1]);
         distanceToEnd[i] = dist;
@@ -84,15 +84,15 @@ void computeDistanceToEnd(const vector<int>& tour,
 
 // ========================================================================
 
-void computeScore(const vector<int>& tour,
+void computeScore(const int* tour, int tour_size,
                   double theta,
                   double delta,
                   double gamma,
-                  vector<double>& score)
+                  double* score)
 {
     // distance from each position in tour to end city
     vector<double> distToEnd;
-    computeDistanceToEnd(const_cast<vector<int>&>(tour), distToEnd);
+    computeDistanceToEnd(tour, tour_size, distToEnd);
 
     double totalTourDist = distToEnd.empty() ? 1.0 : distToEnd.front();
     if (totalTourDist <= 0.0) totalTourDist = 1.0;
@@ -100,10 +100,10 @@ void computeScore(const vector<int>& tour,
     // node -> distance to end
     vector<double> cityDistance(nCities, 0.0);
 
-    for (int pos = 0; pos < (int)tour.size(); pos++)
+    for (int pos = 0; pos < tour_size; pos++)
         cityDistance[tour[pos]] = distToEnd[pos];
 
-    score.resize(nItems);
+    // score is static array of size MAX_ITEMS, so no need to resize
 
     for (int item = 0; item < nItems; item++)
     {
@@ -111,163 +111,139 @@ void computeScore(const vector<int>& tour,
 
         double p = (double)items[item].profit;
         double w = (double)items[item].weight;
-        double d = cityDistance[node];
 
         // Normalize distance ratio: in (0, 1]
-        double d_ratio = d / totalTourDist;
+        double d_ratio = cityDistance[node] / totalTourDist;
 
-        // Refined score formula: Profit ^ theta / (Weight ^ delta * (d_ratio + 0.01) ^ gamma)
-        score[item] =
-            pow(p, theta) /
-            (
-                pow(w, delta) *
-                pow(d_ratio + 0.01, gamma)
-            );
+        score[item] = pow(p, theta) / (pow(w, delta) * pow(d_ratio + 0.01, gamma));
     }
 }
 
 // Utilities =========================================================
-double computeFitness(const vector<int>& tour, Packing& packing){
-    long weight = 0;
-    long profit = 0;
+double computeTime(const int* tour, int tour_size, const Packing& packing) {
     double time = 0.0;
+    long currentWeight = 0;
 
-    int prevCity = tour.front();
+    int currentCity = tour[0];
+    
+    for (int i = 0; i < numItemsAtCity[currentCity]; i++) {
+        if (packing.picked.test(itemsAtCityArr[currentCity][i])) {
+            currentWeight += items[itemsAtCityArr[currentCity][i]].weight;
+        }
+    }
 
-    // cities visited after removing empty cities
-    vector<int> visitedCities;
+    for (int i = 1; i < tour_size; i++) {
+        int nextCity = tour[i];
+        
+        double v = maxSpeed - currentWeight * nu;
+        
+        time += distance(currentCity, nextCity) / v;
 
-    for (int city : tour)
-    {
-        bool hasPicked = false;
-
-        for (int item : itemsAtCity[city])
-        {
-            if (packing.picked[item])
-            {
-                hasPicked = true;
-                break;
+        for (int j = 0; j < numItemsAtCity[nextCity]; j++) {
+            if (packing.picked.test(itemsAtCityArr[nextCity][j])) {
+                currentWeight += items[itemsAtCityArr[nextCity][j]].weight;
             }
         }
 
-        if (hasPicked)
-            visitedCities.push_back(city);
+        currentCity = nextCity;
     }
 
-    // start -> picked cities -> end
-    vector<int> path;
-    path.push_back(tour.front());
-
-    for (int c : visitedCities)
-        path.push_back(c);
-
-    if (path.back() != tour.back())
-        path.push_back(tour.back());
-
-    vector<bool> alreadyPicked(nItems, false);
-
-    // simulate travelling
-    for (size_t i = 0; i + 1 < path.size(); i++)
-    {
-        int city = path[i];
-
-        // pick all items at current city
-        for (int item : itemsAtCity[city])
-        {
-            if (!packing.picked[item]) continue;
-            if (alreadyPicked[item]) continue;
-            alreadyPicked[item] = true;
-
-            weight += items[item].weight;
-
-            if (weight > capacity)
-                return -INF;
-
-            profit += items[item].profit;
-        }
-
-        double speed = maxSpeed - nu * weight;
-
-        if (speed < minSpeed)
-            speed = minSpeed;
-
-        time += distance(city, path[i + 1]) / speed;
-    }
-
-    if (time > maxTime)
-        return -INF;
-
-    packing.totalWeight = weight;
-    packing.totalProfit = profit;
-
-    // Uncomment to debug time discrepancy
-    // cout << "C++ computeFitness time: " << fixed << time << " maxTime: " << maxTime << endl;
-
-    return profit;
+    return time;
 }
 
-void polishPacking(const vector<int>& tour, Packing& packing, double& bestProfit) {
-    vector<int> visitedCities;
-    for (int city : tour) {
-        for (int item : itemsAtCity[city]) {
-            if (packing.picked[item]) {
-                visitedCities.push_back(city);
+double computeFitness(const int* tour, int tour_size, Packing& packing) {
+    double time = computeTime(tour, tour_size, packing);
+    if (time > maxTime) return -INF;
+    return (double)packing.totalProfit;
+}
+
+void polishPacking(const int* tour, int tour_size, Packing& packing, double& bestProfit) {
+    static int visitedCities[MAX_CITIES];
+    int visited_count = 0;
+    for (int i = 0; i < tour_size; i++) {
+        int city = tour[i];
+        for (int k = 0; k < numItemsAtCity[city]; k++) {
+            int item = itemsAtCityArr[city][k];
+            if (packing.picked.test(item)) {
+                visitedCities[visited_count++] = city;
                 break;
             }
         }
     }
-    reverse(visitedCities.begin(), visitedCities.end());
-    for (int city : visitedCities) {
-        vector<int> unpicked;
-        for (int item : itemsAtCity[city]) {
-            if (!packing.picked[item]) unpicked.push_back(item);
+    
+    for (int i = 0; i < visited_count / 2; i++) {
+        swap(visitedCities[i], visitedCities[visited_count - 1 - i]);
+    }
+    
+    for (int i = 0; i < visited_count; i++) {
+        int city = visitedCities[i];
+        static int unpicked[MAX_ITEMS];
+        int unpicked_len = 0;
+        for (int k = 0; k < numItemsAtCity[city]; k++) {
+            int item = itemsAtCityArr[city][k];
+            if (!packing.picked.test(item)) {
+                unpicked[unpicked_len++] = item;
+            }
         }
-        sort(unpicked.begin(), unpicked.end(), [](int a, int b) {
+        sort(unpicked, unpicked + unpicked_len, [](int a, int b) {
             return (double)items[a].profit / items[a].weight > (double)items[b].profit / items[b].weight;
         });
-        for (int item : unpicked) {
+        
+        for (int k = 0; k < unpicked_len; k++) {
+            int item = unpicked[k];
             if (packing.totalWeight + items[item].weight <= capacity) {
-                packing.picked[item] = true;
-                double f = computeFitness(tour, packing);
+                packing.picked.set(item);
+                packing.totalWeight += items[item].weight;
+                packing.totalProfit += items[item].profit;
+                
+                double f = computeFitness(tour, tour_size, packing);
                 if (f > bestProfit) {
                     bestProfit = f;
                 } else {
-                    packing.picked[item] = false;
+                    packing.picked.reset(item);
+                    packing.totalWeight -= items[item].weight;
+                    packing.totalProfit -= items[item].profit;
                 }
             }
         }
     }
 }
 
-void lateHarvestOptimization(const vector<int>& tour, Packing& packing, double& bestProfit) {
+void lateHarvestOptimization(const int* tour, int tour_size, Packing& packing, double& bestProfit) {
     bool improved = true;
     int max_rounds = 2;
     int round = 0;
     while (improved && ++round <= max_rounds) {
         improved = false;
-        size_t cutoff = tour.size() * 6 / 10;
-        vector<int> early_picked;
-        for (size_t i = 0; i < cutoff; ++i) {
+        int cutoff = tour_size * 6 / 10;
+        static int early_picked[MAX_ITEMS];
+        int early_picked_len = 0;
+        for (int i = 0; i < cutoff; ++i) {
             int city = tour[i];
-            for (int item : itemsAtCity[city]) {
-                if (packing.picked[item]) early_picked.push_back(item);
+            for (int k = 0; k < numItemsAtCity[city]; k++) {
+                int item = itemsAtCityArr[city][k];
+                if (packing.picked.test(item)) early_picked[early_picked_len++] = item;
             }
         }
-        sort(early_picked.begin(), early_picked.end(), [](int a, int b) {
+        sort(early_picked, early_picked + early_picked_len, [](int a, int b) {
             return (double)items[a].profit / items[a].weight < (double)items[b].profit / items[b].weight;
         });
 
-        if (early_picked.size() > 15) early_picked.resize(15);
+        if (early_picked_len > 15) early_picked_len = 15;
 
-        for (int drop_item : early_picked) {
+        for (int i = 0; i < early_picked_len; i++) {
+            int drop_item = early_picked[i];
             Packing test_packing = packing;
-            test_packing.picked[drop_item] = false;
-            double cur_p = computeFitness(tour, test_packing);
+            test_packing.picked.reset(drop_item);
+            test_packing.totalWeight -= items[drop_item].weight;
+            test_packing.totalProfit -= items[drop_item].profit;
+            
+            double cur_p = computeFitness(tour, tour_size, test_packing);
             if (cur_p == -INF) {
                 continue;
             }
 
-            polishPacking(tour, test_packing, cur_p);
+            polishPacking(tour, tour_size, test_packing, cur_p);
 
             if (cur_p > bestProfit) {
                 bestProfit = cur_p;
@@ -279,71 +255,42 @@ void lateHarvestOptimization(const vector<int>& tour, Packing& packing, double& 
     }
 }
 
-Packing pack(const vector<int>& tour, int override_ptries = -1){
+Packing pack(const int* tour, int tour_size, int override_ptries = -1){
     Packing best;
-    best.picked.assign(nItems, false);
-
+    best.picked.reset();
+    best.totalWeight = 0;
+    best.totalProfit = 0;
     double bestProfit = -INF;
-
     mt19937 rng(rand());
-
     uniform_real_distribution<double> dist(0.0, 1.0);
-
-    vector<double> score(nItems);
+    static double score[MAX_ITEMS];
 
     int actual_ptries = (override_ptries == -1) ? packParams.ptries : override_ptries;
     for (int attempt = 0; attempt < actual_ptries; attempt++)
     {
-        //---------------------------------------
-        // dynamic θ δ γ emphasizing late harvest
-        //---------------------------------------
+        double theta = dist(rng) * 2.5 + 0.5;
+        double delta = dist(rng) * 2.5 + 0.5;
+        double gamma = dist(rng) * 3.5 + 0.5;
 
-        double theta = dist(rng) * 2.5 + 0.5; // [0.5, 3.0]
-        double delta = dist(rng) * 2.5 + 0.5; // [0.5, 3.0]
-        double gamma = dist(rng) * 3.5 + 0.5; // [0.5, 4.0]
+        computeScore(tour, tour_size, theta, delta, gamma, score);
 
-        //---------------------------------------
-        // compute scores
-        //---------------------------------------
+        static int order[MAX_ITEMS];
+        iota(order, order + nItems, 0);
+        sort(order, order + nItems, [&](int a, int b) { return score[a] > score[b]; });
 
-        computeScore(
-            const_cast<vector<int>&>(tour),
-            theta,
-            delta,
-            gamma,
-            score);
-
-        vector<int> order(nItems);
-
-        iota(order.begin(), order.end(), 0);
-
-        sort(order.begin(), order.end(),
-            [&](int a, int b)
-            {
-                return score[a] > score[b];
-            });
-
-        //---------------------------------------
-        // greedy
-        //---------------------------------------
-
-        int low = 0, high = order.size(), best_k = 0;
+        int low = 0, high = nItems, best_k = 0;
         while (low <= high) {
             int mid = low + (high - low) / 2;
-            
             Packing test_cur;
-            test_cur.picked.assign(nItems, false);
+            test_cur.picked.reset();
             long test_weight = 0;
-            
             for (int i = 0; i < mid; ++i) {
-                int item = order[i];
-                if (test_weight + items[item].weight <= capacity) {
-                    test_cur.picked[item] = true;
-                    test_weight += items[item].weight;
+                if (test_weight + items[order[i]].weight <= capacity) {
+                    test_cur.picked.set(order[i]);
+                    test_weight += items[order[i]].weight;
                 }
             }
-            
-            if (computeFitness(tour, test_cur) != -INF) {
+            if (computeTime(tour, tour_size, test_cur) <= maxTime) {
                 best_k = mid;
                 low = mid + 1;
             } else {
@@ -352,31 +299,30 @@ Packing pack(const vector<int>& tour, int override_ptries = -1){
         }
         
         Packing cur;
-        cur.picked.assign(nItems, false);
-        long currentWeight = 0;
+        cur.picked.reset();
+        cur.totalWeight = 0;
+        cur.totalProfit = 0;
         for (int i = 0; i < best_k; ++i) {
             int item = order[i];
-            if (currentWeight + items[item].weight <= capacity) {
-                cur.picked[item] = true;
-                currentWeight += items[item].weight;
+            if (cur.totalWeight + items[item].weight <= capacity) {
+                cur.picked.set(item);
+                cur.totalWeight += items[item].weight;
+                cur.totalProfit += items[item].profit;
             }
         }
 
-        double profit = computeFitness(tour, cur);
-
-        if (profit > bestProfit)
-        {
+        double profit = computeFitness(tour, tour_size, cur);
+        if (profit > bestProfit) {
             bestProfit = profit;
             best = cur;
         }
     }
 
-    // Polish best packing with greedy fill on visited cities
-    polishPacking(tour, best, bestProfit);
+    polishPacking(tour, tour_size, best, bestProfit);
 
     // Late harvest optimization
     if (packParams.ptries > 5) {
-        lateHarvestOptimization(tour, best, bestProfit);
+        lateHarvestOptimization(tour, tour_size, best, bestProfit);
     }
     
     return best;

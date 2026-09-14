@@ -94,7 +94,7 @@ public:
             if (cost > iter_best_cost) { iter_best_cost = cost; iter_best_ant = &ant; }
         }
         phase2_done:
-        cout << "Pack time: " << pack_time / 1000.0 << "ms, LS time: " << ls_time / 1000.0 << "ms" << endl;
+        // cout << "Pack time: " << pack_time / 1000.0 << "ms, LS time: " << ls_time / 1000.0 << "ms" << endl;
 
         if (iter_best_ant == nullptr) return;
 

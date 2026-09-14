@@ -443,9 +443,7 @@ void neighbour_choose_and_move_to_next( ant_struct *a , long int phase )
         }
     }
 
-    if (phase == 1) {
-        fprintf(stderr, "ANT_STEP1|sum_prob=%.10f|city0=%ld|prob0=%.10f\n", sum_prob, instance.nn_list[current_city][0], prob_ptr[0]);
-    }
+
 
     if (sum_prob <= 0.0) {
         /* All cities from the candidate set are tabu */

@@ -1,40 +1,46 @@
 #pragma once
 #include <queue>
-#include <vector>
 
 using namespace std;
 
-double computeTime(const vector<int>& tour, Packing& packing) {
+static int visitedCitiesArr[MAX_CITIES];
+static int pathArr[MAX_CITIES];
+static bool alreadyPicked[MAX_ITEMS];
+
+double computeTime(const int* tour, int tour_size, Packing& packing) {
     long weight = 0;
     double time = 0.0;
 
-    vector<int> visitedCities;
-    for (int city : tour) {
+    int visited_len = 0;
+    for (int i=0; i<tour_size; i++) {
+        int city = tour[i];
         bool hasPicked = false;
-        for (int item : itemsAtCity[city]) {
-            if (packing.picked[item]) {
+        for (int k = 0; k < numItemsAtCity[city]; k++) {
+            int item = itemsAtCityArr[city][k];
+            if (packing.picked.test(item)) {
                 hasPicked = true;
                 break;
             }
         }
         if (hasPicked)
-            visitedCities.push_back(city);
+            visitedCitiesArr[visited_len++] = city;
     }
 
-    vector<int> path;
-    path.push_back(tour.front());
-    for (int c : visitedCities)
-        path.push_back(c);
-    if (path.back() != tour.back())
-        path.push_back(tour.back());
+    int path_len = 0;
+    pathArr[path_len++] = tour[0];
+    for (int i=0; i<visited_len; i++)
+        pathArr[path_len++] = visitedCitiesArr[i];
+    if (pathArr[path_len - 1] != tour[tour_size - 1])
+        pathArr[path_len++] = tour[tour_size - 1];
 
-    vector<bool> alreadyPicked(nItems, false);
+    for (int i=0; i<nItems; i++) alreadyPicked[i] = false;
 
-    for (size_t i = 0; i + 1 < path.size(); i++) {
-        int city = path[i];
+    for (int i = 0; i + 1 < path_len; i++) {
+        int city = pathArr[i];
 
-        for (int item : itemsAtCity[city]) {
-            if (!packing.picked[item]) continue;
+        for (int k = 0; k < numItemsAtCity[city]; k++) {
+            int item = itemsAtCityArr[city][k];
+            if (!packing.picked.test(item)) continue;
             if (alreadyPicked[item]) continue;
             alreadyPicked[item] = true;
 
@@ -45,7 +51,7 @@ double computeTime(const vector<int>& tour, Packing& packing) {
         if (speed < minSpeed)
             speed = minSpeed;
 
-        time += distance(city, path[i + 1]) / speed;
+        time += distance(city, pathArr[i + 1]) / speed;
     }
 
     return time;
@@ -59,21 +65,21 @@ struct ItemNode {
     }
 };
 
-Packing packIterative(const vector<int>& tour) {
+Packing packIterative(const int* tour, int tour_size) {
     Packing cur;
-    cur.picked.assign(nItems, false);
+    cur.picked.reset();
     cur.totalWeight = 0;
     cur.totalProfit = 0;
 
     priority_queue<ItemNode> pq;
 
-    double baseTime = computeTime(tour, cur);
+    double baseTime = computeTime(tour, tour_size, cur);
 
     for (int i = 0; i < nItems; i++) {
         if (cur.totalWeight + items[i].weight > capacity) continue;
-        cur.picked[i] = true;
-        double newTime = computeTime(tour, cur);
-        cur.picked[i] = false;
+        cur.picked.set(i);
+        double newTime = computeTime(tour, tour_size, cur);
+        cur.picked.reset(i);
 
         double delta_t = newTime - baseTime;
         if (delta_t > 0 && newTime <= maxTime) {
@@ -86,12 +92,12 @@ Packing packIterative(const vector<int>& tour) {
         ItemNode top = pq.top();
         pq.pop();
 
-        if (cur.picked[top.item_idx]) continue;
+        if (cur.picked.test(top.item_idx)) continue;
         if (cur.totalWeight + items[top.item_idx].weight > capacity) continue;
 
-        cur.picked[top.item_idx] = true;
-        double newTime = computeTime(tour, cur);
-        cur.picked[top.item_idx] = false;
+        cur.picked.set(top.item_idx);
+        double newTime = computeTime(tour, tour_size, cur);
+        cur.picked.reset(top.item_idx);
 
         double delta_t = newTime - baseTime;
         if (delta_t <= 0 || newTime > maxTime) continue;
@@ -106,17 +112,18 @@ Packing packIterative(const vector<int>& tour) {
         }
 
         if (is_best) {
-            cur.picked[top.item_idx] = true;
+            cur.picked.set(top.item_idx);
             cur.totalWeight += items[top.item_idx].weight;
             cur.totalProfit += items[top.item_idx].profit;
             baseTime = newTime;
 
             int city = items[top.item_idx].city;
-            for (int other_item : itemsAtCity[city]) {
-                if (!cur.picked[other_item] && cur.totalWeight + items[other_item].weight <= capacity) {
-                    cur.picked[other_item] = true;
-                    double nt = computeTime(tour, cur);
-                    cur.picked[other_item] = false;
+            for (int k = 0; k < numItemsAtCity[city]; k++) {
+                int other_item = itemsAtCityArr[city][k];
+                if (!cur.picked.test(other_item) && cur.totalWeight + items[other_item].weight <= capacity) {
+                    cur.picked.set(other_item);
+                    double nt = computeTime(tour, tour_size, cur);
+                    cur.picked.reset(other_item);
                     double dt = nt - baseTime;
                     if (dt > 0 && nt <= maxTime) {
                         pq.push({other_item, (double)items[other_item].profit / dt});
@@ -130,3 +137,4 @@ Packing packIterative(const vector<int>& tour) {
 
     return cur;
 }
+

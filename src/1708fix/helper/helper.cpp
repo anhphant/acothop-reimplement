@@ -6,8 +6,8 @@ mt19937 rng(seed);
 uniform_real_distribution<double> rand_prob(0.0, 1.0);
 chrono::steady_clock::time_point start_time = chrono::steady_clock::now();
 
-const long double INF = numeric_limits<long double>::infinity();
-const long double epsilon = 1e-10;
+const double INF = numeric_limits<double>::infinity();
+const double epsilon = 1e-10;
 
 
 

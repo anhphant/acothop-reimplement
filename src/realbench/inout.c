@@ -157,9 +157,7 @@ void init_program(long int argc, char * argv[])
 
     if (!log_flag) {
         sprintf(temp_buffer, "%s.log", output_name_buf);
-        /* Redirect stderr into <output>.log so ALL fprintf(stderr, ...)
-           (e.g. PACKLOG in thop.c) land in the log file, not the terminal. */
-        log_file = freopen(temp_buffer, "w", stderr);
+        log_file = fopen(temp_buffer, "w");
     } else {
         log_file = NULL;
     }
@@ -238,7 +236,7 @@ void init_try( long int ntry )
     if ( mmas_flag ) {
         trail_max = 1. / ( (rho) * nn_tour() );
         trail_min = trail_max / ( 2. * instance.n );
-        fprintf(stderr, "PHEROMONE|trail_0=%.15e\n", trail_max);
+
         init_pheromone_trails( trail_max );
     }
     if ( acs_flag ) {
@@ -308,7 +306,7 @@ void read_thop_instance(const char *input_file_name, struct point **nodeptr, str
     else if (strcmp("ATT", buf) == 0) distance = att_distance;
     fgets(buf, LINE_BUF_LEN, input_file); /* NODE_COORD_SECTION  (INDEX, X, Y): */
 
-    if (( * nodeptr = (point *) malloc(sizeof(struct point) * (instance.n))) == NULL)
+    if (( * nodeptr = (struct point *) malloc(sizeof(struct point) * (instance.n))) == NULL)
         exit(EXIT_FAILURE);
     else {
         for (i = 0; i < instance.n - 1; i++) {
@@ -319,7 +317,7 @@ void read_thop_instance(const char *input_file_name, struct point **nodeptr, str
 
     fgets(buf, LINE_BUF_LEN, input_file); /* ITEMS SECTION    (INDEX, PROFIT, WEIGHT, ASSIGNED NODE NUMBER): */
 
-    if (( * itemptr = (item *) malloc(sizeof(struct item) * instance.m)) == NULL)
+    if (( * itemptr = (struct item *) malloc(sizeof(struct item) * instance.m)) == NULL)
         exit(EXIT_FAILURE);
     else {
         for (i = 0; i < instance.m; i++) {

@@ -1,42 +1,18 @@
-## irace scenario file for not-simple-2
-
-## Path to the target-runner script (called for each configuration evaluation)
+## irace scenario ? alpha3 + alpha4 tuning for dsj1000 usw instances
 targetRunner = "target-runner.bat"
-
-## Parameter space definition
 parameterFile = "parameters.txt"
-
-## Training instance list (one file path per line)
 trainInstancesFile = "instances.txt"
-
-## How many experiments irace can run in total
-## Each experiment = 1 algorithm run on 1 instance
-## Budget: 1000 runs * ~30s each = ~8h wall time
-maxExperiments = 1000
-
-## irace RNG seed
-seed = 1234567
-
-## Time limit per run (seconds) — must match --time-limit in target-runner
-## Set to NA to use maxExperiments budget only
-maxTime = 998
-
-## Minimum number of experiments before any elimination
-# minNbSurvival = 2
-
-## Number of parallel processes (set to number of CPU cores for speed)
-## WARNING: set to 1 if your machine is memory-constrained (the exe uses large static arrays)
-
-## Log file
 logFile = "irace.Rdata"
 
-## Show progress
+## Budget: 6 instances * 60s/run / 4 cores = ~90min wall time
+## irace needs >= 5 * nParams * nInstances experiments to race properly
+## nParams=2, nInstances=6 => ~60 minimum => 500 gives good coverage
+maxExperiments = 500
+maxTime = NA
 
-## irace uses RACE (statistical test) to eliminate bad configurations
-## Default: t-test with confidence 0.05
-# testType = "t-test"
-# confidence = 0.95
+## Seed
+seed = 1234567
 
-
-parallel = 4          # Số lượng luồng (cores) muốn sử dụng (ví dụ: 4 luồng)
-loadBalancing = 1     # Bật tính năng cân bằng tải (khuyên dùng để tận dụng tối ưu CPU)
+## Parallel workers (adjust to your CPU cores)
+parallel = 6
+loadBalancing = 1

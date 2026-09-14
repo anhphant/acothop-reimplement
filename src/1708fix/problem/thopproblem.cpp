@@ -1,14 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+const int MAX_CITIES = 10005;
+const int MAX_ITEMS = 100005;
 class Parameter {
 public:
-    long double alpha1 = 1.0L;
-    long double alpha2 = 1.0L;
-    long double alpha3 = 1.0L;
-    long double alpha4 = 1.0L;
-    long double rho = 0.1L;
-    long double delta = 1.0L;
+    double alpha1 = 1.0L;
+    double alpha2 = 1.0L;
+    double alpha3 = 1.0L;
+    double alpha4 = 1.0L;
+    double rho = 0.1L;
+    double delta = 1.0L;
     bool flag_online_step_by_step_pheromone_update = false;
     bool flag_online_delayed_pheromone_update = false;
     string inputfile = "";
@@ -17,7 +19,7 @@ public:
     int number_of_packing = 0;
     int ptries = 1;
     int local_search_flag = 0; // 0: no local search   1: 2-opt   2: 2.5-opt   3: 3-opt
-    long double time_limit = 100.0L;
+    double time_limit = 100.0L;
     int seed = 1910;
     string logfile = "";
     bool adaptive_heuristic = false;
@@ -33,29 +35,19 @@ string name, knapsackType, edgeWeightType;
 long nCities = 0, nItems = 0, capacity = 0;
 double maxTime = 0, minSpeed = 0, maxSpeed = 0;
 
-vector<Point> nodes;
-vector<Item> items;
+Point nodes[MAX_CITIES];
+Item items[MAX_ITEMS];
 
-long double distance(Point i, Point j) {
-    double xd = i.x - j.x;
-    double yd = i.y - j.y;
-    double r = sqrt(xd * xd + yd * yd);
-    
-    if (edgeWeightType == "CEIL_2D" || edgeWeightType.find("CEIL_2D") != string::npos) {
-        return ceil(r);
-    }
-    // Default to EUC_2D
+double distance(Point i, Point j) {
+    double r = ceil(sqrt(pow((double)i.x - j.x, 2) + pow((double)i.y - j.y, 2)));
     return r;
 }
 
-vector<vector<long double>> dist_memo;
+double dist_memo[MAX_CITIES][MAX_CITIES];
 
-long double distance(int i, int j) {
-    if (dist_memo.empty()) {
-        dist_memo.assign(nodes.size(), vector<long double>(nodes.size(), -1.0));
-    }
+double distance(int i, int j) {
     if (dist_memo[i][j] < 0) {
-        long double d = distance(nodes[i], nodes[j]);
+        double d = distance(nodes[i], nodes[j]);
         dist_memo[i][j] = d;
         dist_memo[j][i] = d;
         return d;
@@ -93,8 +85,8 @@ bool readData(const string& path) {
 
     skip();                      // NODE_COORD_SECTION
 
-    nodes.resize(nCities);
-    for (auto& p : nodes) {
+    for (int i = 0; i < nCities; ++i) {
+        Point& p = nodes[i];
         fin >> p.id >> p.x >> p.y;
         p.id--;
     }
@@ -102,8 +94,8 @@ bool readData(const string& path) {
     fin.ignore(256, '\n');
     skip();                      // ITEMS SECTION
 
-    items.resize(nItems);
-    for (auto& item : items) {
+    for (int i = 0; i < nItems; ++i) {
+        Item& item = items[i];
         fin >> item.id >> item.profit >> item.weight >> item.city;
         item.id--;
         item.city--;
@@ -111,11 +103,19 @@ bool readData(const string& path) {
         nodes[item.city].totalProfit += item.profit;
     }
 
+    fin.close();
+
+    for (int i = 0; i < nCities; ++i) {
+        for (int j = 0; j < nCities; ++j) {
+            dist_memo[i][j] = -1.0;
+        }
+    }
+
     log_debug("thopproblem: read header -> cities=", nCities,
          ", items=", nItems, ", capacity=", capacity,
          ", maxTime=", maxTime);
-    log_debug("thopproblem: loaded ", nodes.size(), " nodes and ",
-         items.size(), " items");
+    log_debug("thopproblem: loaded ", nCities, " nodes and ",
+         nItems, " items");
     log_debug("thopproblem: Node 0 -> id: ", nodes[0].id, " x: ", nodes[0].x, " y: ", nodes[0].y);
     log_debug("thopproblem: Node 999 -> id: ", nodes[999].id, " x: ", nodes[999].x, " y: ", nodes[999].y);
     return true;

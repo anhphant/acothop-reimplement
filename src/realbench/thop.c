@@ -298,13 +298,7 @@ long int compute_fitness( long int *t, char *visited, long int t_size, char *p )
         total_distance += instance.distance[t[i]][t[i+1]];
     }
 
-    /* PACKLOG (identical format to not-simple-2/packing.cpp pack()) */
-    static long int pack_log_call = 0; ++pack_log_call;
-    fprintf(stderr, "PACKLOG|call=%ld|tour_len=%ld|end_dist=%.0f\n",
-            pack_log_call, t_size - 2, (double)distance_accumulated[instance.n - 2]);
-    fprintf(stderr, "PACKLOG|tour|");
-    for ( i = 0 ; i < t_size - 2 ; i++ ) fprintf(stderr, "%ld,", t[i]);
-    fprintf(stderr, "\n");
+
 
     double *item_vector = (double *) malloc(instance.m * sizeof(double));
     double *help_vector = (double *) malloc(instance.m * sizeof(double));
@@ -330,8 +324,7 @@ long int compute_fitness( long int *t, char *visited, long int t_size, char *p )
         par_sum = (par_a + par_b + par_c);
         par_a /= par_sum; par_b /= par_sum; par_c /= par_sum;
 
-        fprintf(stderr, "PACKLOG|try=%ld|th=%.9f|de=%.9f|ga=%.9f\n",
-                _try, par_a, par_b, par_c);
+
 
         l = 0;
 
@@ -387,8 +380,7 @@ long int compute_fitness( long int *t, char *visited, long int t_size, char *p )
             }
         }
         
-        fprintf(stderr, "PACKLOG|try=%ld|profit=%ld|weight=%ld\n",
-                _try, total_profit, total_weight);
+
 
         if ( total_profit > best_packing_plan_profit) {
             best_packing_plan_profit = total_profit;
@@ -398,13 +390,7 @@ long int compute_fitness( long int *t, char *visited, long int t_size, char *p )
         }
     }
 
-    {
-        long int best_weight = 0;
-        for ( j = 0 ; j < instance.m ; j++ )
-            if ( p[j] ) best_weight += instance.itemptr[j].weight;
-        fprintf(stderr, "PACKLOG|best|profit=%ld|weight=%ld\n",
-                best_packing_plan_profit, best_weight);
-    }
+
     
     free(distance_accumulated);
     free(item_vector);

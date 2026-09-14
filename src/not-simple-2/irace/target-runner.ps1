@@ -1,15 +1,14 @@
-# target-runner.ps1 — called by irace for each configuration evaluation
-# Args: <config_id> <instance_id> <seed> <instance> [<bound>] --param1 val1 ...
-# Stdout: single number (cost to MINIMIZE) = -profit
+﻿# target-runner.ps1 ? irace calls this for each candidate configuration
+# Args from irace: <config_id> <instance_id> <seed> <instance_path> [--param val ...]
 
 $EXE = Join-Path $PSScriptRoot "..\main.exe"
-$TIME_LIMIT = 30
+$TIME_LIMIT = 998        # 60s per evaluation ? enough signal, not too slow
 
 $seed     = [int]$args[2]
 $instance = [string]$args[3]
 
+# Parse irace args (only alpha3 and alpha4 will be passed)
 $rest = if ($args.Count -gt 4) { $args[4..($args.Count - 1)] } else { @() }
-
 $named = @{}
 $i = 0
 while ($i -lt $rest.Count) {
@@ -20,23 +19,25 @@ while ($i -lt $rest.Count) {
         } else { $i++ }
     } else { $i++ }
 }
-
 function Lookup-Param([string]$k, [string]$d) {
     if ($named.ContainsKey($k)) { return $named[$k] } else { return $d }
 }
 
-$alpha1 = Lookup-Param 'alpha1' '1.0'
-$alpha2 = Lookup-Param 'alpha2' '2.0'
+# === Parameters tuned by irace ===
 $alpha3 = Lookup-Param 'alpha3' '1.0'
-$alpha4 = Lookup-Param 'alpha4' '0.001'
-$eps1   = Lookup-Param 'eps1'   '1.0'
-$eps2   = Lookup-Param 'eps2'   '1.0'
-$rho    = Lookup-Param 'rho'    '0.39'
-$ants   = Lookup-Param 'ants'   '100'
-$ptries = Lookup-Param 'ptries' '2'
-$ls     = Lookup-Param 'ls'     '0'
+$alpha4 = Lookup-Param 'alpha4' '1.0'
 
-$tmpOut = [System.IO.Path]::GetTempFileName()
+# === Fixed parameters (from realbench best config on dsj1000) ===
+$alpha1 = '4.04'       # pheromone importance
+$alpha2 = '7.82'       # distance heuristic
+$eps1   = '0.0001'     # distance smoothing (matches compare_solvers.py)
+$eps2   = '0.0001'     # weight smoothing   (matches compare_solvers.py)
+$rho    = '0.39'       # evaporation rate
+$ants   = '500'        # number of ants
+$ptries = '2'          # packing tries
+$ls     = '1'          # 2-opt local search
+
+$tmpOut = [System.IO.Path]::GetTempFileName() + ".sol"
 
 $argList = @(
     $instance,

@@ -47,7 +47,7 @@ if (-not $compiler) {
 Push-Location $scriptDir
 try {
     Write-Host "Compiling $sourceFile..."
-    & $compiler.Source -std=c++17 -O2 $sourceFile -o $exeFile
+    & $compiler.Source -std=c++17 -O3 -march=native $sourceFile -o $exeFile
     if ($LASTEXITCODE -ne 0) {
         throw "Compilation failed."
     }

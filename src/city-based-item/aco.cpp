@@ -41,20 +41,10 @@ struct State {
     long double solution_cost() {
         vector<int> tour;
         for (auto c : sequence) tour.push_back(c.id);
-        Packing p1 = pack(tour);
-        double f1 = computeFitness(tour, p1);
-        
-        vector<int> rev_tour = tour;
-        reverse(rev_tour.begin() + 1, rev_tour.end() - 1);
-        Packing p2 = pack(rev_tour);
-        double f2 = computeFitness(rev_tour, p2);
-        
-        if (f2 > f1) {
-            // Keep the reversed sequence if it's better
-            reverse(sequence.begin() + 1, sequence.end() - 1);
-            return f2;
-        }
-        return f1;
+        Packing p = pack(tour);
+        double f = computeFitness(tour, p);
+
+        return f;
     }
     void restart() {
         sequence.resize(0);

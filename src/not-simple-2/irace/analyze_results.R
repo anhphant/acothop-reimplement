@@ -1,4 +1,5 @@
-## analyze_results.R — Run after irace to view best configurations
+﻿## analyze_results.R — Run after irace to view best configurations
+## Usage: Rscript analyze_results.R   (from irace/ folder)
 library(irace)
 
 load("irace.Rdata")
@@ -10,9 +11,18 @@ cat("\n=== BEST CONFIGURATION (top 1) ===\n")
 best <- getFinalElites(iraceResults)[1,]
 print(best)
 
-cat("\n=== PARAMETER VALUES FOR run.ps1 ===\n")
+cat("\n=== GIA TRI DE DUNG TRONG run.ps1 ===\n")
 cat(sprintf(
-  "-Alpha1 %.4f -Alpha2 %.4f -Alpha3 %.4f -Alpha4 %.4f -Eps1 %.4f -Eps2 %.4f -Rho %.4f -Ants %d -PTries %d -LocalSearch %s\n",
-  best$alpha1, best$alpha2, best$alpha3, best$alpha4,
-  best$eps1, best$eps2, best$rho, best$ants, best$ptries, best$ls
+  "-Alpha3 %.4f -Alpha4 %.4f\n",
+  best$alpha3, best$alpha4
 ))
+
+cat("\n=== LENH DAY DU (copy-paste vao PowerShell) ===\n")
+cat(sprintf(paste0(
+  ".\\run.ps1 ..\\..\\instances\\dsj1000-thop\\dsj1000_10_usw_10_03.thop `\n",
+  "  -Ants 500 -TimeLimit 998 -LocalSearch 1 `\n",
+  "  -alpha1 4.04 -alpha2 7.82 `\n",
+  "  -alpha3 %.4f -alpha4 %.4f `\n",
+  "  -eps1 0.1 -eps2 0.1 -Rho 0.39 `\n",
+  "  -Seed 642580 -OutputFile out.sol -LogFile run.log -PTries 2 -LogEnabled 0\n"
+), best$alpha3, best$alpha4))
