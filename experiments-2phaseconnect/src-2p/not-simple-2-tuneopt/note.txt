@@ -1,0 +1,4 @@
+>> .\run.ps1 ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop `
+>>   -Ants 407 -TimeLimit 998 -alpha1 1.7568 -alpha2 5.1299 -alpha3 1.3617 -alpha4 0.2531 -eps1 125.8501 -eps2 24948.57 -Rho 0.1468 -LocalSearch 1 `
+>>   -Seed 269070 -OutputFile out.sol -LogFile run.log -PTries 3 -LogEnabled 0
+Best objective: 4712002.0000000000

@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param(
     [Parameter(Position = 0)]
     [string]$InputFile = "..\..\instances\d2103-thop\d2103_01_bsc_01_01.thop",
@@ -7,12 +7,14 @@ param(
     [int]$LocalSearch = 0,
     [double]$Alpha1 = 1.0,
     [double]$Alpha2 = 2.0,
-    [double]$Alpha3 = 1.0,
-    [double]$Alpha4 = 0.001,
-    [double]$Eps1 = 1.0,
-    [double]$Eps2 = 1.0,
+    [double]$Alpha3 = 0.0,
+    [double]$Alpha4 = 0.0,
+    [double]$Eps1 = 0.1,
+    [double]$Eps2 = 0.1,
     [double]$Alpha = -1,
     [double]$Beta  = -1,
+    [int]$NnAnts = 20,
+    [int]$NnLs = 20,
     [double]$Rho = 0.39,
     [double]$Delta = 1.0,
     [int]$Seed = 1910,
@@ -62,6 +64,8 @@ try {
         "--seed",           $Seed,
         "--output",         $OutputFile,
         "--ptries",         $PTries,
+        "--nnants",         $NnAnts,
+        "--nnls",           $NnLs,
         "--step-online",    $StepOnline,
         "--delayed-online", $DelayedOnline
     )

@@ -1,0 +1,104 @@
+Tiến độ  | Instance                 | Seed     | (a, b)     | not-simple-2     | realbench        | Winner          
+--------------------------------------------------------------------------------------------------------------------
+[1/18]   | dsj1000_10_usw_10_03.thop | 226489   | (4.04,7.82)     | 4705490.00 (901.1s) | 4743901.00 (900.6s) | realbench (+)   
+[2/18]   | dsj1000_10_usw_10_03.thop | 126489   | (4.04,7.82)     | 4751951.00 (901.1s) | 4738594.00 (900.4s) | not-simple-2 (+)
+[3/18]   | dsj1000_10_usw_10_03.thop | 126489   | (1.0,2.0)     | 4695572.00 (901.0s) | 4711852.00 (900.7s) | realbench (+)   
+[4/18]   | dsj1000_10_usw_10_03.thop | 326489   | (4.04,7.82)     | 4725964.00 (901.0s) | 4744792.00 (900.7s) | realbench (+)   
+[5/18]   | dsj1000_10_usw_10_03.thop | 226489   | (1.0,2.0)     | 4692520.00 (900.9s) | 4684258.00 (900.4s) | not-simple-2 (+)
+[6/18]   | dsj1000_10_usw_10_03.thop | 326489   | (1.0,2.0)     | 4680753.00 (901.0s) | 4686604.00 (901.8s) | realbench (+)   
+[7/18]   | dsj1000_01_bsc_01_01.thop | 126489   | (4.04,7.82)     | 126204.00 (901.0s) | 144042.00 (900.7s) | realbench (+)   
+[8/18]   | dsj1000_01_bsc_01_01.thop | 226489   | (4.04,7.82)     | 115625.00 (900.9s) | 142501.00 (900.5s) | realbench (+)   
+
+python tune_optuna.py
+     8    0.0000    4.5569        4041089        4041089  00:30:22 << BEST
+     9    0.0000    8.6725        4021242        4041089  00:30:28
+    10    0.0000    7.9665        4028732        4041089  00:30:31
+    11    0.0000   10.0000        4028525        4041089  00:30:46
+alpha3 = 0 => best
+
+======================================================================
+  KET QUA
+======================================================================
+  Best trial   : #11
+  alpha3       : 0.0  (fixed)
+  alpha4       : 0.795394
+  Mean profit  : 4054416  (avg 6 runs)
+  Wall time    : 31.1 min
+  .\run.ps1 ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop `
+    -Ants 500 -TimeLimit 998 -LocalSearch 1 `
+    -Alpha1 4.04 -Alpha2 7.82 `
+    -Alpha3 0.000000 -Alpha4 0.795394 `
+    -Eps1 0.0001 -Eps2 0.0001 -Rho 0.39 `
+    -Seed 642580 -OutputFile out.sol -LogEnabled 0 -PTries 2
+======================================================================
+
+
+opt2:
+S D:\PhD\THOP-TTP\acothop-reconstructed\src\not-simple-2-opt2> .\main.exe ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop `
+>>     --ants 500 --time-limit 998 --local-search 1 `
+>>     --alpha1 2.0 --alpha2 2.04 `
+>>     --beta1 7.82 --beta2 0.795394 `
+>>     --sigma1 0.5 --sigma2 0.15 `
+>>     --cnt1 2 --cnt2 2 `
+>>     --eps1 0.0001 --eps2 0.0001 --rho 0.39 --delta 1 `
+>>     --seed 642580 --output out.sol --step-online 0 --delayed-online 0 --ptries 2
+[0.055s] aco: generation 1 start
+[13.631s] aco: new best solution found with cost 4.60178e+06 and 953 components
+[178.388s] aco: generation 12 start
+[210.577s] aco: new best solution found with cost 4.73826e+06 and 984 components
+[455.792s] aco: generation 20 start
+[501.572s] aco: new best solution found with cost 4.74608e+06 and 982 components
+[592.697s] aco: generation 23 start
+[638.123s] aco: new best solution found with cost 4.74612e+06 and 982 components
+[638.212s] aco: generation 24 start
+[685.573s] aco: generation 25 start
+[733.127s] aco: generation 26 start
+[779.410s] aco: generation 27 start
+[828.220s] aco: generation 28 start
+[865.301s] aco: generation 29 start
+[902.158s] aco: generation 30 start
+[940.063s] aco: generation 31 start
+[983.707s] aco: generation 32 start
+[1005.907s] aco: stopping after 33 generations
+
+ .\run.ps1 ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop `
+>>     -Ants 500 -TimeLimit 998 -LocalSearch 1 `
+>>     -Alpha1 4.04 -Alpha2 7.82 `
+>>     -Alpha3 0.000000 -Alpha4 0.795394 `
+>>     -Eps1 0.0001 -Eps2 0.0001 -Rho 0.39 `
+>>     -Seed 642580 -OutputFile out.sol -LogEnabled 0 -PTries 2
+[932.046s] aco: new best solution found with cost 4.75994e+06 and 992 components
+
+(base) PS D:\PhD\THOP-TTP\acothop-reconstructed\src\not-simple-2-opt2> .\main.exe ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop ` 
+>>     --ants 500 --time-limit 998 --local-search 1 `
+>>     --alpha1 1.5 --alpha2 1.8 `        
+>>     --beta1 8.5 --beta2 0.795394 `       sol
+>>     --sigma1 0.25 --sigma2 0.15 `                           2> 
+>>     --cnt1 3 --cnt2 1 `                                     
+>>     --eps1 0.0001 --eps2 0.0001 --rho 0.39 --delta 1 `                          
+>>     --seed 642580 --output out.sol --step-online 0 --delayed-online 0 --ptries 2
+[0.072s] aco: generation 1 start
+[12.731s] aco: new best solution found with cost 4.60891e+06 and 980 components
+Best objective: 4725045.0000000000
+
+PS D:\PhD\THOP-TTP\acothop-reconstructed\src\not-simple-2-opt2> .\main.exe ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop `
+>>     --ants 500 --time-limit 998 --local-search 1 `
+>>     --alpha1 1.0 --alpha2 1.0 `
+>>     --beta1 2.0 --beta2 3.0 `
+>>     --sigma1 0.5 --sigma2 1.0 `
+>>     --cnt1 1 --cnt2 3 `
+>>     --eps1 0.0001 --eps2 0.0001 --rho 0.1 --delta 1 `
+>>     --seed 642580 --output out_more_components.sol --step-online 0 --delayed-online 0 --ptries 2
+[0.008s] aco: generation 1 start
+[9.324s] aco: new best solution found with cost 4.49463e+06 and 933 components
+Best objective: 4707833.0000000000
+
+PS D:\PhD\THOP-TTP\acothop-reconstructed\src\not-simple-2-opt2> .\main.exe ..\..\instances\dsj1000-thop\dsj1000_10_usw_10_03.thop `
+>>     --ants 500 --time-limit 998 --local-search 1 `
+>>     --alpha1 2.0 --alpha2 2.04 `
+>>     --beta1 7.82 --beta2 3.0 `
+>>     --sigma1 0.5 --sigma2 0.3 ` 
+>>     --cnt1 2 --cnt2 4 `
+>>     --eps1 0.0001 --eps2 0.0001 --rho 0.39 --delta 1 `
+>>     --seed 642580 --output out.sol --step-online 0 --delayed-online 0 --ptries 2     
+[451.280s] aco: new best solution found with cost 4.77216e+06 and 988 components

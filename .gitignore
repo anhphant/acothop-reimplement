@@ -1,0 +1,40 @@
+# Build & runtime artifacts
+*.exe
+*.log
+*.db
+*.o
+*.obj
+*.zip
+*.sol
+*.Rdata
+*.out
+*.stdout
+__pycache__/
+.ipynb_checkpoints/
+
+# Benchmark reference-solver artifacts
+log_*.txt
+target-runner
+ils_thop
+brkga_thop
+
+# Old experiment directories (deleted in restructure step B6; kept out of git until then)
+EA/
+ESACO-experiment/
+change-score-top-K/
+change-score-top-K-fibo/
+change-score-top-K-stratified/
+exp-2phaseconnect/
+exp-2phaseconnect-ssh/
+experiment_setup_a280/
+multi-pheromone/
+multi-pheromone-notoptpack/
+original/
+original-2phaseconnect/
+original-2phaseconnect - Copy/
+original-2phaseconnect-opt2/
+original-fibo/
+original-fibofull/
+
+# Local backup (outside this repo, but belt-and-suspenders)
+/acothop_backup_20261026/

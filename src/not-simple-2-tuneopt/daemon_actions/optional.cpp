@@ -99,13 +99,27 @@ public:
         if (iter_best_ant == nullptr) return;
 
         // best-so-far
-        if (!has_best_solution || iter_best_cost > best_cost) {
+        bool is_new_best = (!has_best_solution || iter_best_cost > best_cost);
+        if (is_new_best) {
             best_cost = iter_best_cost;
             best_solution = iter_best_ant->state;
             has_best_solution = true;
             restart_found_best = iteration;
-            log_debug("aco: new best solution found with cost ", iter_best_cost,
+            log_debug("aco: new best solution found with cost ", (long int)best_cost,
                  " and ", best_solution.sequenceSize, " components");
+        } else {
+            log_debug("aco: generation ", iteration,
+                 " iter_best with cost ", (long int)iter_best_cost,
+                 " and ", iter_best_ant->state.sequenceSize,
+                 " components, best_so_far = ", (long int)best_cost);
+        }
+        printf("best %10ld,        iteration: %10ld,        time %10.2f\n",
+               (long int)best_cost, (long int)iteration, elapsed_time());
+        fflush(stdout);
+        if (log_report_file) {
+            fprintf(log_report_file, "best %10ld,        iteration: %10ld,        time %10.2f\n",
+                    (long int)best_cost, (long int)iteration, elapsed_time());
+            fflush(log_report_file);
         }
 
         // restart-best

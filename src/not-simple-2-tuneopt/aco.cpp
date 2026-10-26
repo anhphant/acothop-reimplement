@@ -121,7 +121,9 @@ void ACOinit() {
     componentList[nCities].y = 0;
 
     // Initialize k-nearest neighbors for local search
-    NN_ANTS = min(MAX_ANTS, n - 1);
+    NN_ANTS = min(params.nn_ants, n - 1);
+    nn_ants = NN_ANTS;
+    nn_ls = min(params.nn_ls, n - 1);
     auto swap2 = [](long int* v, long int* v2, long int i, long int j) {
         long int tmp = v[i]; v[i] = v[j]; v[j] = tmp;
         tmp = v2[i]; v2[i] = v2[j]; v2[j] = tmp;

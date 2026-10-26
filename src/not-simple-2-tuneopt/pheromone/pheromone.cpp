@@ -38,12 +38,12 @@ public:
                 if (i == j) { heuristic[i][j] = 0.0; continue; }
                 double d = connections.distance(componentList[i], componentList[j]);
                 long int rounded_d = (long int)(d + 0.5);
-                double w        = city_weight_topk[j];    // top-K by p/w ratio
-                double d_profit = city_profit_topk[j];    // top-K by p/w ratio
-                double profit_factor = (d_profit > 0.0) ? pow(d_profit, params.alpha4) : 1.0;
-                heuristic[i][j] = pow(1.0 / (rounded_d + params.eps1), params.alpha2) *
-                                   pow(1.0 / (w + params.eps2), params.alpha3) *
-                                   profit_factor;
+                double w = city_weight_topk[j];
+                double d_profit = city_profit_topk[j];
+                double profit_factor = (params.alpha4 > 0.0 && d_profit > 0.0) ? pow(d_profit, params.alpha4) : 1.0;
+                double weight_factor = (params.alpha3 > 0.0) ? pow(1.0 / (w + params.eps2), params.alpha3) : 1.0;
+                heuristic[i][j] = pow(1.0 / ((double)rounded_d + params.eps1), params.alpha2) *
+                                  weight_factor * profit_factor;
             }
         }
     }

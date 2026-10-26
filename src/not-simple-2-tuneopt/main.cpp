@@ -8,54 +8,80 @@ using namespace std;
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         log_debug("Usage: ", argv[0],
-             " <input> --ants N --time-limit T --local-search N",
-             " --alpha1 A1 --alpha2 A2 --alpha3 A3 --alpha4 A4",
-             " --eps1 E1 --eps2 E2 --rho R --delta D",
-             " --seed S --output FILE [--log FILE] --ptries N",
-             " --step-online BOOL --delayed-online BOOL");
+             " <input> [--ants N] [--time-limit T] [--local-search N]",
+             " [--alpha A] [--beta B] [--rho R] [--delta D]",
+             " [--seed S] [--output FILE] [--log FILE] [--ptries N]",
+             " [--nnants N] [--nnls N]");
         return 1;
     }
 
     Parameter p;
-    p.inputfile = argv[1];
+    p.number_of_ants = 500;
+    p.time_limit = 100.0;
+    p.local_search_flag = 1;
+    p.alpha1 = 1.0;
+    p.alpha2 = 1.0;
+    p.alpha3 = 0.0;
+    p.alpha4 = 0.0;
+    p.eps1 = 0.1;
+    p.eps2 = 0.1;
+    p.rho = 0.1;
+    p.delta = 1.0;
+    p.seed = 1910;
+    p.ptries = 1;
+    p.nn_ants = 20;
+    p.nn_ls = 20;
 
-    bool ants = false, time = false, ls = false;
-    bool alpha1 = false, alpha2 = false, alpha3 = false, alpha4 = false;
-    bool eps1 = false, eps2 = false;
-    bool rho = false, delta = false;
-    bool seed = false, output = false, log = false;
-    bool step = false, delayed = false;
+    int i = 1;
+    if (argc > 1 && argv[1][0] != '-') {
+        p.inputfile = argv[1];
+        i = 2;
+    }
 
-    for (int i = 2; i < argc; i += 2) {
-        if (i + 1 >= argc) {
-            log_debug("Missing value for ", argv[i]);
-            return 1;
-        }
-
+    for (; i < argc; i++) {
         string a = argv[i];
-        string v = argv[i + 1];
-
-        if      (a == "--ants")           p.number_of_ants = stoi(v), ants = true;
-        else if (a == "--time-limit")     p.time_limit = stold(v), time = true;
-        else if (a == "--local-search")   p.local_search_flag = stoi(v), ls = true;
-        else if (a == "--alpha1")         p.alpha1 = stold(v), alpha1 = true;
-        else if (a == "--alpha2")         p.alpha2 = stold(v), alpha2 = true;
-        else if (a == "--alpha3")         p.alpha3 = stold(v), alpha3 = true;
-        else if (a == "--alpha4")         p.alpha4 = stold(v), alpha4 = true;
-        else if (a == "--eps1")           p.eps1 = stold(v), eps1 = true;
-        else if (a == "--eps2")           p.eps2 = stold(v), eps2 = true;
-        else if (a == "--rho")            p.rho = stold(v), rho = true;
-        else if (a == "--delta")          p.delta = stold(v), delta = true;
-        else if (a == "--seed")           p.seed = stoi(v), seed = true;
-        else if (a == "--output")         p.outputfile = v, output = true;
-        else if (a == "--log")            p.logfile = v, log = true;
-        else if (a == "--ptries")         p.ptries = stoi(v);
-        else if (a == "--step-online")    p.flag_online_step_by_step_pheromone_update = stoi(v), step = true;
-        else if (a == "--delayed-online") p.flag_online_delayed_pheromone_update = stoi(v), delayed = true;
-        else {
+        string v = "";
+        if (i + 1 < argc && argv[i + 1][0] != '-') {
+            v = argv[++i];
+        }
+        if      (a == "--inputfile")                             p.inputfile = v;
+        else if (a == "--output" || a == "--outputfile")         p.outputfile = v;
+        else if (a == "--log" || a == "--logfile")               p.logfile = v;
+        else if (a == "--ants")                                  p.number_of_ants = stoi(v);
+        else if (a == "--time" || a == "--time-limit")           p.time_limit = stold(v);
+        else if (a == "--localsearch" || a == "--local-search")  p.local_search_flag = stoi(v);
+        else if (a == "--alpha" || a == "--alpha1")              p.alpha1 = stold(v);
+        else if (a == "--beta" || a == "--alpha2")               p.alpha2 = stold(v);
+        else if (a == "--alpha3")                                p.alpha3 = stold(v);
+        else if (a == "--alpha4")                                p.alpha4 = stold(v);
+        else if (a == "--eps1")                                  p.eps1 = stold(v);
+        else if (a == "--eps2")                                  p.eps2 = stold(v);
+        else if (a == "--rho")                                   p.rho = stold(v);
+        else if (a == "--delta")                                 p.delta = stold(v);
+        else if (a == "--seed")                                  p.seed = stoi(v);
+        else if (a == "--ptries")                                p.ptries = stoi(v);
+        else if (a == "--nnants")                                p.nn_ants = stoi(v);
+        else if (a == "--nnls")                                  p.nn_ls = stoi(v);
+        else if (a == "--step-online")                           p.flag_online_step_by_step_pheromone_update = stoi(v);
+        else if (a == "--delayed-online")                        p.flag_online_delayed_pheromone_update = stoi(v);
+        else if (a == "--tries" || a == "--tours" || a == "--optimum" ||
+                 a == "--q0" || a == "--elitistants" || a == "--rasranks" ||
+                 a == "--dlb" || a == "--mmas" || a == "--as" || a == "--eas" ||
+                 a == "--ras" || a == "--bwas" || a == "--acs") {
+            // benign flags from aco++, ignore
+        } else {
             log_debug("Unknown option: ", a);
             return 1;
         }
+    }
+
+    if (p.inputfile.empty()) {
+        log_debug("main: error: input file not specified.");
+        return 1;
+    }
+    if (p.ptries < 1) {
+        log_debug("main: error: ptries must be >= 1.");
+        return 1;
     }
 
     log_debug("main: parsed arguments");
@@ -69,41 +95,56 @@ int main(int argc, char* argv[]) {
          ", rho = ", p.rho, ", delta = ", p.delta);
     log_debug("main: seed = ", p.seed,
          ", output = ", p.outputfile,
-         ", log = ", (log ? p.logfile : string("(disabled)")));
-    log_debug("main: ptries = ", p.ptries);
-    log_debug("main: step-online = ", p.flag_online_step_by_step_pheromone_update,
-         ", delayed-online = ", p.flag_online_delayed_pheromone_update);
-
-    if (!(ants && time && ls && alpha1 && alpha2 && alpha3 && alpha4 &&
-          eps1 && eps2 && rho && delta &&
-          seed && output && step && delayed)) {
-        log_debug("main: error: all required parameters are missing or incomplete.");
-        return 1;
-    }
-
-    if (p.ptries < 1) {
-        log_debug("main: error: ptries must be >= 1.");
-        return 1;
-    }
-
-    log_debug("main: parameter validation passed; preparing solver initialization");
+         ", nnants = ", p.nn_ants, ", nnls = ", p.nn_ls);
 
     params = p;
     packParams.ptries = params.ptries;
 
-    if (log) {
-        // Redirect C stderr into the log file so BOTH log_debug (cerr) and
-        // fprintf(stderr, ...) (e.g. PACKLOG in packing.cpp) land in --log FILE.
+    if (!p.logfile.empty()) {
         if (freopen(p.logfile.c_str(), "w", stderr) == NULL) {
             log_debug("Cannot create/open log file: ", p.logfile);
             return 1;
         }
         log_debug("Log started");
-    } else {
-        log_debug("main: logging disabled");
     }
 
-    log_debug("main: parameter validation passed");
+    string report_filename = "";
+    if (!p.outputfile.empty()) {
+        report_filename = p.outputfile + ".log";
+    }
+    if (!report_filename.empty()) {
+        log_report_file = fopen(report_filename.c_str(), "w");
+        if (log_report_file) {
+            fprintf(log_report_file, "Parameter-settings: \n\n");
+            fprintf(log_report_file, "--inputfile          %s\n", p.inputfile.c_str());
+            fprintf(log_report_file, "--outputfile         %s\n", p.outputfile.c_str());
+            fprintf(log_report_file, "--tries              1\n");
+            fprintf(log_report_file, "--tours              0\n");
+            fprintf(log_report_file, "--ptries             %d\n", p.ptries);
+            fprintf(log_report_file, "--time               %.2f\n", p.time_limit);
+            fprintf(log_report_file, "--seed               %d\n", p.seed);
+            fprintf(log_report_file, "--optimum            1\n");
+            fprintf(log_report_file, "--ants               %d\n", p.number_of_ants);
+            fprintf(log_report_file, "--nnants             %d\n", p.nn_ants);
+            fprintf(log_report_file, "--alpha              %.2f\n", p.alpha1);
+            fprintf(log_report_file, "--beta               %.2f\n", p.alpha2);
+            fprintf(log_report_file, "--rho                %.2f\n", p.rho);
+            fprintf(log_report_file, "--q0                 0.00\n");
+            fprintf(log_report_file, "--elitistants        0\n");
+            fprintf(log_report_file, "--rasranks           0\n");
+            fprintf(log_report_file, "--localsearch        %d\n", p.local_search_flag);
+            fprintf(log_report_file, "--nnls               %d\n", p.nn_ls);
+            fprintf(log_report_file, "--dlb                1\n");
+            fprintf(log_report_file, "--as                 0\n");
+            fprintf(log_report_file, "--eas                0\n");
+            fprintf(log_report_file, "--ras                0\n");
+            fprintf(log_report_file, "--mmas               1\n");
+            fprintf(log_report_file, "--bwas               0\n");
+            fprintf(log_report_file, "--acs                0\n\n\n");
+            fprintf(log_report_file, "begin try 0 \n");
+            fflush(log_report_file);
+        }
+    }
 
     if (!readData(p.inputfile)) {
         log_debug("Cannot read: ", p.inputfile);
@@ -130,30 +171,39 @@ int main(int argc, char* argv[]) {
     // Initial total information (matches realbench init_try: compute_total_information).
     Pheromone.compute_total_information();
 
+    cout << "begin try 0 \n";
+    cout.flush();
+
     int iteration = 1;   // matches realbench init_try (iteration starts at 1)
     while(!termination_criterion()) {
         log_debug("aco: generation ", iteration, " start");
-                auto t1 = chrono::high_resolution_clock::now();
         Colony.ants_generation_and_activity();
-        auto t2 = chrono::high_resolution_clock::now();
         Optional.update_statistics(iteration);
         Pheromone.pheromone_evaporation();
-        auto t3 = chrono::high_resolution_clock::now();
         Optional.daemon_actions(iteration);
-        auto t4 = chrono::high_resolution_clock::now();
-        // cout << "Colony: " << chrono::duration_cast<chrono::milliseconds>(t2 - t1).count() << "ms" << endl;
-        // cout << "Update: " << chrono::duration_cast<chrono::milliseconds>(t3 - t2).count() << "ms" << endl;
-        // cout << "Daemon: " << chrono::duration_cast<chrono::milliseconds>(t4 - t3).count() << "ms" << endl;
         Optional.search_control_and_statistics(iteration);
         // Compute total for the next generation (matches realbench pheromone_trail_update).
         if (params.local_search_flag > 0)
             Pheromone.compute_nn_list_total_information();
         else
             Pheromone.compute_total_information();
-        ++iteration;
-        // 3 these activites needn't to be ordered
+        iteration++;
     }
     log_debug("aco: stopping after ", iteration, " generations");
+
+    cout << "end try 0 \n\n";
+    printf("try          0,        best %10ld,        found at iteration %10d,        found at time %10.2f\n\n",
+           (long int)Optional.best_cost, Optional.restart_found_best, elapsed_time());
+    cout.flush();
+
+    if (log_report_file) {
+        fprintf(log_report_file, "end try 0 \n\n\n");
+        fprintf(log_report_file, "try          0,        best %10ld,        found at iteration %10d,        found at time %10.2f\n\n",
+                (long int)Optional.best_cost, Optional.restart_found_best, elapsed_time());
+        fflush(log_report_file);
+        fclose(log_report_file);
+        log_report_file = nullptr;
+    }
 
     cout << fixed << setprecision(10)
          << "Best objective: " << Optional.best_cost << '\n'

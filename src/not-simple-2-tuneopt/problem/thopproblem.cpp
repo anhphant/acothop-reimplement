@@ -21,6 +21,8 @@ public:
     int local_search_flag = 0; // 0: no local search   1: 2-opt   2: 2.5-opt   3: 3-opt
     double time_limit = 100.0;
     int seed = 1910;
+    int nn_ants = 20;
+    int nn_ls = 20;
     string logfile = "";
 } params;
 

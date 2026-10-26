@@ -1,0 +1,133 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Ablation tour heuristic: profit/weight (alpha3/alpha4) BAT vs TAT.
+
+    tsp  = alpha3=0 alpha4=0 (tour TSP thuan, nhu moi dsj1000 experiment)
+    item = alpha3/alpha4/eps1/eps2 theo note.txt (tour co profit/weight)
+
+    Ca 2 deu --alpha-item 0 de co lap rieng tour heuristic (khong item pheromone).
+
+    python ablate_tour_heur.py --seeds 3 --jobs 8
+"""
+
+import argparse
+import csv
+import subprocess
+import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from run_experiment import RE_PROFIT
+from compare_2p_origin_dsj1000 import parameter_configurations, random_seeds, BASE_DIR
+
+SRC2P = BASE_DIR / "src-2p" / "not-simple-2-tuneopt"
+INSTANCES_DIR = BASE_DIR / "instances" / "dsj1000-thop"
+
+LOSING = [
+    "dsj1000_01_unc_10_01",
+    "dsj1000_01_usw_05_02",
+    "dsj1000_05_bsc_05_01",
+    "dsj1000_10_bsc_10_01",
+    "dsj1000_10_bsc_10_02",
+]
+
+# note.txt (dsj1000_10_usw_10_03): alpha3=1.3617 alpha4=0.2531 eps1=125.8501 eps2=24948.57
+CONFIGS = {
+    "tsp":  {"--alpha3": 0.0, "--alpha4": 0.0, "--eps1": 0.1, "--eps2": 0.1},
+    "item": {"--alpha3": 1.3617, "--alpha4": 0.2531, "--eps1": 125.8501, "--eps2": 24948.57},
+}
+
+
+def cfg_key_of(name):
+    parts = name.split("_")
+    return "dsj1000_%02d_%s" % (int(parts[1]), parts[2])
+
+
+def time_limit(items):
+    return 1000.0 * items / 10.0
+
+
+def run_one(tag, name, cfg_key, items, seed, out_dir):
+    exe = SRC2P / "main.exe"
+    cmd = [str(exe), str(INSTANCES_DIR / (name + ".thop"))]
+    for k, v in parameter_configurations[cfg_key].items():
+        cmd += [k, str(v)]
+    for k, v in CONFIGS[tag].items():
+        cmd += [k, str(v)]
+    cmd += ["--alpha-item", "0"]  # co lap tour heuristic
+    cmd += ["--time-limit", "%.1f" % time_limit(items),
+            "--seed", str(seed),
+            "--output", str(out_dir / "solutions" / ("%s_%s_%d.sol" % (name, tag, seed))),
+            "--log", str(out_dir / "logs" / ("%s_%s_%d.log" % (name, tag, seed)))]
+    proc = subprocess.run(cmd, capture_output=True, text=True,
+                          timeout=time_limit(items) + 60, cwd=exe.parent)
+    m = RE_PROFIT.search(proc.stdout + "\n" + proc.stderr)
+    return float(m.group(1)) if m else None
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--seeds", type=int, default=3)
+    p.add_argument("--jobs", type=int, default=8)
+    p.add_argument("--outdir", default="results_ablate_tour_heur")
+    a = p.parse_args()
+
+    out_dir = BASE_DIR / a.outdir
+    (out_dir / "solutions").mkdir(parents=True, exist_ok=True)
+    (out_dir / "logs").mkdir(parents=True, exist_ok=True)
+
+    tasks = []
+    for name in LOSING:
+        items = int(name.split("_")[1])
+        cfg_key = cfg_key_of(name)
+        for tag in CONFIGS:
+            for seed in random_seeds[:a.seeds]:
+                tasks.append((tag, name, cfg_key, items, seed))
+
+    print("tsp / item(tour-heur)  |  %d instance(s)  |  %d seed(s)  |  jobs=%d"
+          % (len(LOSING), a.seeds, a.jobs), flush=True)
+
+    rows = []
+    with ThreadPoolExecutor(max_workers=a.jobs) as pool:
+        futs = {pool.submit(run_one, *t, out_dir): t for t in tasks}
+        for fut in as_completed(futs):
+            t = futs[fut]
+            tag, name, _, _, seed = t
+            try:
+                profit = fut.result()
+            except Exception:
+                profit = None
+            rows.append((name, tag, seed, profit))
+            print("[%s] %s seed=%d profit=%s"
+                  % (tag, name, seed, "" if profit is None else "%.0f" % profit), flush=True)
+
+    csv_path = out_dir / "raw.csv"
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["instance", "tag", "seed", "profit"])
+        for r in rows:
+            w.writerow([r[0], r[1], r[2], "" if r[3] is None else "%.6f" % r[3]])
+
+    print("\n%-24s %14s %14s %9s  (paired item w-l)"
+          % ("instance", "tsp", "item", "diff%"))
+    for name in LOSING:
+        by = {}
+        for r in rows:
+            if r[0] == name and r[3] is not None:
+                by.setdefault(r[1], {})[r[2]] = r[3]
+        if len(by) < 2:
+            print("%-24s (thieu du lieu)" % name)
+            continue
+        mt = sum(by["tsp"].values()) / len(by["tsp"])
+        mi = sum(by["item"].values()) / len(by["item"])
+        w = sum(1 for sd in by["tsp"] if by["item"][sd] > by["tsp"][sd])
+        l = sum(1 for sd in by["tsp"] if by["item"][sd] < by["tsp"][sd])
+        print("%-24s %14.0f %14.0f %+8.2f%%  (%d - %d)"
+              % (name, mt, mi, 100.0 * (mi - mt) / mt, w, l))
+    print("\nDa ghi:", csv_path)
+
+
+if __name__ == "__main__":
+    main()

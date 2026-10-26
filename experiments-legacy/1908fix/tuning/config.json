@@ -1,0 +1,38 @@
+{
+  "instance": "D:\\PhD\\THOP-TTP\\acothop-reconstructed\\instances\\dsj1000-thop\\dsj1000_10_usw_10_03.thop",
+  "grid": {
+    "alpha2": [
+      "5",
+      "7",
+      "10",
+      "15"
+    ],
+    "alpha1": [
+      "0.5",
+      "1.0",
+      "1.5"
+    ],
+    "rho": [
+      "0.4",
+      "0.63",
+      "0.8"
+    ]
+  },
+  "base": {
+    "ants": "50",
+    "time_limit": "100",
+    "local_search": "3",
+    "alpha1": "1.0",
+    "alpha2": "10.0",
+    "alpha3": "0.0",
+    "alpha4": "0.0",
+    "rho": "0.63",
+    "delta": "1.0",
+    "ptries": "20",
+    "step_online": "0",
+    "delayed_online": "0",
+    "adaptive": "0",
+    "seed": "1910"
+  },
+  "n_configs": 36
+}

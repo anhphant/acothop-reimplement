@@ -52,107 +52,177 @@ void packInit() {
     log_debug("packing: initialized city map and item buckets");
 }
 
-// Incremental knapsack evaluation (O(m·n) per try, matching aco++ compute_fitness).
+struct ItemScore {
+    double score;
+    int idx;
+    bool operator<(const ItemScore& other) const {
+        return score < other.score;
+    }
+};
+
+// Static working buffers for O(N) pack
+static bool in_tour[MAX_CITIES];
+static int tour_pos[MAX_CITIES];
+static double distance_accumulated[MAX_CITIES];
+static double pow_d_end[MAX_CITIES];
+static int dist_to_dest[MAX_CITIES];
+static int tour_items[MAX_ITEMS];
+static ItemScore item_scores[MAX_ITEMS];
+static long weight_accumulated[MAX_CITIES];
+static bool tmp_packing[MAX_ITEMS];
+static int picked_items[MAX_ITEMS];
+static int active_indices[MAX_CITIES];
+static int station_active_pos[MAX_CITIES];
+static double prefix_time[MAX_CITIES];
+static long prefix_weight[MAX_CITIES];
+static double temp_prefix_time[MAX_CITIES];
+static long temp_prefix_weight[MAX_CITIES];
+
+// O(N) Knapsack packing evaluation with bit-for-bit equivalence to original.
 Packing pack(const int* tour, int tourLen) {
     Packing best;
     memset(best.picked, 0, nItems);
 
+    int dest_node = tour[tourLen - 1];
+    for (int i = 0; i < tourLen; ++i) {
+        int u = tour[i];
+        in_tour[u] = true;
+        tour_pos[u] = i;
+        dist_to_dest[u] = distance(u, dest_node);
+    }
 
-    static bool in_tour[MAX_CITIES];
-    memset(in_tour, 0, nCities);
-    for (int i = 0; i < tourLen; ++i) in_tour[tour[i]] = true;
-
-    // distance_accumulated[city] = distance from tour start to the city's position
-    static double distance_accumulated[MAX_CITIES];
     double total_distance = 0.0;
     for (int i = 0; i < tourLen - 1; ++i) {
         distance_accumulated[tour[i]] = total_distance;
         total_distance += distance(tour[i], tour[i + 1]);
     }
     distance_accumulated[tour[tourLen - 1]] = total_distance;
-    
-    // end_dist = accumulated distance at the true final city of the tour.
-    // (not-simple-2 has no dummy node: tourLen-1 is the actual destination)
-    const double end_dist = distance_accumulated[tour[tourLen - 1]];
+    const double end_dist = total_distance;
 
-    // PACKLOG (identical format to realbench/thop.c compute_fitness)
-    static long pack_call = 0; ++pack_call;
-    // fprintf(stderr, "PACKLOG|call=%ld|tour_len=%ld|end_dist=%.0f\n",
-    //         pack_call, (long)tourLen, end_dist);
-    // fprintf(stderr, "PACKLOG|tour|");
-    // for (int i = 0; i < tourLen; ++i) fprintf(stderr, "%ld,", (long)tour[i]);
-    // fprintf(stderr, "\n");
-
-    static double score[MAX_ITEMS];
-    static int order[MAX_ITEMS];
-    static long profit_accumulated[MAX_CITIES];
-    static long weight_accumulated[MAX_CITIES];
-    static bool tmp_packing[MAX_ITEMS];
+    // Tour-Items Pre-filtering: filter once per pack() in increasing j order
+    int tour_items_count = 0;
+    for (int j = 0; j < nItems; ++j) {
+        int node = cityIdToNodeIdx[items[j].city];
+        if (in_tour[node]) {
+            tour_items[tour_items_count++] = j;
+        }
+    }
 
     long best_profit = 0;
     const double EPSILON = 1e-9; 
+    const double inv_vmax = 1.0 / maxSpeed;
+    const double inv_vmax_sq = nu / (maxSpeed * maxSpeed);
 
     for (int attempt = 0; attempt < packParams.ptries; attempt++) {
-        // random θ δ γ
+        // random θ δ γ (identical RNG sequence)
         double theta = ran01(&seed);
         double delta = ran01(&seed);
         double gamma = ran01(&seed);
         double sum = theta + delta + gamma;
         theta /= sum; delta /= sum; gamma /= sum;
 
-        // fprintf(stderr, "PACKLOG|try=%ld|th=%.9f|de=%.9f|ga=%.9f\n",
-        //         (long)attempt, theta, delta, gamma);
-
-        // score items (negated ascending sort puts best first)
-        memset(tmp_packing, 0, nItems);
-        int valid_items_count = 0;
-        for (int j = 0; j < nItems; ++j) {
-            int node = cityIdToNodeIdx[items[j].city];
-            if (!in_tour[node]) continue;
-            
-            double d_end = end_dist - distance_accumulated[node];
-            d_end = max(d_end, 1e-12); // Tránh lỗi chia cho 0 trong C++
-            score[j] = -pow((double)items[j].profit, theta) /
-                       (pow((double)items[j].weight, delta) * pow(d_end, gamma));
-            order[valid_items_count++] = j;
+        // Precompute pow(d_end, gamma) once per tour city
+        for (int i = 0; i < tourLen; ++i) {
+            int u = tour[i];
+            double d_end = max(end_dist - distance_accumulated[u], 1e-12);
+            pow_d_end[u] = pow(d_end, gamma);
         }
-        sort(order, order + valid_items_count, [&](int x, int y) { return score[x] < score[y]; });
 
-        for (int i = 0; i < nCities; ++i) { profit_accumulated[i] = 0; weight_accumulated[i] = 0; }
+        int valid_items_count = tour_items_count;
+        for (int it = 0; it < tour_items_count; ++it) {
+            int j = tour_items[it];
+            int node = cityIdToNodeIdx[items[j].city];
+            double s = -pow((double)items[j].profit, theta) /
+                       (pow((double)items[j].weight, delta) * pow_d_end[node]);
+            item_scores[it] = {s, j};
+        }
+        sort(item_scores, item_scores + valid_items_count);
 
         long total_weight = 0, total_profit = 0;
+        int num_picked = 0;
+
+        // Active stations tracking
+        int num_active = 1;
+        active_indices[0] = tourLen - 1;
+        station_active_pos[dest_node] = 0;
+        prefix_time[0] = distance(0, dest_node) * inv_vmax;
+        prefix_weight[0] = 0;
+        double current_total_time = prefix_time[0];
 
         for (int k = 0; k < valid_items_count; ++k) {
-            int j = order[k];
+            int j = item_scores[k].idx;
             long w = items[j].weight;
             if (total_weight + w > capacity) continue;
 
             int node = cityIdToNodeIdx[items[j].city];
-            profit_accumulated[node] += items[j].profit;
+            int p = tour_pos[node];
+            double slack = maxTime - current_total_time;
+
+            bool is_new_station = (weight_accumulated[node] == 0 && node != dest_node);
+            int insert_pos = 0;
+
+            if (is_new_station) {
+                while (insert_pos < num_active - 1 && active_indices[insert_pos] < p) {
+                    insert_pos++;
+                }
+
+                // O(1) Physical Lower-Bound Pruning
+                int prev_st = (insert_pos == 0) ? 0 : tour[active_indices[insert_pos - 1]];
+                int next_st = tour[active_indices[insert_pos]];
+                int geom_detour = distance(prev_st, node) + distance(node, next_st) - distance(prev_st, next_st);
+                int dist_dest = dist_to_dest[node];
+                double min_dt = geom_detour * inv_vmax + (w * dist_dest) * inv_vmax_sq;
+                if (min_dt > slack + EPSILON) continue; // O(1) PRUNE!
+
+                for (int s = num_active; s > insert_pos; --s) {
+                    active_indices[s] = active_indices[s - 1];
+                    station_active_pos[tour[active_indices[s]]] = s;
+                }
+                active_indices[insert_pos] = p;
+                station_active_pos[node] = insert_pos;
+                num_active++;
+            } else {
+                insert_pos = station_active_pos[node];
+                int dist_dest = dist_to_dest[node];
+                double min_dt = (w * dist_dest) * inv_vmax_sq;
+                if (min_dt > slack + EPSILON) continue; // O(1) PRUNE!
+            }
+
             weight_accumulated[node] += w;
 
-            // O(n) time-feasibility sweep
+            // Prefix Time & Weight Caching (Suffix Sweep)
             bool violate = false;
-            
-            long weight_so_far = 0; 
-            
-            double t_time = 0.0;
-            int prev = 0; // C code gốc khởi tạo `prev_city = 0;` 
-            
-            for (int i = 1; i < tourLen; ++i) {
-                int curr = tour[i];
-                
-                // [FIX 2] C skips empty stations except the last real city
-                // (`instance.n - 2`), which sits just before the dummy. not-simple-2
-                // has NO dummy, so its last real city / destination is `nCities - 1`.
-                if (weight_accumulated[curr] == 0 && curr != (nCities - 1)) continue;
+            double t_time;
+            long weight_so_far;
+            int prev;
+            int start_s;
 
+            if (is_new_station) {
+                if (insert_pos == 0) {
+                    prev = 0;
+                    t_time = 0.0;
+                    weight_so_far = 0;
+                } else {
+                    prev = tour[active_indices[insert_pos - 1]];
+                    t_time = prefix_time[insert_pos - 1];
+                    weight_so_far = prefix_weight[insert_pos - 1];
+                }
+                start_s = insert_pos;
+            } else {
+                prev = node;
+                t_time = prefix_time[insert_pos];
+                weight_so_far = prefix_weight[insert_pos] + w;
+                start_s = insert_pos + 1;
+            }
+
+            for (int s = start_s; s < num_active; ++s) {
+                int curr = tour[active_indices[s]];
                 double speed = maxSpeed - nu * weight_so_far;
                 t_time += distance(prev, curr) / speed;
-
                 if (t_time - EPSILON > maxTime) { violate = true; break; }
-                
                 weight_so_far += weight_accumulated[curr];
+                temp_prefix_time[s] = t_time;
+                temp_prefix_weight[s] = weight_so_far;
                 prev = curr;
             }
 
@@ -160,9 +230,24 @@ Packing pack(const int* tour, int tourLen) {
                 total_profit += items[j].profit;
                 total_weight += w;
                 tmp_packing[j] = true;
+                picked_items[num_picked++] = j;
+                current_total_time = t_time;
+                if (!is_new_station) {
+                    prefix_weight[insert_pos] += w;
+                }
+                for (int s = start_s; s < num_active; ++s) {
+                    prefix_time[s] = temp_prefix_time[s];
+                    prefix_weight[s] = temp_prefix_weight[s];
+                }
             } else {
-                profit_accumulated[node] -= items[j].profit;
                 weight_accumulated[node] -= w;
+                if (is_new_station) {
+                    for (int s = insert_pos; s < num_active - 1; ++s) {
+                        active_indices[s] = active_indices[s + 1];
+                        station_active_pos[tour[active_indices[s]]] = s;
+                    }
+                    num_active--;
+                }
             }
         }
 
@@ -171,16 +256,21 @@ Packing pack(const int* tour, int tourLen) {
             memcpy(best.picked, tmp_packing, nItems);
         }
 
-        // fprintf(stderr, "PACKLOG|try=%ld|profit=%ld|weight=%ld\n",
-        //         (long)attempt, total_profit, total_weight);
+        // Sparse reset
+        for (int p = 0; p < num_picked; ++p) {
+            tmp_packing[picked_items[p]] = false;
+        }
+        for (int s = 0; s < num_active; ++s) {
+            weight_accumulated[tour[active_indices[s]]] = 0;
+        }
     }
+
+    // Reset in_tour
+    for (int i = 0; i < tourLen; ++i) in_tour[tour[i]] = false;
 
     best.totalProfit = best_profit;
     long tw = 0;
     for (int j = 0; j < nItems; ++j) if (best.picked[j]) tw += items[j].weight;
     best.totalWeight = tw;
-
-    // fprintf(stderr, "PACKLOG|best|profit=%ld|weight=%ld\n",
-    //         best.totalProfit, best.totalWeight);
     return best;
 }

@@ -7,8 +7,8 @@ using namespace std;
 // largest instance that completes here.
 constexpr int MAX_CITIES = 4000;
 constexpr int MAX_ITEMS = 100000;
-constexpr int MAX_ANTS = 1000;
-constexpr int MAX_KN = 20;
+constexpr int MAX_ANTS = 10000;
+constexpr int MAX_KN = 100;
 
 #define IA 16807
 #define IM 2147483647
@@ -17,6 +17,7 @@ constexpr int MAX_KN = 20;
 #define IR 2836
 
 long seed = 1910;
+FILE* log_report_file = nullptr;
 
 double ran01(long *idum) {
     long k;

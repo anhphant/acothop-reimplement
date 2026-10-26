@@ -1,0 +1,19 @@
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
+
+# build artifacts & outputs (main.exe ~156 MB)
+**/*.exe
+**/*.log
+**/*.sol
+**/*.db
+**/*.txt
+**/outputs/
+**/__pycache__/
+**/irace/
+
+# docs, results (mount tai runtime)
+*.pdf
+results_*/
+*.tar.gz

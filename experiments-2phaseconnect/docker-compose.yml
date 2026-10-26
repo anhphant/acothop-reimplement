@@ -1,0 +1,15 @@
+services:
+  aco:
+    build: .
+    image: anhphant/exp2:latest
+    volumes:
+      - ./results_tune:/app/results_tune
+    command:
+      - "--trials"
+      - "${TRIALS:-20}"
+      - "--time-limit"
+      - "${TIME_LIMIT:-60}"
+      - "--jobs"
+      - "${JOBS:-8}"
+      - "--out"
+      - "results_tune/tune_rhoitem_alphaitem_trials.csv"
