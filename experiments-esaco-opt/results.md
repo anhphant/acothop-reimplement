@@ -1,12 +1,12 @@
-﻿# ESACO vs ACO++ — Thuc nghiem tren pla33810_10 (338.080 items)
+﻿# ESACO vs ACO++ — Thực nghiệm trên pla33810_10 (338.080 vật phẩm)
 
-- **Ngay:** 2026-11-06
-- **Binary:** cung 1 chuong trinh, chung toan bo tham so. `--esaco 0` = origin (ACO++), `--esaco 1` = ESACO (S1: kNN + pheromone injection; S2: sparse pheromone trail; S3: tiered active list).
-- **Setup:** 27 bo test `pla33810_10_{bsc,unc,usw}_{01,05,10}_{01..03}`, seed 10, time-limit 900s, 10 ants, alpha1=1, alpha2=2, rho=0.5, local search on, nn=20.
-- **gap%** = (esaco − origin)/origin x 100. Duong = esaco tot hon.
-- 5/54 run bi SSH cat ~1s truoc time-limit; gia tri lay lai tu best-so-far trong `.sol.log` (danh dau `*`).
+- **Ngày:** 2026-11-06
+- **Binary:** cùng một chương trình, chung toàn bộ tham số. `--esaco 0` = origin (ACO++), `--esaco 1` = ESACO (S1: kNN + pheromone injection; S2: sparse pheromone trail; S3: tiered active list).
+- **Thiết lập:** 27 bộ test `pla33810_10_{bsc,unc,usw}_{01,05,10}_{01..03}`, seed 10, time-limit 900s, 10 kiến, alpha1=1, alpha2=2, rho=0.5, bật local search, nn=20.
+- **gap%** = (esaco − origin)/origin × 100. Dương = esaco tốt hơn.
+- 5/54 lần chạy bị SSH cắt ~1s trước time-limit; giá trị lấy lại từ best-so-far trong `.sol.log` (đánh dấu `*`).
 
-## Ket qua chi tiet
+## Kết quả chi tiết
 
 | instance | esaco | origin | gap% |
 |---|---:|---:|---:|
@@ -38,17 +38,17 @@
 | usw_10_02 | 73,324,984 | 73,036,346 | +0.40 |
 | usw_10_03 | 92,393,582 | 89,152,466 | +3.64 |
 
-## Tong hop
+## Tổng hợp
 
-| Chi so | Gia tri |
+| Chỉ số | Giá trị |
 |---|---:|
 | W/T/L | 13 / 1 / 13 |
 | Mean gap | **+0.22%** |
 | Median gap | 0.00% |
-| Best / Worst | +6.29% / -6.70% |
-| Generation (mean) | esaco 29.4 vs origin 28.0 |
+| Tốt nhất / Kém nhất | +6.29% / -6.70% |
+| Generation (trung bình) | esaco 29.4 vs origin 28.0 |
 
-| nhom | n | mean | median | W/T/L |
+| nhóm | n | mean | median | W/T/L |
 |---|---:|---:|---:|---|
 | bsc | 9 | +0.32% | +0.39% | 5/1/3 |
 | unc | 9 | -0.15% | -0.07% | 4/0/5 |
@@ -57,17 +57,17 @@
 | cap 05 | 9 | -0.44% | -0.65% | 4/0/5 |
 | cap 10 | 9 | -0.08% | +0.40% | 5/1/3 |
 
-## Ket luan
+## Kết luận
 
-1. Tren instance lon nhat (pla33810_10, 338.080 items): **ESACO nhinh hon origin mot chut** — mean +0.22%, W/T/L 13/1/13. Phan bo gap doi xung quanh 0 (median 0.00%, dao dong ±7%) nen voi 1 seed, ket luan trung thuc la **"ngang ngua, nghieng nhe ve ESACO"**.
-2. **ESACO nhanh hon mot chut moi generation** (29.4 vs 28.0) — loi the tich luy khi budget tang.
-3. Xu huong: ESACO cang co loi the khi instance cang lon — phu hop thiet ke (S2 sparse pheromone giam bo nho, S3 active list giam chi phi moi generation).
-4. Can chay them nhieu seed de kiem dinh +0.22% co khac 0 khong.
+1. Trên instance lớn nhất (pla33810_10, 338.080 vật phẩm): **ESACO nhỉnh hơn origin một chút** — mean +0.22%, W/T/L 13/1/13. Phân bố gap đối xứng quanh 0 (median 0.00%, dao động ±7%) nên với 1 seed, kết luận trung thực là **"ngang ngửa, nghiêng nhẹ về ESACO"**.
+2. **ESACO nhanh hơn một chút mỗi generation** (29.4 vs 28.0) — lợi thế tích lũy khi budget tăng.
+3. Xu hướng: ESACO càng có lợi thế khi instance càng lớn — phù hợp thiết kế (S2 sparse pheromone giảm bộ nhớ, S3 active list giảm chi phí mỗi generation).
+4. Cần chạy thêm nhiều seed để kiểm định +0.22% có khác 0 không.
 
 ## Files
 
-- `src/esaco/` — ma nguon ESACO (cung binary chay ca origin va esaco)
-- `scripts/run_esaco_origin_all.py` — runner: compile + chay 27 x 2 task, 900s/run
-- `scripts/analyze.py` — tinh bang gap + thong ke tu `results/summary.csv`
-- `results/summary.csv` — ket qua thuc nghiem (54 dong)
-- `results/gap.csv` — bang so sanh cuoi cung (27 cap)
+- `src/esaco/` — mã nguồn ESACO (cùng binary chạy cả origin và esaco)
+- `scripts/run_esaco_origin_all.py` — runner: compile + chạy 27 × 2 task, 900s/run
+- `scripts/analyze.py` — tính bảng gap + thống kê từ `results/summary.csv`
+- `results/summary.csv` — kết quả thực nghiệm (54 dòng)
+- `results/gap.csv` — bảng so sánh cuối cùng (27 cặp)
